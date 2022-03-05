@@ -22,6 +22,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        Connect();
     }
 
     Connection con;
@@ -30,7 +31,7 @@ public class Login extends javax.swing.JFrame {
     
     public void Connect(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library","root","Silvatkp99");               
             
         } catch (ClassNotFoundException ex) {
