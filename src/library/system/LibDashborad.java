@@ -33,7 +33,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtBack = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tapSection = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         txtOk = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -70,9 +70,9 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane1.setForeground(new java.awt.Color(255, 255, 255));
-        jTabbedPane1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        tapSection.setBackground(new java.awt.Color(255, 255, 255));
+        tapSection.setForeground(new java.awt.Color(255, 255, 255));
+        tapSection.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -103,7 +103,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addContainerGap(550, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("    Book   ", jPanel2);
+        tapSection.addTab("    Book   ", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -137,7 +137,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addContainerGap(570, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("   Memebers   ", jPanel3);
+        tapSection.addTab("   Memebers   ", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -170,17 +170,20 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addContainerGap(584, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("    Borrow    ", jPanel4);
+        tapSection.addTab("    Borrow    ", jPanel4);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tapSection)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(tapSection, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
@@ -188,7 +191,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanelMainLayout.setHorizontalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,7 +334,7 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelMain;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane tapSection;
     private javax.swing.JButton txtBack;
     private javax.swing.JButton txtOk;
     private javax.swing.JPasswordField txtPassword;
