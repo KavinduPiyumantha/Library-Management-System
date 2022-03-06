@@ -36,6 +36,12 @@ public class LibDashborad extends javax.swing.JFrame {
         tapSection = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         txtOk = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        txtOk1 = new javax.swing.JButton();
+        txtOk2 = new javax.swing.JButton();
+        txtOk3 = new javax.swing.JButton();
+        txtOk4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
@@ -74,15 +80,68 @@ public class LibDashborad extends javax.swing.JFrame {
         tapSection.setForeground(new java.awt.Color(255, 255, 255));
         tapSection.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         txtOk.setBackground(new java.awt.Color(204, 204, 204));
         txtOk.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         txtOk.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk.setText("OK");
+        txtOk.setText("Add");
         txtOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtOkActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Book ID", "Book Title", "Catogery", "Author"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        txtOk1.setBackground(new java.awt.Color(204, 204, 204));
+        txtOk1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtOk1.setForeground(new java.awt.Color(0, 0, 0));
+        txtOk1.setText("Remove");
+        txtOk1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOk1ActionPerformed(evt);
+            }
+        });
+
+        txtOk2.setBackground(new java.awt.Color(204, 204, 204));
+        txtOk2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtOk2.setForeground(new java.awt.Color(0, 0, 0));
+        txtOk2.setText("Update");
+        txtOk2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOk2ActionPerformed(evt);
+            }
+        });
+
+        txtOk3.setBackground(new java.awt.Color(204, 204, 204));
+        txtOk3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtOk3.setForeground(new java.awt.Color(0, 0, 0));
+        txtOk3.setText("Find");
+        txtOk3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOk3ActionPerformed(evt);
+            }
+        });
+
+        txtOk4.setBackground(new java.awt.Color(204, 204, 204));
+        txtOk4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtOk4.setForeground(new java.awt.Color(0, 0, 0));
+        txtOk4.setText("Add");
+        txtOk4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOk4ActionPerformed(evt);
             }
         });
 
@@ -91,16 +150,41 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(txtOk, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1056, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtOk1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(txtOk, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtOk3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(txtOk2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtOk4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90)))
+                .addGap(101, 101, 101)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addComponent(txtOk)
-                .addContainerGap(550, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOk3)
+                    .addComponent(txtOk2))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOk1)
+                    .addComponent(txtOk))
+                .addGap(34, 34, 34)
+                .addComponent(txtOk4)
+                .addGap(104, 104, 104))
         );
 
         tapSection.addTab("    Book   ", jPanel2);
@@ -134,7 +218,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(570, Short.MAX_VALUE))
+                .addContainerGap(592, Short.MAX_VALUE))
         );
 
         tapSection.addTab("   Memebers   ", jPanel3);
@@ -167,7 +251,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(584, Short.MAX_VALUE))
+                .addContainerGap(606, Short.MAX_VALUE))
         );
 
         tapSection.addTab("    Borrow    ", jPanel4);
@@ -196,7 +280,6 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelMainLayout.createSequentialGroup()
-                            .addGap(18, 18, 18)
                             .addComponent(jLabel1)
                             .addGap(247, 247, 247)
                             .addComponent(txtBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -286,6 +369,22 @@ public class LibDashborad extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtBackActionPerformed
 
+    private void txtOk1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOk1ActionPerformed
+
+    private void txtOk2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOk2ActionPerformed
+
+    private void txtOk3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOk3ActionPerformed
+
+    private void txtOk4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOk4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -334,9 +433,15 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelMain;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTabbedPane tapSection;
     private javax.swing.JButton txtBack;
     private javax.swing.JButton txtOk;
+    private javax.swing.JButton txtOk1;
+    private javax.swing.JButton txtOk2;
+    private javax.swing.JButton txtOk3;
+    private javax.swing.JButton txtOk4;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
