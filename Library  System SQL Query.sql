@@ -11,7 +11,8 @@ Tel_No varchar(10)
 
 CREATE TABLE Book(
 Book_id int auto_increment NOT NULL PRIMARY KEY,
-Title varchar(255),
+ISBN varchar(255) NOT NULL ,
+Title varchar(255) NOT NULL,
 catogery varchar(255),
 Author varchar(255)
 );

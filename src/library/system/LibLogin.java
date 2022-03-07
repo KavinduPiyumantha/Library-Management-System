@@ -17,6 +17,7 @@ public class LibLogin extends javax.swing.JFrame {
      */
     public LibLogin() {
         initComponents();
+        
     }
 
     /**
