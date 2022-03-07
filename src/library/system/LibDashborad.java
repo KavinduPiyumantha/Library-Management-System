@@ -4,13 +4,30 @@
  */
 package library.system;
 
+//import com.mysql.cj.jdbc.result.ResultSetMetaData;
+//import com.mysql.cj.protocol.Resultset;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.PreparedStatement;
+//import java.sql.SQLException;
+//import java.util.Vector;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import javax.swing.JOptionPane;
+//import javax.swing.table.DefaultTableModel;
+
+//import com.mysql.cj.protocol.Resultset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,17 +41,19 @@ public class LibDashborad extends javax.swing.JFrame {
     public LibDashborad() {
         initComponents();
         Connect();
-        txtBookCatogery.setSelectedIndex(-1);
+        table_Load();
+   //     txtBookCatogery.setSelectedIndex(-1);
     }
 
     
     Connection con;
     PreparedStatement pst;
+    ResultSet rs;
     
     
     public void Connect(){
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library","root","Silvatkp99");               
             
         } catch (ClassNotFoundException ex) {
@@ -44,6 +63,49 @@ public class LibDashborad extends javax.swing.JFrame {
         }
         
     }
+    
+    
+    
+    public void table_Load(){
+        
+        int c;
+
+        try {
+            pst = con.prepareStatement("SELECT * FROM book");
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            DefaultTableModel d =(DefaultTableModel )BookTable.getModel();
+            d.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int i=1;i<=c;i++){
+                    
+                    v2.add(rs.getString("Book_id"));
+                    v2.add(rs.getString("ISBN"));
+                    v2.add(rs.getString("Title"));
+                    v2.add(rs.getString("catogery"));
+                    v2.add(rs.getString("Author"));
+                    
+                }
+                d.addRow(v2);
+            }
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+        
+        
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,7 +124,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         txtOk = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        BookTable = new javax.swing.JTable();
         txtOk1 = new javax.swing.JButton();
         txtOk2 = new javax.swing.JButton();
         txtOk3 = new javax.swing.JButton();
@@ -72,7 +134,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtAuthor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        bookID = new javax.swing.JLabel();
         txtBookCatogery = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
         txtISBN = new javax.swing.JTextField();
@@ -142,8 +204,8 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        BookTable.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        BookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -159,7 +221,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(BookTable);
 
         txtOk1.setBackground(new java.awt.Color(204, 204, 204));
         txtOk1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -224,10 +286,10 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Author");
 
-        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel9.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("-");
+        bookID.setBackground(new java.awt.Color(255, 255, 255));
+        bookID.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        bookID.setForeground(new java.awt.Color(0, 0, 0));
+        bookID.setText("-");
 
         txtBookCatogery.setBackground(new java.awt.Color(255, 255, 255));
         txtBookCatogery.setEditable(true);
@@ -291,7 +353,7 @@ public class LibDashborad extends javax.swing.JFrame {
                                         .addGap(101, 101, 101)))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(bookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -310,7 +372,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel9))
+                    .addComponent(bookID))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -796,6 +858,8 @@ public class LibDashborad extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BookTable;
+    private javax.swing.JLabel bookID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -811,7 +875,6 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -819,7 +882,6 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTabbedPane tapSection;
     private javax.swing.JTextField txtAuthor;
