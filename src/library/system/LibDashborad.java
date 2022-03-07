@@ -4,19 +4,6 @@
  */
 package library.system;
 
-//import com.mysql.cj.jdbc.result.ResultSetMetaData;
-//import com.mysql.cj.protocol.Resultset;
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.PreparedStatement;
-//import java.sql.SQLException;
-//import java.util.Vector;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-//import javax.swing.JOptionPane;
-//import javax.swing.table.DefaultTableModel;
-
-//import com.mysql.cj.protocol.Resultset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,7 +28,7 @@ public class LibDashborad extends javax.swing.JFrame {
     public LibDashborad() {
         initComponents();
         Connect();
-        table_Load();
+        table_reLoad();
    //     txtBookCatogery.setSelectedIndex(-1);
     }
 
@@ -53,7 +40,7 @@ public class LibDashborad extends javax.swing.JFrame {
     
     public void Connect(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library","root","Silvatkp99");               
             
         } catch (ClassNotFoundException ex) {
@@ -66,7 +53,7 @@ public class LibDashborad extends javax.swing.JFrame {
     
     
     
-    public void table_Load(){
+    public void table_reLoad(){
         
         int c;
 
@@ -745,6 +732,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
                 txtISBN.requestFocus();
+                table_reLoad();
             }
             else{
                 JOptionPane.showMessageDialog(this,"Error:: Can't Add new Book");
