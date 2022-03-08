@@ -40,7 +40,7 @@ public class LibDashborad extends javax.swing.JFrame {
     
     public void Connect(){
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library","root","Silvatkp99");               
             
         } catch (ClassNotFoundException ex) {
@@ -109,11 +109,11 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         tapSection = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        txtOk = new javax.swing.JButton();
+        txtAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         BookTable = new javax.swing.JTable();
-        txtOk1 = new javax.swing.JButton();
-        txtOk2 = new javax.swing.JButton();
+        txtDelete = new javax.swing.JButton();
+        txtUpdate = new javax.swing.JButton();
         txtOk3 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtBookTitle = new javax.swing.JTextField();
@@ -181,13 +181,13 @@ public class LibDashborad extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        txtOk.setBackground(new java.awt.Color(204, 204, 204));
-        txtOk.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtOk.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk.setText("Add");
-        txtOk.addActionListener(new java.awt.event.ActionListener() {
+        txtAdd.setBackground(new java.awt.Color(204, 204, 204));
+        txtAdd.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtAdd.setForeground(new java.awt.Color(0, 0, 0));
+        txtAdd.setText("Add");
+        txtAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOkActionPerformed(evt);
+                txtAddActionPerformed(evt);
             }
         });
 
@@ -208,25 +208,30 @@ public class LibDashborad extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        BookTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(BookTable);
 
-        txtOk1.setBackground(new java.awt.Color(204, 204, 204));
-        txtOk1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtOk1.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk1.setText("Remove");
-        txtOk1.addActionListener(new java.awt.event.ActionListener() {
+        txtDelete.setBackground(new java.awt.Color(204, 204, 204));
+        txtDelete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtDelete.setForeground(new java.awt.Color(0, 0, 0));
+        txtDelete.setText("Remove");
+        txtDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOk1ActionPerformed(evt);
+                txtDeleteActionPerformed(evt);
             }
         });
 
-        txtOk2.setBackground(new java.awt.Color(204, 204, 204));
-        txtOk2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtOk2.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk2.setText("Update");
-        txtOk2.addActionListener(new java.awt.event.ActionListener() {
+        txtUpdate.setBackground(new java.awt.Color(204, 204, 204));
+        txtUpdate.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtUpdate.setForeground(new java.awt.Color(0, 0, 0));
+        txtUpdate.setText("Update");
+        txtUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOk2ActionPerformed(evt);
+                txtUpdateActionPerformed(evt);
             }
         });
 
@@ -312,13 +317,13 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtOk1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
-                                .addComponent(txtOk2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(txtOk3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
-                                .addComponent(txtOk, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -379,11 +384,11 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGap(83, 83, 83)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtOk3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtOk, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(txtAdd, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOk1)
-                    .addComponent(txtOk2))
+                    .addComponent(txtDelete)
+                    .addComponent(txtUpdate))
                 .addGap(72, 72, 72))
         );
 
@@ -708,7 +713,7 @@ public class LibDashborad extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
+    private void txtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddActionPerformed
         // TODO add your handling code here:
         
         String isbnNO = txtISBN.getText();
@@ -744,7 +749,7 @@ public class LibDashborad extends javax.swing.JFrame {
             Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_txtOkActionPerformed
+    }//GEN-LAST:event_txtAddActionPerformed
 
     private void txtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBackActionPerformed
         // TODO add your handling code here:
@@ -755,13 +760,98 @@ public class LibDashborad extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtBackActionPerformed
 
-    private void txtOk1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk1ActionPerformed
+    private void txtDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeleteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtOk1ActionPerformed
+        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
+        int selectIndex =BookTable.getSelectedRow();
+        
+        
+        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        
+        String isbnNO = txtISBN.getText();
+        String bookTitle = txtBookTitle.getText();
+        String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+        String Author = txtAuthor.getText();
+        
+        
+        try {
+            pst = con.prepareStatement("delete from book where Book_id = ?");
+           
+            pst.setInt(1, id);
+            
+            int k = pst.executeUpdate();
+            
+            if(k==1){
+                JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
+                bookID.setText("-");
+                txtISBN.setText(""); 
+                txtBookTitle.setText("");
+                txtBookCatogery.setSelectedIndex(-1);
+                txtAuthor.setText("");
+                
+                txtISBN.requestFocus();
+                table_reLoad();
+                txtAdd.setEnabled(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error:: Can't Delete Book");
+            }
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_txtDeleteActionPerformed
 
-    private void txtOk2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk2ActionPerformed
+    private void txtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtOk2ActionPerformed
+        
+        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
+        int selectIndex =BookTable.getSelectedRow();
+        
+        
+        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        
+        String isbnNO = txtISBN.getText();
+        String bookTitle = txtBookTitle.getText();
+        String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+        String Author = txtAuthor.getText();
+        
+        
+        try {
+            pst = con.prepareStatement("update book set ISBN = ?,Title = ?,catogery = ?,Author = ? where Book_id = ?");
+            pst.setString(1, isbnNO);
+            pst.setString(2, bookTitle);
+            pst.setString(3, bookCatogery);
+            pst.setString(4, Author);
+            pst.setInt(5, id);
+            int k = pst.executeUpdate();
+            
+            if(k==1){
+                JOptionPane.showMessageDialog(this,"Book Succesfully Updated");
+                txtISBN.setText(""); 
+                txtBookTitle.setText("");
+                txtBookCatogery.setSelectedIndex(-1);
+                txtAuthor.setText("");
+                txtISBN.requestFocus();
+                table_reLoad();
+                txtAdd.setEnabled(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error:: Can't Update Book");
+            }
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_txtUpdateActionPerformed
 
     private void txtOk3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk3ActionPerformed
         // TODO add your handling code here:
@@ -806,6 +896,26 @@ public class LibDashborad extends javax.swing.JFrame {
     private void txtISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBNActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtISBNActionPerformed
+
+    private void BookTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookTableMouseClicked
+        // TODO add your handling code here:
+        
+        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
+        int selectIndex =BookTable.getSelectedRow();
+        
+        
+        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        String z = Integer.toString(id);
+        bookID.setText(z);
+        txtISBN.setText(d1.getValueAt(selectIndex, 01).toString()); 
+        txtBookTitle.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtBookCatogery.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
+        txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
+        //txtISBN.requestFocus();
+        
+        txtAdd.setEnabled(false);
+        
+    }//GEN-LAST:event_BookTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -872,20 +982,20 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTabbedPane tapSection;
+    private javax.swing.JButton txtAdd;
     private javax.swing.JTextField txtAuthor;
     private javax.swing.JButton txtBack;
     private javax.swing.JComboBox<String> txtBookCatogery;
     private javax.swing.JTextField txtBookTitle;
+    private javax.swing.JButton txtDelete;
     private javax.swing.JTextField txtISBN;
-    private javax.swing.JButton txtOk;
-    private javax.swing.JButton txtOk1;
-    private javax.swing.JButton txtOk2;
     private javax.swing.JButton txtOk3;
     private javax.swing.JButton txtOk4;
     private javax.swing.JButton txtOk5;
     private javax.swing.JButton txtOk6;
     private javax.swing.JButton txtOk7;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JButton txtUpdate;
     private javax.swing.JTextField txtUserName5;
     private javax.swing.JTextField txtUserName6;
     private javax.swing.JTextField txtUserName7;

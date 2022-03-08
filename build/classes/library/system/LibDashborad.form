@@ -206,14 +206,14 @@
                                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="txtOk1" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="txtDelete" min="-2" pref="124" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                              <Component id="txtOk2" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="txtUpdate" min="-2" pref="124" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
                                               <Component id="txtOk3" min="-2" pref="124" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                              <Component id="txtOk" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="txtAdd" min="-2" pref="124" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -296,12 +296,12 @@
                               <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtOk3" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtOk" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtAdd" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtOk1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtOk2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDelete" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtUpdate" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                           </Group>
@@ -309,7 +309,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="txtOk">
+                    <Component class="javax.swing.JButton" name="txtAdd">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -323,7 +323,7 @@
                         <Property name="text" type="java.lang.String" value="Add"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOkActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAddActionPerformed"/>
                       </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -380,10 +380,13 @@
                               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BookTableMouseClicked"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JButton" name="txtOk1">
+                    <Component class="javax.swing.JButton" name="txtDelete">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -397,10 +400,10 @@
                         <Property name="text" type="java.lang.String" value="Remove"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOk1ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDeleteActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="txtOk2">
+                    <Component class="javax.swing.JButton" name="txtUpdate">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -414,7 +417,7 @@
                         <Property name="text" type="java.lang.String" value="Update"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOk2ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUpdateActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="txtOk3">
