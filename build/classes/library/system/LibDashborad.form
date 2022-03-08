@@ -206,14 +206,14 @@
                                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="txtDelete" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="btnDelete" min="-2" pref="124" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                              <Component id="txtUpdate" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="btnUpdate" min="-2" pref="124" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="txtOk3" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="btnFind" min="-2" pref="124" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                              <Component id="txtAdd" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="btnAdd" min="-2" pref="124" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -295,13 +295,13 @@
                               </Group>
                               <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtOk3" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtAdd" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnFind" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnAdd" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtDelete" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtUpdate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnUpdate" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                           </Group>
@@ -309,7 +309,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="txtAdd">
+                    <Component class="javax.swing.JButton" name="btnAdd">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -323,7 +323,7 @@
                         <Property name="text" type="java.lang.String" value="Add"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAddActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
                       </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -386,7 +386,7 @@
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JButton" name="txtDelete">
+                    <Component class="javax.swing.JButton" name="btnDelete">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -400,10 +400,10 @@
                         <Property name="text" type="java.lang.String" value="Remove"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDeleteActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="txtUpdate">
+                    <Component class="javax.swing.JButton" name="btnUpdate">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -417,10 +417,10 @@
                         <Property name="text" type="java.lang.String" value="Update"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUpdateActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="txtOk3">
+                    <Component class="javax.swing.JButton" name="btnFind">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -434,7 +434,7 @@
                         <Property name="text" type="java.lang.String" value="Find"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOk3ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel5">

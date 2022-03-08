@@ -109,12 +109,12 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         tapSection = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        txtAdd = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         BookTable = new javax.swing.JTable();
-        txtDelete = new javax.swing.JButton();
-        txtUpdate = new javax.swing.JButton();
-        txtOk3 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnFind = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtBookTitle = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -181,13 +181,13 @@ public class LibDashborad extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        txtAdd.setBackground(new java.awt.Color(204, 204, 204));
-        txtAdd.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtAdd.setForeground(new java.awt.Color(0, 0, 0));
-        txtAdd.setText("Add");
-        txtAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setBackground(new java.awt.Color(204, 204, 204));
+        btnAdd.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(0, 0, 0));
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAddActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
@@ -215,33 +215,33 @@ public class LibDashborad extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(BookTable);
 
-        txtDelete.setBackground(new java.awt.Color(204, 204, 204));
-        txtDelete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtDelete.setForeground(new java.awt.Color(0, 0, 0));
-        txtDelete.setText("Remove");
-        txtDelete.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setBackground(new java.awt.Color(204, 204, 204));
+        btnDelete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(0, 0, 0));
+        btnDelete.setText("Remove");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDeleteActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
-        txtUpdate.setBackground(new java.awt.Color(204, 204, 204));
-        txtUpdate.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtUpdate.setForeground(new java.awt.Color(0, 0, 0));
-        txtUpdate.setText("Update");
-        txtUpdate.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setBackground(new java.awt.Color(204, 204, 204));
+        btnUpdate.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUpdateActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
-        txtOk3.setBackground(new java.awt.Color(204, 204, 204));
-        txtOk3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtOk3.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk3.setText("Find");
-        txtOk3.addActionListener(new java.awt.event.ActionListener() {
+        btnFind.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind.setText("Find");
+        btnFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOk3ActionPerformed(evt);
+                btnFindActionPerformed(evt);
             }
         });
 
@@ -317,13 +317,13 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
-                                .addComponent(txtUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtOk3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
-                                .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -383,12 +383,12 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addGap(83, 83, 83)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtOk3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtAdd, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnFind, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDelete)
-                    .addComponent(txtUpdate))
+                    .addComponent(btnDelete)
+                    .addComponent(btnUpdate))
                 .addGap(72, 72, 72))
         );
 
@@ -713,7 +713,7 @@ public class LibDashborad extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         
         String isbnNO = txtISBN.getText();
@@ -731,13 +731,16 @@ public class LibDashborad extends javax.swing.JFrame {
             int k = pst.executeUpdate();
             
             if(k==1){
-                JOptionPane.showMessageDialog(this,"New Book Succesfully Added");
+                
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
                 txtISBN.requestFocus();
                 table_reLoad();
+                
+                JOptionPane.showMessageDialog(this,"New Book Succesfully Added");
+                
             }
             else{
                 JOptionPane.showMessageDialog(this,"Error:: Can't Add new Book");
@@ -749,7 +752,7 @@ public class LibDashborad extends javax.swing.JFrame {
             Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_txtAddActionPerformed
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void txtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBackActionPerformed
         // TODO add your handling code here:
@@ -760,7 +763,7 @@ public class LibDashborad extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtBackActionPerformed
 
-    private void txtDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeleteActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
         int selectIndex =BookTable.getSelectedRow();
@@ -782,7 +785,7 @@ public class LibDashborad extends javax.swing.JFrame {
             int k = pst.executeUpdate();
             
             if(k==1){
-                JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
+                
                 bookID.setText("-");
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
@@ -791,7 +794,8 @@ public class LibDashborad extends javax.swing.JFrame {
                 
                 txtISBN.requestFocus();
                 table_reLoad();
-                txtAdd.setEnabled(true);
+                btnAdd.setEnabled(true);
+                JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
             }
             else{
                 JOptionPane.showMessageDialog(this,"Error:: Can't Delete Book");
@@ -804,9 +808,9 @@ public class LibDashborad extends javax.swing.JFrame {
         }
         
         
-    }//GEN-LAST:event_txtDeleteActionPerformed
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void txtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         
         DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
@@ -831,14 +835,15 @@ public class LibDashborad extends javax.swing.JFrame {
             int k = pst.executeUpdate();
             
             if(k==1){
-                JOptionPane.showMessageDialog(this,"Book Succesfully Updated");
+                
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
                 txtISBN.requestFocus();
                 table_reLoad();
-                txtAdd.setEnabled(true);
+                btnAdd.setEnabled(true);
+                JOptionPane.showMessageDialog(this,"Book Succesfully Updated");
             }
             else{
                 JOptionPane.showMessageDialog(this,"Error:: Can't Update Book");
@@ -851,11 +856,11 @@ public class LibDashborad extends javax.swing.JFrame {
         }
         
         
-    }//GEN-LAST:event_txtUpdateActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void txtOk3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk3ActionPerformed
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtOk3ActionPerformed
+    }//GEN-LAST:event_btnFindActionPerformed
 
     private void txtAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAuthorActionPerformed
         // TODO add your handling code here:
@@ -913,7 +918,7 @@ public class LibDashborad extends javax.swing.JFrame {
         txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
         //txtISBN.requestFocus();
         
-        txtAdd.setEnabled(false);
+        btnAdd.setEnabled(false);
         
     }//GEN-LAST:event_BookTableMouseClicked
 
@@ -958,6 +963,10 @@ public class LibDashborad extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BookTable;
     private javax.swing.JLabel bookID;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnFind;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -982,20 +991,16 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTabbedPane tapSection;
-    private javax.swing.JButton txtAdd;
     private javax.swing.JTextField txtAuthor;
     private javax.swing.JButton txtBack;
     private javax.swing.JComboBox<String> txtBookCatogery;
     private javax.swing.JTextField txtBookTitle;
-    private javax.swing.JButton txtDelete;
     private javax.swing.JTextField txtISBN;
-    private javax.swing.JButton txtOk3;
     private javax.swing.JButton txtOk4;
     private javax.swing.JButton txtOk5;
     private javax.swing.JButton txtOk6;
     private javax.swing.JButton txtOk7;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JButton txtUpdate;
     private javax.swing.JTextField txtUserName5;
     private javax.swing.JTextField txtUserName6;
     private javax.swing.JTextField txtUserName7;

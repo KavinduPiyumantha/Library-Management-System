@@ -4,6 +4,7 @@
  */
 package library.system;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -53,6 +54,11 @@ public class LibLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanelMain.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelMain.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanelMainKeyPressed(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Archivo SemiBold", 1, 28)); // NOI18N
@@ -83,6 +89,11 @@ public class LibLogin extends javax.swing.JFrame {
                 txtOkActionPerformed(evt);
             }
         });
+        txtOk.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtOkKeyPressed(evt);
+            }
+        });
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -100,6 +111,16 @@ public class LibLogin extends javax.swing.JFrame {
 
         txtPassword.setBackground(new java.awt.Color(255, 255, 255));
         txtPassword.setForeground(new java.awt.Color(0, 0, 0));
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
         jPanelMain.setLayout(jPanelMainLayout);
@@ -213,6 +234,54 @@ public class LibLogin extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_txtBackActionPerformed
+
+    private void txtOkKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOkKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOkKeyPressed
+
+    private void jPanelMainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanelMainKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanelMainKeyPressed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            String username = txtUserName.getText();
+        char[] password = txtPassword.getPassword();
+        
+        char[] correctPass ={'1','2','3','4'};
+        boolean passcheck=false;
+        
+        for(int i=0 ;i<password.length;i++){
+            
+            if(password.length != correctPass.length || correctPass[i] != password[i]){
+                passcheck = false;
+                break;
+            }
+            
+            passcheck = true;
+        }
+        
+        if(username.equals("kavindu") && passcheck){
+            
+            LibDashborad login =new LibDashborad();
+            this.hide();
+            login.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
+            txtUserName.setText("");
+            //txtPassword.selectAll();
+            
+    
+            txtUserName.requestFocus();
+        }
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
