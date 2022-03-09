@@ -160,9 +160,19 @@ public class Login extends javax.swing.JFrame {
 
     private void txtLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibrarianActionPerformed
         // TODO add your handling code here:
-        LibLogin login =new LibLogin();
+        
+        
+//        LibLogin login =new LibLogin();
+//        this.hide();
+//        login.setVisible(true);
+        
+        
+        LibDashborad login =new LibDashborad();
         this.hide();
         login.setVisible(true);
+        
+        
+        
     }//GEN-LAST:event_txtLibrarianActionPerformed
 
     /**

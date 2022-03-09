@@ -77,6 +77,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     v2.add(rs.getString("Title"));
                     v2.add(rs.getString("catogery"));
                     v2.add(rs.getString("Author"));
+                    v2.add(rs.getString("book_count"));
                     
                 }
                 d.addRow(v2);
@@ -121,10 +122,12 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtAuthor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        bookID = new javax.swing.JLabel();
         txtBookCatogery = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
         txtISBN = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        bookCount = new javax.swing.JLabel();
+        BookID = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -197,11 +200,11 @@ public class LibDashborad extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Book ID", "Book Title", "Catogery", "Author", "ISBN No"
+                "Book ID", "ISBN No", "Book Title", "Catogery", "Author", "Count"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -278,11 +281,6 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Author");
 
-        bookID.setBackground(new java.awt.Color(255, 255, 255));
-        bookID.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        bookID.setForeground(new java.awt.Color(0, 0, 0));
-        bookID.setText("-");
-
         txtBookCatogery.setBackground(new java.awt.Color(255, 255, 255));
         txtBookCatogery.setEditable(true);
         txtBookCatogery.setForeground(new java.awt.Color(0, 0, 0));
@@ -307,6 +305,25 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Count");
+
+        bookCount.setBackground(new java.awt.Color(255, 255, 255));
+        bookCount.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        bookCount.setForeground(new java.awt.Color(0, 0, 0));
+        bookCount.setText("-");
+
+        BookID.setBackground(new java.awt.Color(255, 255, 255));
+        BookID.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        BookID.setForeground(new java.awt.Color(0, 0, 0));
+        BookID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BookIDActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -327,14 +344,21 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtBookCatogery, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(bookCount, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -343,15 +367,11 @@ public class LibDashborad extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel5)
                                         .addGap(101, 101, 101)))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                                    .addComponent(bookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BookID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -364,7 +384,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(bookID))
+                    .addComponent(BookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,7 +401,11 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(83, 83, 83)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9)
+                    .addComponent(bookCount, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnFind, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -648,14 +672,17 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(tapSection)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tapSection, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tapSection)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
@@ -715,7 +742,7 @@ public class LibDashborad extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        
+        String bookid = BookID.getText();
         String isbnNO = txtISBN.getText();
         String bookTitle = txtBookTitle.getText();
         String bookCatogery = txtBookCatogery.getSelectedItem().toString();
@@ -723,20 +750,23 @@ public class LibDashborad extends javax.swing.JFrame {
         
         
         try {
-            pst = con.prepareStatement("insert into book(ISBN,Title,catogery,Author)values(?,?,?,?)");
-            pst.setString(1, isbnNO);
-            pst.setString(2, bookTitle);
-            pst.setString(3, bookCatogery);
-            pst.setString(4, Author);
+            pst = con.prepareStatement("insert into book(Book_id,ISBN,Title,catogery,Author)values(?,?,?,?,?)");
+            
+            pst.setString(1, bookid);
+            pst.setString(2, isbnNO);
+            pst.setString(3, bookTitle);
+            pst.setString(4, bookCatogery);
+            pst.setString(5, Author);
             int k = pst.executeUpdate();
             
             if(k==1){
                 
+                BookID.setText("");
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
-                txtISBN.requestFocus();
+                BookID.requestFocus();
                 table_reLoad();
                 
                 JOptionPane.showMessageDialog(this,"New Book Succesfully Added");
@@ -786,13 +816,14 @@ public class LibDashborad extends javax.swing.JFrame {
             
             if(k==1){
                 
-                bookID.setText("-");
+                BookID.setText("");
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
+                bookCount.setText("-");
                 
-                txtISBN.requestFocus();
+                BookID.requestFocus();
                 table_reLoad();
                 btnAdd.setEnabled(true);
                 JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
@@ -832,15 +863,19 @@ public class LibDashborad extends javax.swing.JFrame {
             pst.setString(3, bookCatogery);
             pst.setString(4, Author);
             pst.setInt(5, id);
+             
             int k = pst.executeUpdate();
             
             if(k==1){
                 
+                BookID.setText("");
                 txtISBN.setText(""); 
                 txtBookTitle.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtAuthor.setText("");
-                txtISBN.requestFocus();
+                bookCount.setText("-");
+                
+                BookID.requestFocus();
                 table_reLoad();
                 btnAdd.setEnabled(true);
                 JOptionPane.showMessageDialog(this,"Book Succesfully Updated");
@@ -909,18 +944,28 @@ public class LibDashborad extends javax.swing.JFrame {
         int selectIndex =BookTable.getSelectedRow();
         
         
-        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-        String z = Integer.toString(id);
-        bookID.setText(z);
-        txtISBN.setText(d1.getValueAt(selectIndex, 01).toString()); 
+        
+        //int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+       // String z = Integer.toString(id);
+        
+//        int count =Integer.parseInt(d1.getValueAt(selectIndex, 5).toString());
+//        String cnt = Integer.toString(count);
+        
+        BookID.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtISBN.setText(d1.getValueAt(selectIndex, 1).toString()); 
         txtBookTitle.setText(d1.getValueAt(selectIndex, 2).toString());
         txtBookCatogery.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
         txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
+        bookCount.setText(d1.getValueAt(selectIndex, 5).toString());
         //txtISBN.requestFocus();
         
         btnAdd.setEnabled(false);
         
     }//GEN-LAST:event_BookTableMouseClicked
+
+    private void BookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BookIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookIDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -961,8 +1006,9 @@ public class LibDashborad extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField BookID;
     private javax.swing.JTable BookTable;
-    private javax.swing.JLabel bookID;
+    private javax.swing.JLabel bookCount;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFind;
@@ -982,6 +1028,7 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
