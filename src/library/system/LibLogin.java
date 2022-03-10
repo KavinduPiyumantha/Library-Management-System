@@ -250,7 +250,8 @@ public class LibLogin extends javax.swing.JFrame {
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            String username = txtUserName.getText();
+            
+        String username = txtUserName.getText();
         char[] password = txtPassword.getPassword();
         
         char[] correctPass ={'1','2','3','4'};
