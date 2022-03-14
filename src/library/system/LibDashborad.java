@@ -93,7 +93,7 @@ public class LibDashborad extends javax.swing.JFrame {
     }
         
     public void bookCopyTable_reLoad(){
-    int c;
+        int c;
 
         try {
             pst = con.prepareStatement("SELECT * FROM bookcopy");
@@ -128,6 +128,58 @@ public class LibDashborad extends javax.swing.JFrame {
     
     };    
         
+   
+    
+    
+    public void increase_Book_Count(String id){
+        
+        String bookId = id;
+        
+        
+            try {
+       
+                    int intbookId = Integer.parseInt(bookId);
+                    pst = con.prepareStatement("SELECT book_count FROM book where Book_id = "+ intbookId);
+                    rs = pst.executeQuery();
+                    
+                    System.out.println("intbookId "+ intbookId);
+                    
+                    rs.next();
+                    int bookCount = rs.getInt(1);
+                    
+                    System.out.println("bookCount "+bookCount);
+                    
+                    bookCount = bookCount + 1;
+                    
+                    System.out.println("bookCount "+bookCount);
+
+                    //String sbookCount =  Integer.toString(bookCount) ;
+
+                
+                    
+                    pst = con.prepareStatement("Update book set book_count = ? where book_id =?");
+                    //rs = pst.executeQuery();
+                    pst.setInt(1, bookCount);
+                    
+                    System.out.println("setcount "+bookCount);
+                   // pst.setString(2, bookCount);
+                    //pst.setString(3, 1);
+                    pst.setInt(2, intbookId);
+                    
+                    System.out.println("setid "+intbookId);
+                    
+                    pst.executeUpdate();
+                    
+                    table_reLoad();
+                    
+                    }catch (SQLException ex) {
+                        Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+        
+                    }
+
+            
+        
+    }
     
     
     
@@ -209,7 +261,6 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         txtBookID = new javax.swing.JTextField();
         copyNo = new javax.swing.JTextField();
-        DateChooser = new com.toedter.calendar.JDateChooser();
         txtDate = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -432,7 +483,7 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addComponent(btnFind_Book, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(47, 47, 47)
                             .addComponent(btnAdd_Book, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -847,6 +898,7 @@ public class LibDashborad extends javax.swing.JFrame {
         txtDate.setBackground(new java.awt.Color(255, 255, 255));
         txtDate.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         txtDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtDate.setToolTipText("YYYY/MM/DD");
 
         javax.swing.GroupLayout BookCopySectionLayout = new javax.swing.GroupLayout(BookCopySection);
         BookCopySection.setLayout(BookCopySectionLayout);
@@ -857,7 +909,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(BookCopySectionLayout.createSequentialGroup()
-                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                             .addGap(18, 18, 18)
                             .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(BookCopySectionLayout.createSequentialGroup()
@@ -874,7 +926,6 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(copyNo, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                                 .addComponent(txtPrice)
-                                .addComponent(DateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtDate))))
                     .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, BookCopySectionLayout.createSequentialGroup()
@@ -913,9 +964,7 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel20)
                             .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addComponent(DateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(103, 103, 103)
+                        .addGap(161, 161, 161)
                         .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnFind_bookCopy, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnAdd_bookCopy, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -1240,16 +1289,26 @@ public class LibDashborad extends javax.swing.JFrame {
 
             if(k==1){
 
+                
+
+                
+                //get book Count
+                increase_Book_Count(bookId);
+                
                 copyNo.setText("");
                 txtBookID.setText("");
                 txtDate.setText("");
                 txtBookCatogery.setSelectedIndex(-1);
                 txtPrice.setText("");
                 copyNo.requestFocus();
+                
                 bookCopyTable_reLoad();
-
+                
+                
+                
+                
                 JOptionPane.showMessageDialog(this,"New Book Copy Succesfully Added");
-
+            
             }
             else{
                 JOptionPane.showMessageDialog(this,"Error:: Can't Add new Book Copy");
@@ -1333,7 +1392,6 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JTextField BookID;
     private javax.swing.JTable BookTable;
     private javax.swing.JTable Book_Copy_Table;
-    private com.toedter.calendar.JDateChooser DateChooser;
     private javax.swing.JLabel bookCount;
     private javax.swing.JButton btnAdd_Book;
     private javax.swing.JButton btnAdd_bookCopy;

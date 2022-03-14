@@ -20,7 +20,6 @@ Author varchar(255)
 CREATE TABLE BookCopy(
 Copy_No int NOT NULL unique,
 Book_id int NOT NULL,
--- ISBN varchar(255) NOT NULL ,
 Purchase_Date date,
 Price double,
 PRIMARY KEY(Copy_No,Book_id),
@@ -90,3 +89,24 @@ CHANGE id id int(11),
 ADD PRIMARY KEY (uuid);
 
 ALTER TABLE book CHANGE Book_id Book_id int;
+
+ALTER TABLE book
+ALTER book_count SET DEFAULT 0;
+
+
+Alter DATE_FORMAT(Purchase_Date, '%m/%d/%Y %H:%i') FROM bookcopy;
+
+
+ALTER TABLE bookcopy
+CHANGE Purchase_Date Purchase_Date Date;
+
+insert into bookcopy(copy_No,Book_id,Purchase_Date,Price)values
+(1,2,'2012/09/06',2345);
+
+
+
+UPDATE book 
+SET 
+    book_count = book_count + 1
+WHERE
+    Book_id = 1;
