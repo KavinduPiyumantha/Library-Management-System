@@ -216,7 +216,7 @@ public class LibLogin extends javax.swing.JFrame {
         }
         else{
             JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
-            txtUserName.setText("");
+            //txtUserName.setText("");
             //txtPassword.selectAll();
             
     
