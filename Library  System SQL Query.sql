@@ -110,3 +110,5 @@ SET
     book_count = book_count + 1
 WHERE
     Book_id = 1;
+    
+select book_count from book where Book_id = 1 ;
