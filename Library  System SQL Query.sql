@@ -14,7 +14,8 @@ Book_id int NOT NULL PRIMARY KEY,
 ISBN varchar(255) NOT NULL ,
 Title varchar(255) NOT NULL,
 catogery varchar(255),
-Author varchar(255)
+Author varchar(255),
+book_count int
 );
 
 CREATE TABLE BookCopy(
