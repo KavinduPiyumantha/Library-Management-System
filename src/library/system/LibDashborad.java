@@ -251,6 +251,10 @@ public class LibDashborad extends javax.swing.JFrame {
         txtUserName8 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtUserName9 = new javax.swing.JTextField();
+        selectTypeBox1 = new javax.swing.JComboBox<>();
+        txtBookFind2 = new javax.swing.JTextField();
+        btnFind_Book2 = new javax.swing.JButton();
+        btnClearSearch1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         BookCopySection = new javax.swing.JPanel();
         btnAdd_bookCopy = new javax.swing.JButton();
@@ -267,9 +271,10 @@ public class LibDashborad extends javax.swing.JFrame {
         txtBookID = new javax.swing.JTextField();
         copyNo = new javax.swing.JTextField();
         txtDate = new javax.swing.JTextField();
-        txtBookCatogery2 = new javax.swing.JComboBox<>();
-        txtBookFind1 = new javax.swing.JTextField();
-        btnFind_Book1 = new javax.swing.JButton();
+        selectTypeBox2 = new javax.swing.JComboBox<>();
+        txtBookFind3 = new javax.swing.JTextField();
+        btnFind_Book3 = new javax.swing.JButton();
+        btnClearSearch2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -298,7 +303,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        tapSection.setBackground(new java.awt.Color(255, 255, 255));
+        tapSection.setBackground(new java.awt.Color(204, 204, 204));
         tapSection.setForeground(new java.awt.Color(255, 255, 255));
         tapSection.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
 
@@ -337,10 +342,6 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(BookTable);
-        if (BookTable.getColumnModel().getColumnCount() > 0) {
-            BookTable.getColumnModel().getColumn(4).setHeaderValue("Author");
-            BookTable.getColumnModel().getColumn(5).setHeaderValue("Count");
-        }
 
         btnDelete_Book.setBackground(new java.awt.Color(204, 204, 204));
         btnDelete_Book.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -545,48 +546,49 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBookFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFind_Book)
-                    .addComponent(btnClearSearch))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtBookIDSec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtBookCatogery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9)
-                    .addComponent(txtBookCount, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd_Book)
-                    .addComponent(btnUpdate_Book))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete_Book)
-                    .addComponent(btnClearBook))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(selectTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBookFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFind_Book)
+                            .addComponent(btnClearSearch))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtBookIDSec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtBookCatogery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9)
+                            .addComponent(txtBookCount, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAdd_Book)
+                            .addComponent(btnUpdate_Book))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDelete_Book)
+                            .addComponent(btnClearBook))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -723,11 +725,50 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
+        selectTypeBox1.setBackground(new java.awt.Color(255, 255, 255));
+        selectTypeBox1.setEditable(true);
+        selectTypeBox1.setForeground(new java.awt.Color(0, 0, 0));
+        selectTypeBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "ISBN NO", "Book Title", "Book Catogery", "Author", "Count" }));
+        selectTypeBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTypeBox1ActionPerformed(evt);
+            }
+        });
+
+        txtBookFind2.setBackground(new java.awt.Color(255, 255, 255));
+        txtBookFind2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtBookFind2.setForeground(new java.awt.Color(0, 0, 0));
+        txtBookFind2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBookFind2ActionPerformed(evt);
+            }
+        });
+
+        btnFind_Book2.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind_Book2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind_Book2.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind_Book2.setText("Find");
+        btnFind_Book2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFind_Book2ActionPerformed(evt);
+            }
+        });
+
+        btnClearSearch1.setBackground(new java.awt.Color(204, 204, 204));
+        btnClearSearch1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnClearSearch1.setForeground(new java.awt.Color(0, 0, 0));
+        btnClearSearch1.setText("Clear ");
+        btnClearSearch1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearch1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -766,13 +807,28 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addGap(104, 104, 104)
                             .addComponent(jLabel11))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(selectTypeBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBookFind2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFind_Book2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnClearSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(selectTypeBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBookFind2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFind_Book2)
+                    .addComponent(btnClearSearch1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -942,32 +998,42 @@ public class LibDashborad extends javax.swing.JFrame {
         txtDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDate.setToolTipText("YYYY/MM/DD");
 
-        txtBookCatogery2.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookCatogery2.setEditable(true);
-        txtBookCatogery2.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookCatogery2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "ISBN NO", "Book Title", "Book Catogery", "Author", "Count" }));
-        txtBookCatogery2.addActionListener(new java.awt.event.ActionListener() {
+        selectTypeBox2.setBackground(new java.awt.Color(255, 255, 255));
+        selectTypeBox2.setEditable(true);
+        selectTypeBox2.setForeground(new java.awt.Color(0, 0, 0));
+        selectTypeBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "ISBN NO", "Book Title", "Book Catogery", "Author", "Count" }));
+        selectTypeBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookCatogery2ActionPerformed(evt);
+                selectTypeBox2ActionPerformed(evt);
             }
         });
 
-        txtBookFind1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookFind1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookFind1.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookFind1.addActionListener(new java.awt.event.ActionListener() {
+        txtBookFind3.setBackground(new java.awt.Color(255, 255, 255));
+        txtBookFind3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtBookFind3.setForeground(new java.awt.Color(0, 0, 0));
+        txtBookFind3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookFind1ActionPerformed(evt);
+                txtBookFind3ActionPerformed(evt);
             }
         });
 
-        btnFind_Book1.setBackground(new java.awt.Color(204, 204, 204));
-        btnFind_Book1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnFind_Book1.setForeground(new java.awt.Color(0, 0, 0));
-        btnFind_Book1.setText("Find");
-        btnFind_Book1.addActionListener(new java.awt.event.ActionListener() {
+        btnFind_Book3.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind_Book3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind_Book3.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind_Book3.setText("Find");
+        btnFind_Book3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFind_Book1ActionPerformed(evt);
+                btnFind_Book3ActionPerformed(evt);
+            }
+        });
+
+        btnClearSearch2.setBackground(new java.awt.Color(204, 204, 204));
+        btnClearSearch2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnClearSearch2.setForeground(new java.awt.Color(0, 0, 0));
+        btnClearSearch2.setText("Clear ");
+        btnClearSearch2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearch2ActionPerformed(evt);
             }
         });
 
@@ -976,46 +1042,50 @@ public class LibDashborad extends javax.swing.JFrame {
         BookCopySectionLayout.setHorizontalGroup(
             BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BookCopySectionLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
                 .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(BookCopySectionLayout.createSequentialGroup()
-                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(BookCopySectionLayout.createSequentialGroup()
-                            .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(BookCopySectionLayout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(12, 12, 12))
-                                .addGroup(BookCopySectionLayout.createSequentialGroup()
-                                    .addComponent(jLabel20)
-                                    .addGap(79, 79, 79)))
-                            .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(copyNo, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                                .addComponent(txtPrice)
-                                .addComponent(txtDate))))
-                    .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, BookCopySectionLayout.createSequentialGroup()
-                            .addComponent(btnDelete_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(47, 47, 47)
-                            .addComponent(btnUpdate_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(BookCopySectionLayout.createSequentialGroup()
-                            .addComponent(btnFind_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(47, 47, 47)
-                            .addComponent(btnAdd_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(BookCopySectionLayout.createSequentialGroup()
-                        .addComponent(txtBookCatogery2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16)
+                        .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(BookCopySectionLayout.createSequentialGroup()
+                                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(BookCopySectionLayout.createSequentialGroup()
+                                    .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(BookCopySectionLayout.createSequentialGroup()
+                                            .addGap(0, 0, Short.MAX_VALUE)
+                                            .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(12, 12, 12))
+                                        .addGroup(BookCopySectionLayout.createSequentialGroup()
+                                            .addComponent(jLabel20)
+                                            .addGap(79, 79, 79)))
+                                    .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(copyNo, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                                        .addComponent(txtPrice)
+                                        .addComponent(txtDate))))
+                            .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, BookCopySectionLayout.createSequentialGroup()
+                                    .addComponent(btnDelete_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(47, 47, 47)
+                                    .addComponent(btnUpdate_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(BookCopySectionLayout.createSequentialGroup()
+                                    .addComponent(btnFind_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(47, 47, 47)
+                                    .addComponent(btnAdd_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BookCopySectionLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(selectTypeBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtBookFind1)
+                        .addComponent(txtBookFind3, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnFind_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnFind_Book3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnClearSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         BookCopySectionLayout.setVerticalGroup(
@@ -1047,11 +1117,12 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addComponent(btnUpdate_bookCopy))
                 .addContainerGap(167, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BookCopySectionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBookCatogery2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBookFind1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFind_Book1))
+                    .addComponent(selectTypeBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBookFind3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFind_Book3)
+                    .addComponent(btnClearSearch2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1184,134 +1255,127 @@ public class LibDashborad extends javax.swing.JFrame {
     private void btnFind_BookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_BookActionPerformed
         // TODO add your handling code here:
 
-            if( txtBookFind.getText().equals("") || selectTypeBox.getSelectedItem().toString().equals("") )
-                JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
-            else{
+        if( txtBookFind.getText().equals("") || selectTypeBox.getSelectedItem().toString().equals("") )
+            JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        else{
+
+            String typeGets = selectTypeBox.getSelectedItem().toString();
+
+            String type;
+
+            try {
+
+                if(typeGets == "ID"){
+                    int text = 0;
+                    type = "Book_id";
+                    String textGets = txtBookFind.getText();
+                    text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from book where "+ type +" = "+ text);
+                }
+                else if(typeGets == "ISBN NO"){
+
+                    type = "ISBN";
+                    String textGets = txtBookFind.getText();
+                    pst =con.prepareStatement("Select * from book where "+ type +" like ?");
+                    pst.setString(1,textGets);
+
+                }
+                else if(typeGets == "Book Title"){
+                    int text = 0;
+                    type = "Title";
+                    String textGets = txtBookFind.getText();
+                    //text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from book where "+ type +" = ?");
+                    pst.setString(1,textGets);
+                }
+                else if(typeGets == "Book Catogery"){
+                    int text = 0;
+                    type = "catogery";
+                    String textGets = txtBookFind.getText();
+                   // text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from book where "+ type +" = ?");
+                    pst.setString(1,textGets);
+                }
+                else if(typeGets == "Author"){
+                    int text = 0;
+                    type = "Author";
+                    String textGets = txtBookFind.getText();
+                   // text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from book where "+ type +" = ?");
+                    pst.setString(1,textGets);
+
+                }
+                else{
+                    int text = 0;
+                    type = "book_Count";
+
+                    String textGets = txtBookFind.getText();
+                    text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from book where "+ type +" = "+ text);
+                }
                 
-                String typeGets = selectTypeBox.getSelectedItem().toString();
-  
-                String type;
+                rs= pst.executeQuery();
 
-                try {
+                 //no result error mag popup    
+                if( rs.next()==false){
+                    JOptionPane.showMessageDialog(null, "No Result Found!", "Oops ...!", JOptionPane.ERROR_MESSAGE);
 
-                    if(typeGets == "ID"){
-                        int text = 0;
-                        type = "Book_id";
-                        String textGets = txtBookFind.getText();
-                        text= Integer.parseInt(textGets);
-                        
-                        pst =con.prepareStatement("Select * from book where "+ type +" = "+ text);
-                    }
-                    else if(typeGets == "ISBN NO"){
-                        
-                        type = "ISBN";
-                        String textGets = txtBookFind.getText();
-                        pst =con.prepareStatement("Select * from book where "+ type +" like ?");
-                        pst.setString(1,textGets);
-                       
-                    }
-                    else if(typeGets == "Book Title"){
-                        int text = 0;
-                        type = "Title";
-                        String textGets = txtBookFind.getText();
-                        //text= Integer.parseInt(textGets);
-                        
-                        pst =con.prepareStatement("Select * from book where "+ type +" = ?");
-                        pst.setString(1,textGets);
-                    }
-                    else if(typeGets == "Book Catogery"){
-                        int text = 0;
-                        type = "catogery";
-                        String textGets = txtBookFind.getText();
-                       // text= Integer.parseInt(textGets);
-                        
-                        pst =con.prepareStatement("Select * from book where "+ type +" = ?");
-                        pst.setString(1,textGets);
-                    }
-                    else if(typeGets == "Author"){
-                        int text = 0;
-                        type = "Author";
-                        String textGets = txtBookFind.getText();
-                       // text= Integer.parseInt(textGets);
-                        
-                        pst =con.prepareStatement("Select * from book where "+ type +" = ?");
-                        pst.setString(1,textGets);
-                        
-                    }
-                    else{
-                        int text = 0;
-                        type = "book_Count";
-                        
-                        String textGets = txtBookFind.getText();
-                        text= Integer.parseInt(textGets);
-                        
-                        pst =con.prepareStatement("Select * from book where "+ type +" = "+ text);
-                    }
-
-            
+                }else{
+                    
                     int c;
 
-                    rs= pst.executeQuery();
-                    
-                   // System.out.println(rs);
                     ResultSetMetaData rsd;
                     rsd = rs.getMetaData();
-                    
 
-                        c =rsd.getColumnCount();
+                    c =rsd.getColumnCount();
 
-    //                    System.out.println(rsd);
-    //                    System.out.println(c);
+                    DefaultTableModel d =(DefaultTableModel) BookTable.getModel();
+                    d.setRowCount(0);
 
-                        DefaultTableModel d =(DefaultTableModel) BookTable.getModel();
-                        d.setRowCount(0);
+                    do{
+                        Vector v1 = new Vector();
+                        //System.out.println(v1);
 
+                            for(int i=1;i<=c;i++){
+                               // int idrs = rs.getInt("Book_id");
 
-                        
-                    // no result error mag popup    
-                    if(!rs.first()){
-                        JOptionPane.showMessageDialog(null, "No Result Found!", "Oops ...!", JOptionPane.ERROR_MESSAGE);
-                       
-                    }
-                    else{
-                        while(rs.next()){
-                            Vector v1 = new Vector();
-                            //System.out.println(v);//
+                                v1.add(rs.getInt("Book_id"));
+                                    //System.out.println(rs.getInt("Book_id"));
+                                v1.add(rs.getString("ISBN"));
+                                    //System.out.println(rs.getString("ISBN"));
+                                v1.add(rs.getString("Title"));
+                                    //System.out.println(rs.getString("Title"));
+                                v1.add(rs.getString("catogery"));
+                                    //System.out.println(rs.getString("catogery"));
+                                v1.add(rs.getString("Author"));
 
-                                for(int i=1;i<=c;i++){
-                                    int idrs = rs.getInt("Book_id");
-                                     
-                                    
-                                    v1.add(idrs);
-                                        //System.out.println(rs.getInt("Item_No"));
-                                    v1.add(rs.getString("ISBN"));
-                                       // System.out.println(rs.getString("Name"));
-                                    v1.add(rs.getString("Title"));
-                                       // System.out.println(rs.getInt("Quantity"));
-                                    v1.add(rs.getString("catogery"));
-                                        //System.out.println(rs.getDouble("Price"));
-                                    v1.add(rs.getString("Author"));
+                                v1.add(rs.getInt("book_count"));
+                                    //System.out.println(rs.getInt("book_count"));
 
-                                    v1.add(rs.getInt("book_count"));
+                           // System.out.print(v1);//
 
-                                    
-                               // System.out.print(v1);//
-                               
-                               }
-                            d.addRow(v1);
-                            
-                            
-                        }
-                    }
-                        
-                    txtBookFind.setText("");
-
-                    //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                           }
+                            System.out.println(v1);
+                        d.addRow(v1);
+                    }while(rs.next());//
                 }
+
+                txtBookFind.setText("");
+
+                //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch(Exception ex){
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
     }//GEN-LAST:event_btnFind_BookActionPerformed
 
@@ -1599,24 +1663,44 @@ public class LibDashborad extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBookFindActionPerformed
 
-    private void txtBookCatogery2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookCatogery2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookCatogery2ActionPerformed
-
-    private void txtBookFind1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookFind1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookFind1ActionPerformed
-
-    private void btnFind_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_Book1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFind_Book1ActionPerformed
-
     private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
         // TODO add your handling code here:
         
         txtBookFind.setText("");
         table_reLoad();
     }//GEN-LAST:event_btnClearSearchActionPerformed
+
+    private void selectTypeBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectTypeBox1ActionPerformed
+
+    private void txtBookFind2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookFind2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBookFind2ActionPerformed
+
+    private void btnFind_Book2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_Book2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFind_Book2ActionPerformed
+
+    private void btnClearSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearch1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearSearch1ActionPerformed
+
+    private void selectTypeBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectTypeBox2ActionPerformed
+
+    private void txtBookFind3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookFind3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBookFind3ActionPerformed
+
+    private void btnFind_Book3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_Book3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFind_Book3ActionPerformed
+
+    private void btnClearSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearch2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearSearch2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1664,10 +1748,13 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd_bookCopy;
     private javax.swing.JButton btnClearBook;
     private javax.swing.JButton btnClearSearch;
+    private javax.swing.JButton btnClearSearch1;
+    private javax.swing.JButton btnClearSearch2;
     private javax.swing.JButton btnDelete_Book;
     private javax.swing.JButton btnDelete_bookCopy;
     private javax.swing.JButton btnFind_Book;
-    private javax.swing.JButton btnFind_Book1;
+    private javax.swing.JButton btnFind_Book2;
+    private javax.swing.JButton btnFind_Book3;
     private javax.swing.JButton btnFind_bookCopy;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_bookCopy;
@@ -1705,6 +1792,8 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
     private javax.swing.JComboBox<String> selectTypeBox;
+    private javax.swing.JComboBox<String> selectTypeBox1;
+    private javax.swing.JComboBox<String> selectTypeBox2;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel1;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel2;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel3;
@@ -1713,10 +1802,10 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JTextField txtAuthor;
     private javax.swing.JButton txtBack;
     private javax.swing.JComboBox<String> txtBookCatogery;
-    private javax.swing.JComboBox<String> txtBookCatogery2;
     private javax.swing.JLabel txtBookCount;
     private javax.swing.JTextField txtBookFind;
-    private javax.swing.JTextField txtBookFind1;
+    private javax.swing.JTextField txtBookFind2;
+    private javax.swing.JTextField txtBookFind3;
     private javax.swing.JTextField txtBookID;
     private javax.swing.JTextField txtBookIDSec;
     private javax.swing.JTextField txtBookTitle;
