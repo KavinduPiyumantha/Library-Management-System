@@ -329,7 +329,7 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         txtBookID = new javax.swing.JTextField();
-        copyNo = new javax.swing.JTextField();
+        txtCopyNo = new javax.swing.JTextField();
         txtDate = new javax.swing.JTextField();
         selectTypeBox2 = new javax.swing.JComboBox<>();
         txtBookFind3 = new javax.swing.JTextField();
@@ -793,12 +793,12 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        copyNo.setBackground(new java.awt.Color(255, 255, 255));
-        copyNo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        copyNo.setForeground(new java.awt.Color(0, 0, 0));
-        copyNo.addActionListener(new java.awt.event.ActionListener() {
+        txtCopyNo.setBackground(new java.awt.Color(255, 255, 255));
+        txtCopyNo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtCopyNo.setForeground(new java.awt.Color(0, 0, 0));
+        txtCopyNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copyNoActionPerformed(evt);
+                txtCopyNoActionPerformed(evt);
             }
         });
 
@@ -882,7 +882,7 @@ public class LibDashborad extends javax.swing.JFrame {
                                             .addComponent(jLabel20)
                                             .addGap(79, 79, 79)))
                                     .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(copyNo, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                                        .addComponent(txtCopyNo, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                                         .addComponent(txtPrice)
                                         .addComponent(txtDate))))
                             .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -913,7 +913,7 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addGap(116, 116, 116)
                 .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(copyNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCopyNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(BookCopySectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1544,15 +1544,13 @@ public class LibDashborad extends javax.swing.JFrame {
 
     private void btnDelete_BookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete_BookActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
-        int selectIndex =BookTable.getSelectedRow();
 
-        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        int id =Integer.parseInt(txtBookIDSec.getText()) ;
 
-        String isbnNO = txtISBN.getText();
-        String bookTitle = txtBookTitle.getText();
-        String bookCatogery = txtBookCatogery.getSelectedItem().toString();
-        String Author = txtAuthor.getText();
+//        String isbnNO = txtISBN.getText();
+//        String bookTitle = txtBookTitle.getText();
+//        String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+//        String Author = txtAuthor.getText();
 
         try {
             pst = con.prepareStatement("delete from book where Book_id = ?");
@@ -1571,8 +1569,12 @@ public class LibDashborad extends javax.swing.JFrame {
                 txtBookCount.setText("-");
 
                 txtBookIDSec.requestFocus();
+                
                 table_reLoad();
+                
                 btnAdd_Book.setEnabled(true);
+                
+                btnUpdate_Book.setEnabled(false);
                 btnDelete_Book.setEnabled(false);
                 JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
             }
@@ -1670,7 +1672,7 @@ public class LibDashborad extends javax.swing.JFrame {
 //        java.util.Date date=new java.util.Date();
 //        java.sql.Date sqlDate=new java.sql.Date(date.getTime());
         
-        String copyno = copyNo.getText();
+        String copyno = txtCopyNo.getText();
         String bookId = txtBookID.getText();
         String pDate = txtDate.getText();
         String sPrice = txtPrice.getText();
@@ -1695,12 +1697,11 @@ public class LibDashborad extends javax.swing.JFrame {
                 //get book Count
                 increase_Book_Count(bookId);
                 
-                copyNo.setText("");
+                txtCopyNo.setText("");
                 txtBookID.setText("");
                 txtDate.setText("");
-                txtBookCatogery.setSelectedIndex(-1);
                 txtPrice.setText("");
-                copyNo.requestFocus();
+                txtCopyNo.requestFocus();
                 
                 bookCopyTable_reLoad();
                 
@@ -1729,7 +1730,7 @@ public class LibDashborad extends javax.swing.JFrame {
         DefaultTableModel d1 =(DefaultTableModel )Book_Copy_Table.getModel();
         int selectIndex =Book_Copy_Table.getSelectedRow();
 
-        copyNo.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNo.setText(d1.getValueAt(selectIndex, 0).toString());
         txtBookID.setText(d1.getValueAt(selectIndex, 1).toString());
         txtDate.setText(d1.getValueAt(selectIndex, 2).toString());
         //txtPrice.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
@@ -1745,7 +1746,48 @@ public class LibDashborad extends javax.swing.JFrame {
     private void btnDelete_bookCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete_bookCopyActionPerformed
         // TODO add your handling code here:
         
-        btnAdd_bookCopy.setEnabled(true);
+         int copyNo =Integer.parseInt(txtCopyNo.getText()) ;
+         String bookID =txtBookID.getText() ;
+
+//        String isbnNO = txtISBN.getText();
+//        String bookTitle = txtBookTitle.getText();
+//        String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+//        String Author = txtAuthor.getText();
+
+        try {
+            pst = con.prepareStatement("delete from bookcopy where copy_no = ?");
+
+            pst.setInt(1, copyNo);
+
+            int k = pst.executeUpdate();
+
+            if(k==1){
+
+                 txtCopyNo.setText("");
+                txtBookID.setText("");
+                txtDate.setText("");
+                txtPrice.setText("");
+                txtCopyNo.requestFocus();
+                
+                bookCopyTable_reLoad();
+                
+                
+                 decrease_Book_Count(bookID);
+                
+                
+                btnAdd_bookCopy.setEnabled(true);
+                btnDelete_Book.setEnabled(false);
+                JOptionPane.showMessageDialog(this,"Book Succesfully Deleted");
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error:: Can't Delete Book");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }
+        
     }//GEN-LAST:event_btnDelete_bookCopyActionPerformed
 
     private void btnUpdate_bookCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_bookCopyActionPerformed
@@ -1762,13 +1804,13 @@ public class LibDashborad extends javax.swing.JFrame {
         
         if( oldID != newID ){
                 
-                if ( copyNo.getText().equals("") || txtBookID.getText().equals("") ||  txtDate.getText().equals("") ||  txtPrice.getText().equals("") ) {
+                if ( txtCopyNo.getText().equals("") || txtBookID.getText().equals("") ||  txtDate.getText().equals("") ||  txtPrice.getText().equals("") ) {
                         JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);   
                 } else {
                     
                     try {
 
-                        String copyno = copyNo.getText();
+                        String copyno = txtCopyNo.getText();
                         String bookId = txtBookID.getText();
                         String pDate = txtDate.getText();
                         String sPrice = txtPrice.getText();
@@ -1792,14 +1834,14 @@ public class LibDashborad extends javax.swing.JFrame {
 
                         if(k==1){
 
-                            copyNo.setText("");
+                            txtCopyNo.setText("");
                             txtBookID.setText("");
                             txtDate.setText("");
                             //txtBookCatogery.setSelectedIndex(-1);
                             txtPrice.setText("");
                             //txtBookCount.setText("-");
 
-                            copyNo.requestFocus();
+                            txtCopyNo.requestFocus();
                             bookCopyTable_reLoad();
 
                             
@@ -1827,12 +1869,12 @@ public class LibDashborad extends javax.swing.JFrame {
             
         }else{
             
-                if ( copyNo.getText().equals("") || txtBookID.getText().equals("") ||  txtDate.getText().equals("") ||  txtPrice.getText().equals("") ) {
+                if ( txtCopyNo.getText().equals("") || txtBookID.getText().equals("") ||  txtDate.getText().equals("") ||  txtPrice.getText().equals("") ) {
                     JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);   
                 } else {
                     try {
 
-                        String copyno = copyNo.getText();
+                        String copyno = txtCopyNo.getText();
                         String bookId = txtBookID.getText();
                         String pDate = txtDate.getText();
                         String sPrice = txtPrice.getText();
@@ -1856,14 +1898,14 @@ public class LibDashborad extends javax.swing.JFrame {
 
                         if(k==1){
 
-                            copyNo.setText("");
+                            txtCopyNo.setText("");
                             txtBookID.setText("");
                             txtDate.setText("");
                             //txtBookCatogery.setSelectedIndex(-1);
                             txtPrice.setText("");
                             //txtBookCount.setText("-");
 
-                            copyNo.requestFocus();
+                            txtCopyNo.requestFocus();
                             bookCopyTable_reLoad();
 
 
@@ -1890,9 +1932,9 @@ public class LibDashborad extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBookIDActionPerformed
 
-    private void copyNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyNoActionPerformed
+    private void txtCopyNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCopyNoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_copyNoActionPerformed
+    }//GEN-LAST:event_txtCopyNoActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
@@ -1968,7 +2010,7 @@ public class LibDashborad extends javax.swing.JFrame {
     private void btnClearBookCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBookCopyActionPerformed
         // TODO add your handling code here:
         
-        copyNo.setText(" ");
+        txtCopyNo.setText(" ");
         txtBookID.setText("");
         txtDate.setText("");
         txtPrice.setText("");
@@ -1984,7 +2026,7 @@ public class LibDashborad extends javax.swing.JFrame {
         DefaultTableModel d1 =(DefaultTableModel )Book_Copy_Table.getModel();
         int selectIndex =Book_Copy_Table.getSelectedRow();
 
-        copyNo.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNo.setText(d1.getValueAt(selectIndex, 0).toString());
         txtBookID.setText(d1.getValueAt(selectIndex, 1).toString());
         txtDate.setText(d1.getValueAt(selectIndex, 2).toString());
         //txtPrice.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
@@ -2057,7 +2099,6 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JButton btnFind_Book3;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_bookCopy;
-    private javax.swing.JTextField copyNo;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
@@ -2103,6 +2144,7 @@ public class LibDashborad extends javax.swing.JFrame {
     private javax.swing.JTextField txtBookID;
     private javax.swing.JTextField txtBookIDSec;
     private javax.swing.JTextField txtBookTitle;
+    private javax.swing.JTextField txtCopyNo;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtISBN;
     private javax.swing.JButton txtOk4;

@@ -818,7 +818,7 @@
                                                       </Group>
                                                   </Group>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Component id="copyNo" pref="185" max="32767" attributes="0"/>
+                                                      <Component id="txtCopyNo" pref="185" max="32767" attributes="0"/>
                                                       <Component id="txtPrice" max="32767" attributes="0"/>
                                                       <Component id="txtDate" alignment="0" max="32767" attributes="0"/>
                                                   </Group>
@@ -861,7 +861,7 @@
                               <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="copyNo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtCopyNo" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
@@ -1097,7 +1097,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBookIDActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="copyNo">
+                    <Component class="javax.swing.JTextField" name="txtCopyNo">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -1110,7 +1110,7 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyNoActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCopyNoActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtDate">
