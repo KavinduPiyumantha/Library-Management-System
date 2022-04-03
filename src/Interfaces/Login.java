@@ -150,15 +150,15 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-//        LibLogin login =new LibLogin();
-//        this.hide();
-//        login.setVisible(true);
-        
-        
-        LibDashborad login =new LibDashborad();
+        LibLogin login =new LibLogin();
         this.hide();
         login.setVisible(true);
         
+        
+//        LibDashborad login =new LibDashborad();
+//        this.hide();
+//        login.setVisible(true);
+//        
         
         
     }//GEN-LAST:event_txtLibrarianActionPerformed

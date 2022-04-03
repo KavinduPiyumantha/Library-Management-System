@@ -1,115 +1,122 @@
-CREATE DATABASE Library;
 
-CREATE TABLE Member(
-Member_No int NOT NULL PRIMARY KEY auto_increment,
-Member_Username varchar(255) NOT NULL unique,
-Member_pasword varchar(255) ,
-Member_Name varchar(255),
-Member_Address varchar(255), 
-Tel_No varchar(10)
-);
 
-CREATE TABLE Book(
-Book_id int NOT NULL PRIMARY KEY,
-ISBN varchar(255) NOT NULL ,
-Title varchar(255) NOT NULL,
-catogery varchar(255),
-Author varchar(255),
-book_count int
-);
-
-CREATE TABLE BookCopy(
-Copy_No int NOT NULL unique,
-Book_id int NOT NULL,
-Purchase_Date date,
-Price double,
-PRIMARY KEY(Copy_No,Book_id),
-FOREIGN KEY(Book_id) REFERENCES Book(Book_id)
-);
-
-CREATE TABLE Reservation(
-Reservation_No varchar(255) NOT NULL,
-Member_No varchar(255) NOT NULL ,
-ISBN varchar(255) NOT NULL ,
-Reservation_Date date,
-PRIMARY KEY(Reservation_No,Member_No,ISBN),
-FOREIGN KEY(Member_No) REFERENCES Member(Member_No),
-FOREIGN KEY(ISBN) REFERENCES Book(ISBN)
+CREATE TABLE `member` (
+  `memberID` int not null unique,
+  `Member_Name` varchar(255),
+  `Member_Address` varchar(255),
+  `Tel_No` varchar(255),
+  PRIMARY KEY (`memberID`)
 );
 
 
-
-CREATE TABLE Borrows(
-Member_No varchar(255) NOT NULL,
-Copy_No varchar(255) NOT NULL ,
-Due_Date date,
-Loan_date date,
-Return_date date,
-PRIMARY KEY(Member_No,Copy_No),
-FOREIGN KEY(Member_No) REFERENCES Member(Member_No),
-FOREIGN KEY(Copy_No) REFERENCES BookCopy(Copy_No)
+CREATE TABLE `librarian` (
+  `Lib_ID` int not null unique,
+  `Lib_Name` varchar(255),
+  `Lib_Address` varchar(255),
+  `Tel_No` varchar(10),
+  PRIMARY KEY (`Lib_ID`)
 );
 
-CREATE TABLE Librarian(
-Lib_No int NOT NULL  auto_increment,
-lib_Username varchar(255) NOT NULL unique,
-lib_pasword varchar(255) ,
-Lib_Name varchar(255),
-Lib_Address varchar(255), 
-Tel_No varchar(10),
-PRIMARY KEY(Lib_No)
+
+CREATE TABLE `Login` (
+  `ID` int not null ,
+  `role` varchar(255) not null,
+  `username` varchar(255) not null unique,
+  `password` varchar(255),
+  PRIMARY KEY (`ID`, `role`)
+--   FOREIGN KEY (`ID`) REFERENCES `Member`(`memberID`),
+--   FOREIGN KEY (`ID`) REFERENCES `Librarian`(`Lib_ID`)
 );
 
-insert into Librarian values
-(1,'kavindu123','123','Kavindu Piyumantha','Aluthgama','0773648123');
 
-insert into Librarian(lib_Username,lib_pasword,Lib_Name,Lib_Address,Tel_No) values
-('kavindu13423','123','Kavindu Piyumantha','Aluthgama','0773648123');
-
-delete from librarian where Lib_No=2;
-
-
-ALTER TABLE book;
-ADD book_count int;
-
-
-add FOREIGN KEY(book_count) REFERENCES Member (Member_No),;
+CREATE TABLE `book` (
+  `Book_id` int not null unique,
+  `ISBN` varchar(255),
+  `Title` varchar(255),
+  `catogery` varchar(255),
+  `Author` varchar(255),
+  `book_count` int DEFAULT 0,
+  PRIMARY KEY (`Book_id`)
+);
 
 
-ALTER TABLE book AUTO_INCREMENT = 1;
+CREATE TABLE `bookcopy` (
+  `copy_no` int not null unique,
+  `Book_id` int not null,
+  `Edition` varchar(255),
+  PRIMARY KEY (`copy_no`),
+  FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`)
+);
+
+CREATE TABLE `purchase` (
+  `copy_no` int not null ,
+  `Lib_ID` int not null ,
+  `Purchase_date` date,
+  `Price` double,
+  PRIMARY KEY (`copy_no`, `Lib_ID`),
+  FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
+  FOREIGN KEY (`Lib_ID`) REFERENCES `librarian`(`Lib_ID`)
+);
+
+CREATE TABLE `reserve` (
+  `copy_no` int not null ,
+  `memberID` int not null ,
+  `Reserve_Date` datetime,
+  `Status` varchar(255),
+  PRIMARY KEY (`copy_no`, `memberID`, `Reserve_Date`),
+  FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
+  FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
+);
+
+																																	
+CREATE TABLE `borrow` (
+  `copy_no` int not null ,
+  `memberID` int not null,
+  `Borrow_Date` datetime,
+  `Due_Date` datetime,
+  `returned_Date` datetime,
+  `Status` varchar(255),
+  `penalty_fee` double,
+  PRIMARY KEY (`copy_no`, `memberID`, `Borrow_Date`),
+  FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
+  FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
+);
 
 
 
+
+
+
+
+insert into Login(ID,role,username,password)values
+(1,"Librarian","kavindu","12345");
+
+select Lib_Name from librarian where Lib_ID = 1 ;
+
+insert into librarian(Lib_ID,Lib_Name,Lib_Address,Tel_No) value
+(1,"Kavindu Piyumantha","aluthgama","1234567890");
+
+update librarian set Lib_Name= "Kavindu Piyumantha" where Lib_ID=1;
+
+SELECT * FROM Book;
 
 insert into book(Book_id,ISBN,Title,catogery,Author)values
 (1,'kavincrefdu13c423','1dqwdfref23','dxferfws','Adwlefuthgama');
 
-ALTER TABLE book
-DROP PRIMARY KEY,
-CHANGE id id int(11),
-ADD PRIMARY KEY (uuid);
+insert into bookcopy(copy_no,Book_id,Edition)values
+(1,1,'10');
 
-ALTER TABLE book CHANGE Book_id Book_id int;
+insert into purchase(copy_no,Lib_ID,Purchase_date,Price)values
+(1,1,'2022/10/12',1253);
 
-ALTER TABLE book
-ALTER book_count SET DEFAULT 0;
-
-
-Alter DATE_FORMAT(Purchase_Date, '%m/%d/%Y %H:%i') FROM bookcopy;
-
-
-ALTER TABLE bookcopy
-CHANGE Purchase_Date Purchase_Date Date;
-
-insert into bookcopy(copy_No,Book_id,Purchase_Date,Price)values
-(1,2,'2012/09/06',2345);
+drop table bookCopy;
+drop table book;
+drop table purchase;
+drop table borrow;
+drop table reserve;
+drop table login;
+drop table member;
+drop table librarian;
 
 
-
-UPDATE book 
-SET 
-    book_count = book_count + 1
-WHERE
-    Book_id = 1;
-    
-select book_count from book where Book_id = 1 ;
+SELECT * FROM book NATURAL JOIN bookcopy;

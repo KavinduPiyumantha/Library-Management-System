@@ -30,7 +30,7 @@ public class LibLogin extends javax.swing.JFrame {
      */
     public LibLogin() {
         initComponents();
-         con =DBconnect.Connect();
+        con =DBconnect.Connect();
         
     }
     
@@ -39,6 +39,103 @@ public class LibLogin extends javax.swing.JFrame {
     PreparedStatement pst;
     ResultSet rs;
 
+    
+    
+    public void checklogin(){
+                 
+                String userName = txtUserName.getText();
+                String password = txtPassword.getText();
+
+                int libID = 0;
+                String name = "saman";
+                String correctPass = null;
+               // String correctPass ={'1','2','3','4'};
+               
+                boolean avblUsername=false;
+                boolean passcheck=false;
+
+                try {
+                            pst = con.prepareStatement("SELECT ID,password FROM Login  where username = ? ");
+                            pst.setString(1, userName);
+
+                            rs = pst.executeQuery();
+                            
+                            if(rs.next()==false){
+                                    avblUsername=false;
+                            }else{
+                                    avblUsername=true;
+                                    do{
+                                          libID = rs.getInt("ID");
+                                          correctPass=  rs.getString("password") ;
+                                    }while( rs.next());
+                                    
+                                     for(int i=0 ;i<password.length();i++){
+
+                                          if(password.length () != correctPass.length () || correctPass.charAt(i) != password.charAt(i)){
+                                                    passcheck = false;
+                                                    break;
+                                          }
+
+                                           passcheck = true;
+                                           //System.out.println("password correct");
+                                      }
+
+                               }
+
+//                            System.out.println(ID);
+//                            System.out.println(correctPass);
+
+                 } catch (SQLException ex) {
+                    Logger.getLogger(LibLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }       
+
+
+
+                if(avblUsername &&  passcheck){
+
+                    //System.out.println(libID);
+                    LibDashborad.libID =libID;
+                    
+                    
+                    
+                    try {
+                            pst=con.prepareStatement("Select  Lib_Name from librarian where Lib_ID = ?");
+                            pst.setInt(1, libID);
+                            rs=pst.executeQuery();
+
+                            rs.next();
+                            name=rs.getString("Lib_Name");
+                            //System.out.println(name);
+
+                            LibDashborad.libName =rs.getString("Lib_Name");
+
+
+                    } catch (SQLException ex) {
+                            Logger.getLogger(LibLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    LibDashborad login =new LibDashborad(/*ID,name*/);
+                    this.hide();
+                    login.setVisible(true);
+                    
+
+                    
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
+                    //txtUserName.setText("");
+                    //txtPassword.selectAll();
+
+
+                    
+                    txtUserName.requestFocus();
+                }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,6 +207,11 @@ public class LibLogin extends javax.swing.JFrame {
         txtUserName.setBackground(new java.awt.Color(255, 255, 255));
         txtUserName.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUserNameKeyPressed(evt);
+            }
+        });
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -199,38 +301,8 @@ public class LibLogin extends javax.swing.JFrame {
     private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
         // TODO add your handling code here:
         
-        String username = txtUserName.getText();
-        char[] password = txtPassword.getPassword();
-        
-        char[] correctPass ={'1','2','3','4'};
-        boolean passcheck=false;
-        
-        for(int i=0 ;i<password.length;i++){
-            
-            if(password.length != correctPass.length || correctPass[i] != password[i]){
-                passcheck = false;
-                break;
-            }
-            
-            passcheck = true;
-        }
-        
-        if(username.equals("kavindu") && passcheck){
-            
-            LibDashborad login =new LibDashborad();
-            this.hide();
-            login.setVisible(true);
-        }
-        else{
-            JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
-            //txtUserName.setText("");
-            //txtPassword.selectAll();
-            
-    
-            txtUserName.requestFocus();
-        }
-        
-        
+        checklogin();
+
     }//GEN-LAST:event_txtOkActionPerformed
 
     private void txtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBackActionPerformed
@@ -258,38 +330,15 @@ public class LibLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             
-        String username = txtUserName.getText();
-        char[] password = txtPassword.getPassword();
-        
-        char[] correctPass ={'1','2','3','4'};
-        boolean passcheck=false;
-        
-        for(int i=0 ;i<password.length;i++){
-            
-            if(password.length != correctPass.length || correctPass[i] != password[i]){
-                passcheck = false;
-                break;
-            }
-            
-            passcheck = true;
-        }
-        
-        if(username.equals("kavindu") && passcheck){
-            
-            LibDashborad login =new LibDashborad();
-            this.hide();
-            login.setVisible(true);
-        }
-        else{
-            JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
-            txtUserName.setText("");
-            //txtPassword.selectAll();
-            
-    
-            txtUserName.requestFocus();
-        }
+                checklogin();
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void txtUserNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyPressed
+        // TODO add your handling code here:
+        
+       
+    }//GEN-LAST:event_txtUserNameKeyPressed
 
     /**
      * @param args the command line arguments
