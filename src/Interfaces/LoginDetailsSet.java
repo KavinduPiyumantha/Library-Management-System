@@ -4,6 +4,15 @@
  */
 package Interfaces;
 
+import Codes.DBconnect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author KAVINDU PIYUMANTHA
@@ -13,10 +22,59 @@ public class LoginDetailsSet extends javax.swing.JFrame {
     /**
      * Creates new form LoginDetailsSet
      */
+    
+    public static int memberID = 0;
+    public static String memberName =null;
+    public static String role =null;
+    
     public LoginDetailsSet() {
         initComponents();
-    }
 
+        con =DBconnect.Connect();    
+        
+        lblLabirarianID.setText(Integer.toString(memberID));
+        lblLabirarianName.setText(memberName);
+        
+        checkPreviousPass();
+        
+        
+    }
+    
+    
+    Connection con=null;
+    PreparedStatement pst;
+    ResultSet rs;
+    
+    public boolean checkPreviousPass(){
+        boolean status=false;
+       
+        try {
+            pst = con.prepareStatement("select username, password from login where  ID=? and role=?");
+            pst.setInt(1, memberID);
+            pst.setString(2, role);
+            
+            rs = pst.executeQuery();
+            
+            if(rs.next() == false){
+                btnUpdateUP.setEnabled(false);
+            }else{
+                btnAddUP.setEnabled(false);
+                
+                do{
+                txtUserNameMember.setText(rs.getString("username"));
+                txtPasswordMember.setText(rs.getString("password"));
+                }while(rs.next());
+            }
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDetailsSet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return status;   
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,13 +91,12 @@ public class LoginDetailsSet extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txtUserName6 = new javax.swing.JTextField();
-        txtUserName5 = new javax.swing.JTextField();
+        txtUserNameMember = new javax.swing.JTextField();
         lblLabirarianID = new javax.swing.JLabel();
-        lblLabirarianID1 = new javax.swing.JLabel();
+        lblLabirarianName = new javax.swing.JLabel();
+        txtPasswordMember = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -83,51 +140,63 @@ public class LoginDetailsSet extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Password");
 
-        txtUserName6.setBackground(new java.awt.Color(255, 255, 255));
-        txtUserName6.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtUserName6.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtUserName5.setBackground(new java.awt.Color(255, 255, 255));
-        txtUserName5.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtUserName5.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserNameMember.setBackground(new java.awt.Color(255, 255, 255));
+        txtUserNameMember.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtUserNameMember.setForeground(new java.awt.Color(0, 0, 0));
 
         lblLabirarianID.setBackground(new java.awt.Color(255, 255, 255));
         lblLabirarianID.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lblLabirarianID.setForeground(new java.awt.Color(0, 0, 0));
         lblLabirarianID.setText("-");
 
-        lblLabirarianID1.setBackground(new java.awt.Color(255, 255, 255));
-        lblLabirarianID1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        lblLabirarianID1.setForeground(new java.awt.Color(0, 0, 0));
-        lblLabirarianID1.setText("-");
+        lblLabirarianName.setBackground(new java.awt.Color(255, 255, 255));
+        lblLabirarianName.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        lblLabirarianName.setForeground(new java.awt.Color(0, 0, 0));
+        lblLabirarianName.setText("-");
+
+        txtPasswordMember.setBackground(new java.awt.Color(255, 255, 255));
+        txtPasswordMember.setForeground(new java.awt.Color(0, 0, 0));
+        txtPasswordMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordMemberActionPerformed(evt);
+            }
+        });
+        txtPasswordMember.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordMemberKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblLabirarianID1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblLabirarianID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13))
-                        .addGap(12, 12, 12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUserName5, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                            .addComponent(txtUserName6)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblLabirarianName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblLabirarianID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel13))
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUserNameMember, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                                    .addComponent(txtPasswordMember)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAddUP, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnUpdateUP, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(59, 59, 59)
+                        .addComponent(btnUpdateUP, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddUP, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(63, 63, 63))
         );
         jPanel1Layout.setVerticalGroup(
@@ -140,20 +209,20 @@ public class LoginDetailsSet extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(lblLabirarianID1))
+                    .addComponent(lblLabirarianName))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txtUserName5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                    .addComponent(txtUserNameMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(txtUserName6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                    .addComponent(txtPasswordMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddUP)
-                    .addComponent(btnUpdateUP))
-                .addGap(33, 33, 33))
+                    .addComponent(btnUpdateUP)
+                    .addComponent(btnAddUP))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,19 +247,104 @@ public class LoginDetailsSet extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddUPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUPActionPerformed
-        // TODO add your handling code here:
-        //System.exit(0);
+
+        if(txtUserNameMember.getText().equals("") || txtPasswordMember.getPassword().equals("")){
+             JOptionPane.showMessageDialog(null, "Enter Username and Password!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        }else{
+            
+    
+            
+            try {
+                
+                String username = txtUserNameMember.getText();
+                String password = txtPasswordMember.getText();
+                
+                
+                pst=con.prepareStatement("insert into Login(ID,role,username,password) value(?,?,?,?) ");
+                pst.setInt(1, memberID);
+                pst.setString(2, role);
+                pst.setString(3, username);
+                pst.setString(4,password);
+                
+               int k = pst.executeUpdate();
+               if(k==1){
+                   
+                   txtUserNameMember.setText("");
+                   txtPasswordMember.setText("");
+                   
+                   this.hide();
+                   
+                   JOptionPane.showMessageDialog(this,"Username Password Succesfully Set");
+               }else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Add a new Username Password");
+                   
+                }
+    
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDetailsSet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
+        }
         
-        //LibDashborad login =new LibDashborad(/*ID,name*/);
-        //LibDashborad.DboardEnable();
-        this.hide();
+        
+        
         
         //login.setVisible(true);
     }//GEN-LAST:event_btnAddUPActionPerformed
 
     private void btnUpdateUPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUPActionPerformed
         // TODO add your handling code here:
+        
+        if(txtUserNameMember.getText().equals("") || txtPasswordMember.getPassword().equals("")){
+             JOptionPane.showMessageDialog(null, "Enter Username and Password!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        }else{
+
+            try {
+                
+                String username = txtUserNameMember.getText();
+                String password = txtPasswordMember.getText();
+                
+                
+                pst=con.prepareStatement("update Login set username =?,password = ?  where ID = ? and role = ? ");
+
+                pst.setString(1, username);
+                pst.setString(2,password);
+                pst.setInt(3, memberID);
+                pst.setString(4, role);
+                
+               int k = pst.executeUpdate();
+               if(k==1){
+                   
+                   txtUserNameMember.setText("");
+                   txtPasswordMember.setText("");
+                   
+                   this.hide();
+                   
+                   JOptionPane.showMessageDialog(this,"Username Password Succesfully Updated");
+               }else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Username Password");
+                   
+                }
+    
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDetailsSet.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
     }//GEN-LAST:event_btnUpdateUPActionPerformed
+
+    private void txtPasswordMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordMemberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordMemberActionPerformed
+
+    private void txtPasswordMemberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordMemberKeyPressed
+        // TODO add your handling code here:
+//        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+//
+//            checklogin();
+//        }
+    }//GEN-LAST:event_txtPasswordMemberKeyPressed
 
     /**
      * @param args the command line arguments
@@ -236,8 +390,8 @@ public class LoginDetailsSet extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLabirarianID;
-    private javax.swing.JLabel lblLabirarianID1;
-    private javax.swing.JTextField txtUserName5;
-    private javax.swing.JTextField txtUserName6;
+    private javax.swing.JLabel lblLabirarianName;
+    private javax.swing.JPasswordField txtPasswordMember;
+    private javax.swing.JTextField txtUserNameMember;
     // End of variables declaration//GEN-END:variables
 }

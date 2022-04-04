@@ -112,13 +112,13 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblLabirarianID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblLibName" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblLabirarianID" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
@@ -1325,12 +1325,12 @@
                                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="txtMemeberUpdate" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                                              <Component id="txtOk6" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                                              <Component id="txtMemeberRemove" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="btnClearBook2" min="-2" pref="124" max="-2" attributes="0"/>
+                                                  <Component id="btnMemberClearText" min="-2" pref="124" max="-2" attributes="0"/>
                                                   <EmptySpace pref="16" max="32767" attributes="0"/>
                                               </Group>
                                               <Group type="102" attributes="0">
@@ -1342,17 +1342,17 @@
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-                                      <Component id="btnClearBook3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnloginDeUpdate" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="47" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="selectTypeBox1" min="-2" pref="149" max="-2" attributes="0"/>
+                                      <Component id="selectTypeBoxMember" min="-2" pref="149" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="txtBookFind2" min="-2" pref="479" max="-2" attributes="0"/>
+                                      <Component id="txtMemberFind" min="-2" pref="479" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="btnFind_Book2" min="-2" pref="101" max="-2" attributes="0"/>
+                                      <Component id="btnFind_Member" min="-2" pref="101" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnClearSearch1" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
@@ -1367,9 +1367,9 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="selectTypeBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtBookFind2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnFind_Book2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="selectTypeBoxMember" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtMemberFind" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnFind_Member" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnClearSearch1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="20" max="32767" attributes="0"/>
@@ -1401,11 +1401,11 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="txtOk6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="btnClearBook2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtMemeberRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnMemberClearText" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="btnClearBook3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnloginDeUpdate" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -1479,7 +1479,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMemberAddActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="txtOk6">
+                    <Component class="javax.swing.JButton" name="txtMemeberRemove">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -1493,7 +1493,7 @@
                         <Property name="text" type="java.lang.String" value="Remove"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOk6ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMemeberRemoveActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="txtMemeberUpdate">
@@ -1520,7 +1520,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable2">
+                        <Component class="javax.swing.JTable" name="memberTable">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="sansserif" size="14" style="1"/>
@@ -1562,7 +1562,8 @@
                             </Property>
                           </Properties>
                           <Events>
-                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable2MouseClicked"/>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="memberTableMouseClicked"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="memberTableKeyReleased"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -1627,7 +1628,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMemberTepActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="selectTypeBox1">
+                    <Component class="javax.swing.JComboBox" name="selectTypeBoxMember">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -1637,24 +1638,22 @@
                           <Color blue="0" green="0" red="0" type="rgb"/>
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="6">
-                            <StringItem index="0" value="ID"/>
-                            <StringItem index="1" value="ISBN NO"/>
-                            <StringItem index="2" value="Book Title"/>
-                            <StringItem index="3" value="Book Catogery"/>
-                            <StringItem index="4" value="Author"/>
-                            <StringItem index="5" value="Count"/>
+                          <StringArray count="4">
+                            <StringItem index="0" value="Member Id"/>
+                            <StringItem index="1" value="Name"/>
+                            <StringItem index="2" value="Address"/>
+                            <StringItem index="3" value="Telephone"/>
                           </StringArray>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectTypeBox1ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectTypeBoxMemberActionPerformed"/>
                       </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtBookFind2">
+                    <Component class="javax.swing.JTextField" name="txtMemberFind">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -1667,10 +1666,10 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBookFind2ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMemberFindActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnFind_Book2">
+                    <Component class="javax.swing.JButton" name="btnFind_Member">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -1684,7 +1683,7 @@
                         <Property name="text" type="java.lang.String" value="Find"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFind_Book2ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFind_MemberActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnClearSearch1">
@@ -1717,7 +1716,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnClearBook2">
+                    <Component class="javax.swing.JButton" name="btnMemberClearText">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -1731,10 +1730,10 @@
                         <Property name="text" type="java.lang.String" value="Clear "/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearBook2ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMemberClearTextActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnClearBook3">
+                    <Component class="javax.swing.JButton" name="btnloginDeUpdate">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -1748,7 +1747,7 @@
                         <Property name="text" type="java.lang.String" value="Update Login Detais"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearBook3ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnloginDeUpdateActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

@@ -40,6 +40,7 @@ public class LibDashborad extends javax.swing.JFrame {
         con =DBconnect.Connect();
         table_reLoad();
         bookCopyTable_reLoad();
+        memberTableReLoad();
         
         //book section
         btnUpdate_Book.setEnabled(false);
@@ -49,9 +50,14 @@ public class LibDashborad extends javax.swing.JFrame {
         btnUpdate_bookCopy.setEnabled(false);
         btnDelete_bookCopy.setEnabled(false);
         
+        //memeber Section
+        txtMemeberUpdate.setEnabled(false);
+        txtMemeberRemove.setEnabled(false);
+        btnloginDeUpdate.setEnabled(false);
+        
         
        //Dispaly Librarian Id and Name   
-       strLibID=String.valueOf(libID);
+        strLibID=String.valueOf(libID);
         lblLabirarianID.setText(strLibID);
         lblLibName.setText(libName);
         
@@ -159,6 +165,44 @@ public class LibDashborad extends javax.swing.JFrame {
     
     
     };    
+    
+   public void memberTableReLoad(){
+        int c;
+
+        try {
+            pst = con.prepareStatement("SELECT * FROM member");
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            DefaultTableModel d =(DefaultTableModel )memberTable.getModel();
+            d.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int i=1;i<=c;i++){
+                    
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("Member_Name"));
+                    v2.add(rs.getString("Member_Address"));
+                    v2.add(rs.getString("Tel_No"));
+                   // v2.add(rs.getString("Price"));
+
+                    
+                }
+                d.addRow(v2);
+            }
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }
+   }
+    
+    
         
    public void loadTableData(){
        
@@ -359,21 +403,21 @@ public class LibDashborad extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtMamberName = new javax.swing.JTextField();
         txtMemberAdd = new javax.swing.JButton();
-        txtOk6 = new javax.swing.JButton();
+        txtMemeberRemove = new javax.swing.JButton();
         txtMemeberUpdate = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        memberTable = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         txtMemberAddress = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtMemberTep = new javax.swing.JTextField();
-        selectTypeBox1 = new javax.swing.JComboBox<>();
-        txtBookFind2 = new javax.swing.JTextField();
-        btnFind_Book2 = new javax.swing.JButton();
+        selectTypeBoxMember = new javax.swing.JComboBox<>();
+        txtMemberFind = new javax.swing.JTextField();
+        btnFind_Member = new javax.swing.JButton();
         btnClearSearch1 = new javax.swing.JButton();
         txtMemberId = new javax.swing.JTextField();
-        btnClearBook2 = new javax.swing.JButton();
-        btnClearBook3 = new javax.swing.JButton();
+        btnMemberClearText = new javax.swing.JButton();
+        btnloginDeUpdate = new javax.swing.JButton();
         ReserveSection = new javax.swing.JPanel();
         btnAdd_Book1 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -1044,13 +1088,13 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        txtOk6.setBackground(new java.awt.Color(204, 204, 204));
-        txtOk6.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtOk6.setForeground(new java.awt.Color(0, 0, 0));
-        txtOk6.setText("Remove");
-        txtOk6.addActionListener(new java.awt.event.ActionListener() {
+        txtMemeberRemove.setBackground(new java.awt.Color(204, 204, 204));
+        txtMemeberRemove.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtMemeberRemove.setForeground(new java.awt.Color(0, 0, 0));
+        txtMemeberRemove.setText("Remove");
+        txtMemeberRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOk6ActionPerformed(evt);
+                txtMemeberRemoveActionPerformed(evt);
             }
         });
 
@@ -1064,8 +1108,8 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        memberTable.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        memberTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1091,12 +1135,17 @@ public class LibDashborad extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        memberTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                memberTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        memberTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                memberTableKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(memberTable);
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
         jLabel15.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -1126,32 +1175,32 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        selectTypeBox1.setBackground(new java.awt.Color(255, 255, 255));
-        selectTypeBox1.setEditable(true);
-        selectTypeBox1.setForeground(new java.awt.Color(0, 0, 0));
-        selectTypeBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "ISBN NO", "Book Title", "Book Catogery", "Author", "Count" }));
-        selectTypeBox1.addActionListener(new java.awt.event.ActionListener() {
+        selectTypeBoxMember.setBackground(new java.awt.Color(255, 255, 255));
+        selectTypeBoxMember.setEditable(true);
+        selectTypeBoxMember.setForeground(new java.awt.Color(0, 0, 0));
+        selectTypeBoxMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Member Id", "Name", "Address", "Telephone" }));
+        selectTypeBoxMember.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectTypeBox1ActionPerformed(evt);
+                selectTypeBoxMemberActionPerformed(evt);
             }
         });
 
-        txtBookFind2.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookFind2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookFind2.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookFind2.addActionListener(new java.awt.event.ActionListener() {
+        txtMemberFind.setBackground(new java.awt.Color(255, 255, 255));
+        txtMemberFind.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtMemberFind.setForeground(new java.awt.Color(0, 0, 0));
+        txtMemberFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookFind2ActionPerformed(evt);
+                txtMemberFindActionPerformed(evt);
             }
         });
 
-        btnFind_Book2.setBackground(new java.awt.Color(204, 204, 204));
-        btnFind_Book2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnFind_Book2.setForeground(new java.awt.Color(0, 0, 0));
-        btnFind_Book2.setText("Find");
-        btnFind_Book2.addActionListener(new java.awt.event.ActionListener() {
+        btnFind_Member.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind_Member.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind_Member.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind_Member.setText("Find");
+        btnFind_Member.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFind_Book2ActionPerformed(evt);
+                btnFind_MemberActionPerformed(evt);
             }
         });
 
@@ -1169,23 +1218,23 @@ public class LibDashborad extends javax.swing.JFrame {
         txtMemberId.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         txtMemberId.setForeground(new java.awt.Color(0, 0, 0));
 
-        btnClearBook2.setBackground(new java.awt.Color(204, 204, 204));
-        btnClearBook2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnClearBook2.setForeground(new java.awt.Color(0, 0, 0));
-        btnClearBook2.setText("Clear ");
-        btnClearBook2.addActionListener(new java.awt.event.ActionListener() {
+        btnMemberClearText.setBackground(new java.awt.Color(204, 204, 204));
+        btnMemberClearText.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnMemberClearText.setForeground(new java.awt.Color(0, 0, 0));
+        btnMemberClearText.setText("Clear ");
+        btnMemberClearText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearBook2ActionPerformed(evt);
+                btnMemberClearTextActionPerformed(evt);
             }
         });
 
-        btnClearBook3.setBackground(new java.awt.Color(204, 204, 204));
-        btnClearBook3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnClearBook3.setForeground(new java.awt.Color(0, 0, 0));
-        btnClearBook3.setText("Update Login Detais");
-        btnClearBook3.addActionListener(new java.awt.event.ActionListener() {
+        btnloginDeUpdate.setBackground(new java.awt.Color(204, 204, 204));
+        btnloginDeUpdate.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnloginDeUpdate.setForeground(new java.awt.Color(0, 0, 0));
+        btnloginDeUpdate.setText("Update Login Detais");
+        btnloginDeUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearBook3ActionPerformed(evt);
+                btnloginDeUpdateActionPerformed(evt);
             }
         });
 
@@ -1213,26 +1262,26 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addGap(33, 33, 33)
                             .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtMemeberUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtOk6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtMemeberRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(35, 35, 35)
                             .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(MemberSectionLayout.createSequentialGroup()
-                                    .addComponent(btnClearBook2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnMemberClearText, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
                                 .addGroup(MemberSectionLayout.createSequentialGroup()
                                     .addComponent(txtMemberAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(0, 0, Short.MAX_VALUE)))))
                     .addGroup(MemberSectionLayout.createSequentialGroup()
                         .addGap(91, 91, 91)
-                        .addComponent(btnClearBook3)))
+                        .addComponent(btnloginDeUpdate)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(MemberSectionLayout.createSequentialGroup()
-                        .addComponent(selectTypeBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectTypeBoxMember, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtBookFind2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMemberFind, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnFind_Book2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFind_Member, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnClearSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2))
@@ -1243,9 +1292,9 @@ public class LibDashborad extends javax.swing.JFrame {
             .addGroup(MemberSectionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectTypeBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBookFind2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFind_Book2)
+                    .addComponent(selectTypeBoxMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMemberFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFind_Member)
                     .addComponent(btnClearSearch1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1271,10 +1320,10 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addComponent(txtMemeberUpdate))
                         .addGap(30, 30, 30)
                         .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtOk6)
-                            .addComponent(btnClearBook2))
+                            .addComponent(txtMemeberRemove)
+                            .addComponent(btnMemberClearText))
                         .addGap(35, 35, 35)
-                        .addComponent(btnClearBook3)
+                        .addComponent(btnloginDeUpdate)
                         .addGap(137, 137, 137))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MemberSectionLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1675,11 +1724,11 @@ public class LibDashborad extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel21)
-                        .addComponent(lblLabirarianID))
-                    .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblLibName)
-                        .addComponent(jLabel25)))
+                        .addComponent(jLabel25))
+                    .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel21)
+                        .addComponent(lblLabirarianID)))
                 .addGap(22, 22, 22)
                 .addComponent(TabSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1720,15 +1769,175 @@ public class LibDashborad extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMemberAddressActionPerformed
 
     private void txtMemeberUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMemeberUpdateActionPerformed
-        // TODO add your handling code here:
+ 
+        
+        if ( txtMemberId.getText().equals("") || txtMamberName.getText().equals("") ||  txtMemberAddress.getText().equals("")  || txtMemberTep.getText().equals("")  ) {
+            JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);   
+        } else {
+            try {
+                
+            String memberid = txtMemberId.getText();
+            String memberName = txtMamberName.getText();
+            String memberAdress = txtMemberAddress.getText();
+            String tepNo = txtMemberTep.getText();
+                
+                String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+                
+                int ID =Integer.parseInt(memberid);
+                
+                pst = con.prepareStatement("update member set Member_Name = ?,Member_Address = ?,Tel_No = ? where memberID = ?");
+                pst.setString(1, memberName);
+                pst.setString(2, memberAdress);
+                pst.setString(3, tepNo);
+                pst.setInt(4, ID);
+
+                int k = pst.executeUpdate();
+
+                if(k==1){
+
+                    txtMemberId.setText("");
+                    txtMamberName.setText("");
+                    txtMemberAddress.setText("");
+                    txtMemberTep.setText("");
+                    txtBookIDSec.requestFocus();
+
+                    txtMemberId.requestFocus();
+                    
+                    memberTableReLoad();
+                    
+                    txtMemberAdd.setEnabled(true);
+                    JOptionPane.showMessageDialog(this,"Member Details Succesfully Updated");
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Member Details");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
     }//GEN-LAST:event_txtMemeberUpdateActionPerformed
 
-    private void txtOk6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOk6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtOk6ActionPerformed
+    private void txtMemeberRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMemeberRemoveActionPerformed
+      
+        if ( txtMemberId.getText().equals("") || txtMamberName.getText().equals("") ||  txtMemberAddress.getText().equals("")  || txtMemberTep.getText().equals("")  ) {
+            JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);   
+        } else {
+            try {
+                
+                String memberid = txtMemberId.getText();
+//                String memberName = txtMamberName.getText();
+//                String memberAdress = txtMemberAddress.getText();
+//                String tepNo = txtMemberTep.getText();
+                
+                String bookCatogery = txtBookCatogery.getSelectedItem().toString();
+                
+                int ID =Integer.parseInt(memberid);
+                
+                String role = "Member";
+                pst = con.prepareStatement("delete from login where ID = ? "+"and"+" role =?");
+                pst.setInt(1, ID);
+                pst.setString(2, role);
+
+                int k2 = pst.executeUpdate();
+                
+                pst = con.prepareStatement("delete from member where memberID = ?");
+                pst.setInt(1, ID);
+                
+
+                int k1 = pst.executeUpdate();
+
+                if(k1==1 && k2==1){
+
+                    txtMemberId.setText("");
+                    txtMamberName.setText("");
+                    txtMemberAddress.setText("");
+                    txtMemberTep.setText("");
+                    txtBookIDSec.requestFocus();
+
+                    txtMemberId.requestFocus();
+                    
+                    memberTableReLoad();
+                    
+                    txtMemberAdd.setEnabled(true);
+                    JOptionPane.showMessageDialog(this,"Member Details Succesfully Deleted");
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Delete Member Details");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
+    }//GEN-LAST:event_txtMemeberRemoveActionPerformed
 
     private void txtMemberAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMemberAddActionPerformed
         // TODO add your handling code here:
+        
+                
+        
+        if (txtMemberId.getText().equals("") || txtMamberName.getText().equals("") ||  txtMemberAddress.getText().equals("")  || txtMemberTep.getText().equals("") ) {
+                JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                
+        } else {
+            
+            String memberid = txtMemberId.getText();
+            String memberName = txtMamberName.getText();
+            String memberAdress = txtMemberAddress.getText();
+            //String bookCatogery = txtMemberTep.getSelectedItem().toString();
+            String tepNo = txtMemberTep.getText();
+
+            try {
+                pst = con.prepareStatement("insert into member(memberID,member_Name,member_Address,Tel_No)values(?,?,?,?)");
+
+                pst.setString(1, memberid);
+                pst.setString(2, memberName);
+                pst.setString(3, memberAdress);
+                pst.setString(4, tepNo);
+               // pst.setString(5, Author);
+                int k1 = pst.executeUpdate();
+
+                if(k1==1){
+                    
+                    int intID = Integer.parseInt(memberid);
+                    
+                    LoginDetailsSet.memberID = intID;
+                    LoginDetailsSet.memberName = memberName;
+                    LoginDetailsSet.role = "Member";
+
+                    txtMemberId.setText("");
+                    txtMamberName.setText("");
+                    txtMemberAddress.setText("");
+                    //txtBookCatogery.setSelectedIndex(-1);
+                    txtMemberTep.setText("");
+                    txtBookIDSec.requestFocus();
+
+                    memberTableReLoad();
+                    
+                    
+                    LoginDetailsSet loginSet = new  LoginDetailsSet();
+                    loginSet.setVisible(true);
+                    
+                    
+                    
+
+                    JOptionPane.showMessageDialog(this,"New Member Succesfully Added");
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Add new Member");
+                   
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                // JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
     }//GEN-LAST:event_txtMemberAddActionPerformed
 
     private void txtMamberNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMamberNameActionPerformed
@@ -2373,9 +2582,28 @@ public class LibDashborad extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCopyNoActionPerformed
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable2MouseClicked
+    private void memberTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_memberTableMouseClicked
+
+        DefaultTableModel d1 =(DefaultTableModel )memberTable.getModel();
+        int selectIndex =memberTable.getSelectedRow();
+
+        txtMemberId.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtMamberName.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberAddress.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtMemberTep.setText(d1.getValueAt(selectIndex, 3).toString());
+        //txtPrice.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
+        //txtPrice.setText(d1.getValueAt(selectIndex, 4).toString());
+        //txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
+        
+        LoginDetailsSet.memberID =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        LoginDetailsSet.memberName = d1.getValueAt(selectIndex, 1).toString();
+        
+        txtMemberAdd.setEnabled(false);
+        txtMemeberUpdate.setEnabled(true);
+        txtMemeberRemove.setEnabled(true);
+        btnloginDeUpdate.setEnabled(true);
+        
+    }//GEN-LAST:event_memberTableMouseClicked
 
     private void btnClearBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBookActionPerformed
         // TODO add your handling code here:
@@ -2406,20 +2634,137 @@ public class LibDashborad extends javax.swing.JFrame {
         table_reLoad();
     }//GEN-LAST:event_btnClearSearchActionPerformed
 
-    private void selectTypeBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBox1ActionPerformed
+    private void selectTypeBoxMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxMemberActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_selectTypeBox1ActionPerformed
+    }//GEN-LAST:event_selectTypeBoxMemberActionPerformed
 
-    private void txtBookFind2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookFind2ActionPerformed
+    private void txtMemberFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMemberFindActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookFind2ActionPerformed
+    }//GEN-LAST:event_txtMemberFindActionPerformed
 
-    private void btnFind_Book2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_Book2ActionPerformed
+    private void btnFind_MemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_MemberActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnFind_Book2ActionPerformed
+        
+
+
+
+
+        
+        if( txtMemberFind.getText().equals("") || selectTypeBoxMember.getSelectedItem().toString().equals("") )
+            JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        else{
+
+            String typeGets = selectTypeBoxMember.getSelectedItem().toString();
+
+            String type;
+
+            try {
+
+                if(typeGets == "Member Id"){
+                    int text = 0;
+                    type = "memberID";
+                    String textGets = txtMemberFind.getText();
+                    text= Integer.parseInt(textGets);
+
+                    pst =con.prepareStatement("Select * from member where "+ type +" = "+ text);
+                }
+                else if(typeGets == "Name"){
+
+                    type = "Member_Name";
+                    String textGets = txtMemberFind.getText();
+                    //String finalText = textGets+"%";
+                    
+                    pst =con.prepareStatement("Select * from member where "+ type +" =?");
+                    pst.setString(1,textGets);
+
+                }
+                else if(typeGets == "Address"){
+                    int text = 0;
+                    type = "Member_Address";
+                    String textGets = txtMemberFind.getText();
+                    //text= Integer.parseInt(textGets);
+                    String finalText = "%"+textGets+"%";
+                    //System.out.println(finalText);
+
+                    pst =con.prepareStatement("Select * from member where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+                else{
+                    int text = 0;
+                    type = "Tel_No";
+                    String textGets = txtMemberFind.getText();
+                   // text= Integer.parseInt(textGets);
+                   String finalText ="%"+textGets+"%";
+                  
+                    pst =con.prepareStatement("Select * from member where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+
+                
+                rs= pst.executeQuery();
+
+                 //no result error mag popup    
+                if( rs.next()==false){
+                    JOptionPane.showMessageDialog(null, "No Result Found!", "Oops ...!", JOptionPane.ERROR_MESSAGE);
+
+                }else{
+                    
+                    int c;
+
+                    ResultSetMetaData rsd;
+                    rsd = rs.getMetaData();
+
+                    c =rsd.getColumnCount();
+
+                    DefaultTableModel d =(DefaultTableModel) memberTable.getModel();
+                    d.setRowCount(0);
+
+                    do{
+                        Vector v1 = new Vector();
+                        //System.out.println(v1);
+
+                            for(int i=1;i<=c;i++){
+                               // int idrs = rs.getInt("Book_id");
+
+                                v1.add(rs.getInt("memberID"));
+                                    //System.out.println(rs.getInt("Book_id"));
+                                v1.add(rs.getString("Member_Name"));
+                                    //System.out.println(rs.getString("ISBN"));
+                                v1.add(rs.getString("Member_Address"));
+                                    //System.out.println(rs.getString("Title"));
+                                v1.add(rs.getString("Tel_No"));
+                                    //System.out.println(rs.getString("catogery"));
+                                //v1.add(rs.getString("Author"));
+
+                                //v1.add(rs.getInt("book_count"));
+                                    //System.out.println(rs.getInt("book_count"));
+
+                           // System.out.print(v1);//
+
+                           }
+                            System.out.println(v1);
+                        d.addRow(v1);
+                    }while(rs.next());//
+                }
+
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+            catch(Exception ex){
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
+        
+    }//GEN-LAST:event_btnFind_MemberActionPerformed
 
     private void btnClearSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearch1ActionPerformed
         // TODO add your handling code here:
+        
+        txtMemberFind.setText("");
+        memberTableReLoad();
     }//GEN-LAST:event_btnClearSearch1ActionPerformed
 
     private void selectTypeBoxBookCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxBookCopyActionPerformed
@@ -2664,17 +3009,52 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearSearch2ActionPerformed
 
-    private void btnClearBook2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBook2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClearBook2ActionPerformed
-
-    private void btnClearBook3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBook3ActionPerformed
+    private void btnMemberClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberClearTextActionPerformed
         // TODO add your handling code here:
         
+                
+        txtMemberId.setText("");
+        txtMamberName.setText("");
+        txtMemberAddress.setText("");
+        txtMemberTep.setText("");
+        txtBookIDSec.requestFocus();
+       
+        
+         txtMemberAdd.setEnabled(true);
+         
+        txtMemeberUpdate.setEnabled(false);
+        txtMemeberRemove.setEnabled(false);
+        btnloginDeUpdate.setEnabled(false);
+    }//GEN-LAST:event_btnMemberClearTextActionPerformed
+
+    private void btnloginDeUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginDeUpdateActionPerformed
+        // TODO add your handling code here:
+        
+        LoginDetailsSet.role = "Member";
         LoginDetailsSet logDeSet =new LoginDetailsSet();
         //this.setEnabled(false);
         logDeSet.setVisible(true);
-    }//GEN-LAST:event_btnClearBook3ActionPerformed
+    }//GEN-LAST:event_btnloginDeUpdateActionPerformed
+
+    private void memberTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_memberTableKeyReleased
+       
+        DefaultTableModel d1 =(DefaultTableModel )memberTable.getModel();
+        int selectIndex =memberTable.getSelectedRow();
+
+        txtMemberId.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtMamberName.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberAddress.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtMemberTep.setText(d1.getValueAt(selectIndex, 3).toString());
+
+        LoginDetailsSet.memberID =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        LoginDetailsSet.memberName = d1.getValueAt(selectIndex, 1).toString();
+        
+        txtMemberAdd.setEnabled(false);
+        
+        txtMemeberUpdate.setEnabled(true);
+        txtMemeberRemove.setEnabled(true);
+        btnloginDeUpdate.setEnabled(true);
+    }//GEN-LAST:event_memberTableKeyReleased
 
     /**
      * @param args the command line arguments
@@ -2729,8 +3109,6 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton btnAdd_bookCopy;
     private javax.swing.JButton btnClearBook;
     private javax.swing.JButton btnClearBook1;
-    private javax.swing.JButton btnClearBook2;
-    private javax.swing.JButton btnClearBook3;
     private javax.swing.JButton btnClearBookCopy;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnClearSearch1;
@@ -2741,11 +3119,13 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton btnDelete_bookCopy;
     private javax.swing.JButton btnFind_Book;
     private javax.swing.JButton btnFind_Book1;
-    private javax.swing.JButton btnFind_Book2;
     private javax.swing.JButton btnFind_BookCopy;
+    private javax.swing.JButton btnFind_Member;
+    private javax.swing.JButton btnMemberClearText;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_Book1;
     private javax.swing.JButton btnUpdate_bookCopy;
+    private javax.swing.JButton btnloginDeUpdate;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
@@ -2779,14 +3159,14 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblEdition;
     private javax.swing.JLabel lblLabirarianID;
     private javax.swing.JLabel lblLibName;
+    private javax.swing.JTable memberTable;
     private javax.swing.JComboBox<String> selectTypeBox;
-    private javax.swing.JComboBox<String> selectTypeBox1;
     private javax.swing.JComboBox<String> selectTypeBox2;
     private javax.swing.JComboBox<String> selectTypeBoxBookCopy;
+    private javax.swing.JComboBox<String> selectTypeBoxMember;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel1;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel2;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel3;
@@ -2802,7 +3182,6 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel txtBookCount1;
     private javax.swing.JTextField txtBookFind;
     private javax.swing.JTextField txtBookFind1;
-    private javax.swing.JTextField txtBookFind2;
     private javax.swing.JTextField txtBookID;
     private javax.swing.JTextField txtBookIDSec;
     private javax.swing.JTextField txtBookIDSec1;
@@ -2816,10 +3195,11 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JTextField txtMamberName;
     private javax.swing.JButton txtMemberAdd;
     private javax.swing.JTextField txtMemberAddress;
+    private javax.swing.JTextField txtMemberFind;
     private javax.swing.JTextField txtMemberId;
     private javax.swing.JTextField txtMemberTep;
+    private javax.swing.JButton txtMemeberRemove;
     private javax.swing.JButton txtMemeberUpdate;
-    private javax.swing.JButton txtOk6;
     private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
 }

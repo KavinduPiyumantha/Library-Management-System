@@ -1,4 +1,4 @@
-
+create database librarysystem; 
 
 CREATE TABLE `member` (
   `memberID` int not null unique,
@@ -118,5 +118,8 @@ drop table login;
 drop table member;
 drop table librarian;
 
+delete * from Login;
 
 SELECT * FROM book NATURAL JOIN bookcopy;
+
+delete from login where ID =3 and role = "Member";
