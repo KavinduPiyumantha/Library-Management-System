@@ -59,17 +59,20 @@ CREATE TABLE `purchase` (
 );
 
 CREATE TABLE `reserve` (
+  `Book_id` int not null ,
   `copy_no` int not null ,
   `memberID` int not null ,
   `Reserve_Date` datetime,
   `Status` varchar(255),
-  PRIMARY KEY (`copy_no`, `memberID`, `Reserve_Date`),
+  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Reserve_Date`),
+  FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
 );
 
 																																	
 CREATE TABLE `borrow` (
+  `Book_id` int not null ,
   `copy_no` int not null ,
   `memberID` int not null,
   `Borrow_Date` datetime,
@@ -77,7 +80,8 @@ CREATE TABLE `borrow` (
   `returned_Date` datetime,
   `Status` varchar(255),
   `penalty_fee` double,
-  PRIMARY KEY (`copy_no`, `memberID`, `Borrow_Date`),
+  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`),
+  FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
 );
@@ -86,7 +90,8 @@ CREATE TABLE `borrow` (
 
 
 
-
+insert into reserve(Book_id,copy_no,memberID,Reserve_Date,Status) value 
+(2,1,2,'2010-01-23 12:45:56','Reserved');
 
 insert into Login(ID,role,username,password)values
 (1,"Librarian","kavindu","12345");
@@ -118,7 +123,7 @@ drop table login;
 drop table member;
 drop table librarian;
 
-delete * from Login;
+SELECT * from Login;
 
 SELECT * FROM book NATURAL JOIN bookcopy;
 

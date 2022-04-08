@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author KAVINDU PIYUMANTHA
+ * 
  */
 public class LibDashborad extends javax.swing.JFrame {
 
@@ -41,6 +41,7 @@ public class LibDashborad extends javax.swing.JFrame {
         table_reLoad();
         bookCopyTable_reLoad();
         memberTableReLoad();
+        reserveTableReload();
         
         //book section
         btnUpdate_Book.setEnabled(false);
@@ -200,6 +201,49 @@ public class LibDashborad extends javax.swing.JFrame {
             Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null  ,ex);
         }
+   }
+   
+   public void reserveTableReload(){
+          int c;
+
+        try {
+//            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
+//            pst.setString(1,"Reserved");
+            
+            pst = con.prepareStatement("SELECT * FROM reserve  ");
+            
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
+            d.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int i=1;i<=c;i++){
+                    
+                    v2.add(rs.getString("Book_id"));
+                    v2.add(rs.getString("copy_no"));
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("Reserve_Date"));
+                    v2.add(rs.getString("Status"));
+                    
+                   // v2.add(rs.getString("Price"));
+
+                    
+                }
+                d.addRow(v2);
+            }
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }     
+       
    }
     
     
@@ -419,28 +463,24 @@ public class LibDashborad extends javax.swing.JFrame {
         btnMemberClearText = new javax.swing.JButton();
         btnloginDeUpdate = new javax.swing.JButton();
         ReserveSection = new javax.swing.JPanel();
-        btnAdd_Book1 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        BookTable1 = new javax.swing.JTable();
-        btnDelete_Book1 = new javax.swing.JButton();
+        BookReserveTable = new javax.swing.JTable();
         btnUpdate_Book1 = new javax.swing.JButton();
-        btnFind_Book1 = new javax.swing.JButton();
+        btnFind_Reserve = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        txtBookTitle1 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        txtAuthor1 = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        txtBookCatogery1 = new javax.swing.JComboBox<>();
+        txtStatusReserve = new javax.swing.JComboBox<>();
         jLabel27 = new javax.swing.JLabel();
-        txtISBN1 = new javax.swing.JTextField();
-        jLabel28 = new javax.swing.JLabel();
-        txtBookCount1 = new javax.swing.JLabel();
-        txtBookIDSec1 = new javax.swing.JTextField();
-        btnClearBook1 = new javax.swing.JButton();
-        selectTypeBox2 = new javax.swing.JComboBox<>();
-        txtBookFind1 = new javax.swing.JTextField();
+        btnClearReseve = new javax.swing.JButton();
+        selectTypeBoxReserve = new javax.swing.JComboBox<>();
+        txFindReserve = new javax.swing.JTextField();
         btnClearSearch2 = new javax.swing.JButton();
+        jLabel29 = new javax.swing.JLabel();
+        txtMemberIDReserve = new javax.swing.JLabel();
+        txtBookIDReserve = new javax.swing.JLabel();
+        txtCopyNoReserve = new javax.swing.JLabel();
+        txtDateReserve = new javax.swing.JLabel();
         BorrowSection = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         lblLabirarianID = new javax.swing.JLabel();
@@ -714,7 +754,7 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addComponent(btnDelete_Book, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(47, 47, 47)
                             .addComponent(btnClearBook, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(BookSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(BookSectionLayout.createSequentialGroup()
@@ -1007,7 +1047,7 @@ public class LibDashborad extends javax.swing.JFrame {
                                     .addComponent(btnDelete_bookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(47, 47, 47)
                                     .addComponent(btnClearBookCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -1274,7 +1314,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addGroup(MemberSectionLayout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addComponent(btnloginDeUpdate)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(MemberSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(MemberSectionLayout.createSequentialGroup()
                         .addComponent(selectTypeBoxMember, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1334,30 +1374,20 @@ public class LibDashborad extends javax.swing.JFrame {
 
         ReserveSection.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnAdd_Book1.setBackground(new java.awt.Color(204, 204, 204));
-        btnAdd_Book1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnAdd_Book1.setForeground(new java.awt.Color(0, 0, 0));
-        btnAdd_Book1.setText("Add");
-        btnAdd_Book1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdd_Book1ActionPerformed(evt);
-            }
-        });
-
-        BookTable1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        BookTable1.setModel(new javax.swing.table.DefaultTableModel(
+        BookReserveTable.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        BookReserveTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Book ID", "ISBN No", "Book Title", "Catogery", "Author", "Count"
+                "Book ID", "Book Copy No", "Member ID", "Reserve Date Time", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1368,27 +1398,17 @@ public class LibDashborad extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        BookTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        BookReserveTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BookTable1MouseClicked(evt);
+                BookReserveTableMouseClicked(evt);
             }
         });
-        BookTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+        BookReserveTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                BookTable1KeyReleased(evt);
+                BookReserveTableKeyReleased(evt);
             }
         });
-        jScrollPane4.setViewportView(BookTable1);
-
-        btnDelete_Book1.setBackground(new java.awt.Color(204, 204, 204));
-        btnDelete_Book1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnDelete_Book1.setForeground(new java.awt.Color(0, 0, 0));
-        btnDelete_Book1.setText("Remove");
-        btnDelete_Book1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDelete_Book1ActionPerformed(evt);
-            }
-        });
+        jScrollPane4.setViewportView(BookReserveTable);
 
         btnUpdate_Book1.setBackground(new java.awt.Color(204, 204, 204));
         btnUpdate_Book1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -1400,118 +1420,72 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
-        btnFind_Book1.setBackground(new java.awt.Color(204, 204, 204));
-        btnFind_Book1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnFind_Book1.setForeground(new java.awt.Color(0, 0, 0));
-        btnFind_Book1.setText("Find");
-        btnFind_Book1.addActionListener(new java.awt.event.ActionListener() {
+        btnFind_Reserve.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind_Reserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind_Reserve.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind_Reserve.setText("Find");
+        btnFind_Reserve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFind_Book1ActionPerformed(evt);
+                btnFind_ReserveActionPerformed(evt);
             }
         });
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel11.setText("ID");
-
-        txtBookTitle1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookTitle1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookTitle1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("Book ID");
 
         jLabel23.setBackground(new java.awt.Color(255, 255, 255));
         jLabel23.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel23.setText("Book Title");
+        jLabel23.setText("Member ID");
 
         jLabel24.setBackground(new java.awt.Color(255, 255, 255));
         jLabel24.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Book Catogery");
+        jLabel24.setText("Status");
 
-        txtAuthor1.setBackground(new java.awt.Color(255, 255, 255));
-        txtAuthor1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtAuthor1.setForeground(new java.awt.Color(0, 0, 0));
-        txtAuthor1.addActionListener(new java.awt.event.ActionListener() {
+        txtStatusReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txtStatusReserve.setEditable(true);
+        txtStatusReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txtStatusReserve.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reserved", "Picked Up" }));
+        txtStatusReserve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAuthor1ActionPerformed(evt);
-            }
-        });
-
-        jLabel26.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel26.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Author");
-
-        txtBookCatogery1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookCatogery1.setEditable(true);
-        txtBookCatogery1.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookCatogery1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kids Story", "Action and Adventure", "Classics", "Comic Book or Graphic Novel", "Detective and Mystery", "Fantasy", "Historical Fiction", "Horror", "Literary Fiction", "Romance", "Science Fiction (Sci-Fi)", "Short Stories", "Suspense and Thrillers", "Women's Fiction", "Biographies and Autobiographies", "Cookbooks", "Essays", "History", "Memoir", "Poetry", "Self-Help", "True Crime", "Science", "Computer Science", "IT", "Biology", "Arts", " " }));
-        txtBookCatogery1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookCatogery1ActionPerformed(evt);
+                txtStatusReserveActionPerformed(evt);
             }
         });
 
         jLabel27.setBackground(new java.awt.Color(255, 255, 255));
         jLabel27.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel27.setText("ISBN No");
+        jLabel27.setText("Copy No");
 
-        txtISBN1.setBackground(new java.awt.Color(255, 255, 255));
-        txtISBN1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtISBN1.setForeground(new java.awt.Color(0, 0, 0));
-        txtISBN1.addActionListener(new java.awt.event.ActionListener() {
+        btnClearReseve.setBackground(new java.awt.Color(204, 204, 204));
+        btnClearReseve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnClearReseve.setForeground(new java.awt.Color(0, 0, 0));
+        btnClearReseve.setText("Clear ");
+        btnClearReseve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtISBN1ActionPerformed(evt);
+                btnClearReseveActionPerformed(evt);
             }
         });
 
-        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel28.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel28.setText("Count");
-
-        txtBookCount1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookCount1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookCount1.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookCount1.setText("-");
-
-        txtBookIDSec1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookIDSec1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookIDSec1.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookIDSec1.addActionListener(new java.awt.event.ActionListener() {
+        selectTypeBoxReserve.setBackground(new java.awt.Color(255, 255, 255));
+        selectTypeBoxReserve.setEditable(true);
+        selectTypeBoxReserve.setForeground(new java.awt.Color(0, 0, 0));
+        selectTypeBoxReserve.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book ID", "Copy NO", "Member ID", "Reserve Date", "Status" }));
+        selectTypeBoxReserve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookIDSec1ActionPerformed(evt);
+                selectTypeBoxReserveActionPerformed(evt);
             }
         });
 
-        btnClearBook1.setBackground(new java.awt.Color(204, 204, 204));
-        btnClearBook1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnClearBook1.setForeground(new java.awt.Color(0, 0, 0));
-        btnClearBook1.setText("Clear ");
-        btnClearBook1.addActionListener(new java.awt.event.ActionListener() {
+        txFindReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txFindReserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txFindReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txFindReserve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearBook1ActionPerformed(evt);
-            }
-        });
-
-        selectTypeBox2.setBackground(new java.awt.Color(255, 255, 255));
-        selectTypeBox2.setEditable(true);
-        selectTypeBox2.setForeground(new java.awt.Color(0, 0, 0));
-        selectTypeBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "ISBN NO", "Book Title", "Book Catogery", "Author", "Count" }));
-        selectTypeBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectTypeBox2ActionPerformed(evt);
-            }
-        });
-
-        txtBookFind1.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookFind1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookFind1.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookFind1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBookFind1ActionPerformed(evt);
+                txFindReserveActionPerformed(evt);
             }
         });
 
@@ -1525,6 +1499,31 @@ public class LibDashborad extends javax.swing.JFrame {
             }
         });
 
+        jLabel29.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel29.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel29.setText("Reserved Date");
+
+        txtMemberIDReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txtMemberIDReserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtMemberIDReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txtMemberIDReserve.setText("-");
+
+        txtBookIDReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txtBookIDReserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtBookIDReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txtBookIDReserve.setText("-");
+
+        txtCopyNoReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txtCopyNoReserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtCopyNoReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txtCopyNoReserve.setText("-");
+
+        txtDateReserve.setBackground(new java.awt.Color(255, 255, 255));
+        txtDateReserve.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtDateReserve.setForeground(new java.awt.Color(0, 0, 0));
+        txtDateReserve.setText("-");
+
         javax.swing.GroupLayout ReserveSectionLayout = new javax.swing.GroupLayout(ReserveSection);
         ReserveSection.setLayout(ReserveSectionLayout);
         ReserveSectionLayout.setHorizontalGroup(
@@ -1532,51 +1531,45 @@ public class LibDashborad extends javax.swing.JFrame {
             .addGroup(ReserveSectionLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ReserveSectionLayout.createSequentialGroup()
-                            .addComponent(jLabel24)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtBookCatogery1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(ReserveSectionLayout.createSequentialGroup()
-                            .addComponent(jLabel27)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtISBN1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(ReserveSectionLayout.createSequentialGroup()
-                            .addComponent(jLabel26)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtBookCount1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtAuthor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)))
-                        .addGroup(ReserveSectionLayout.createSequentialGroup()
-                            .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(ReserveSectionLayout.createSequentialGroup()
-                                    .addComponent(jLabel23)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSectionLayout.createSequentialGroup()
-                                    .addComponent(jLabel11)
-                                    .addGap(101, 101, 101)))
-                            .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtBookTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtBookIDSec1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(ReserveSectionLayout.createSequentialGroup()
-                            .addComponent(btnUpdate_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAdd_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(ReserveSectionLayout.createSequentialGroup()
-                            .addComponent(btnDelete_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(47, 47, 47)
-                            .addComponent(btnClearBook1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(ReserveSectionLayout.createSequentialGroup()
+                        .addComponent(btnClearReseve, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdate_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSectionLayout.createSequentialGroup()
+                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ReserveSectionLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(txtStatusReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ReserveSectionLayout.createSequentialGroup()
+                                .addComponent(txtDateReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSectionLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBookIDReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSectionLayout.createSequentialGroup()
+                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtMemberIDReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSectionLayout.createSequentialGroup()
+                        .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCopyNoReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(ReserveSectionLayout.createSequentialGroup()
-                        .addComponent(selectTypeBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectTypeBoxReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtBookFind1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txFindReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnFind_Book1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFind_Reserve, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnClearSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(16, 16, 16))
@@ -1588,49 +1581,41 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addGroup(ReserveSectionLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(selectTypeBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtBookFind1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnFind_Book1)
+                            .addComponent(selectTypeBoxReserve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txFindReserve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFind_Reserve)
                             .addComponent(btnClearSearch2))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ReserveSectionLayout.createSequentialGroup()
-                        .addGap(101, 101, 101)
+                        .addGap(122, 122, 122)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(txtBookIDSec1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtISBN1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel27))
-                        .addGap(26, 26, 26)
+                            .addComponent(txtBookIDReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(txtCopyNoReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel23)
-                            .addComponent(txtBookTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
+                            .addComponent(txtMemberIDReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel29)
+                            .addComponent(txtDateReserve, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel24)
-                            .addComponent(txtBookCatogery1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
+                            .addComponent(txtStatusReserve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(76, 76, 76)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtAuthor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel26))
-                        .addGap(18, 18, 18)
-                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel28)
-                            .addComponent(txtBookCount1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAdd_Book1)
-                            .addComponent(btnUpdate_Book1))
-                        .addGap(18, 18, 18)
-                        .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnDelete_Book1)
-                            .addComponent(btnClearBook1))))
+                            .addComponent(btnClearReseve)
+                            .addComponent(btnUpdate_Book1))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        tapSection.addTab("    Reserve Section  ", ReserveSection);
+        tapSection.addTab("    Reserved Section  ", ReserveSection);
 
         BorrowSection.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1638,14 +1623,14 @@ public class LibDashborad extends javax.swing.JFrame {
         BorrowSection.setLayout(BorrowSectionLayout);
         BorrowSectionLayout.setHorizontalGroup(
             BorrowSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1271, Short.MAX_VALUE)
+            .addGap(0, 1273, Short.MAX_VALUE)
         );
         BorrowSectionLayout.setVerticalGroup(
             BorrowSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 614, Short.MAX_VALUE)
         );
 
-        tapSection.addTab("    Borrow Section   ", BorrowSection);
+        tapSection.addTab("    Borrowed Section   ", BorrowSection);
 
         javax.swing.GroupLayout TabSectionLayout = new javax.swing.GroupLayout(TabSection);
         TabSection.setLayout(TabSectionLayout);
@@ -2645,11 +2630,6 @@ public class LibDashborad extends javax.swing.JFrame {
     private void btnFind_MemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_MemberActionPerformed
         // TODO add your handling code here:
         
-
-
-
-
-        
         if( txtMemberFind.getText().equals("") || selectTypeBoxMember.getSelectedItem().toString().equals("") )
             JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
         else{
@@ -2953,60 +2933,248 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEditionActionPerformed
 
-    private void btnAdd_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_Book1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdd_Book1ActionPerformed
+    private void BookReserveTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookReserveTableMouseClicked
+        
+        DefaultTableModel d1 =(DefaultTableModel )BookReserveTable.getModel();
+        int selectIndex =BookReserveTable.getSelectedRow();
 
-    private void BookTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookTable1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BookTable1MouseClicked
+        txtBookIDReserve.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNoReserve.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberIDReserve.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtDateReserve.setText(d1.getValueAt(selectIndex, 3).toString());
+        txtStatusReserve.setSelectedItem(d1.getValueAt(selectIndex, 4).toString());
+        //txtPrice.setText(d1.getValueAt(selectIndex, 4).toString());
+        //txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
+        
+        //LoginDetailsSet.memberID =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        //LoginDetailsSet.memberName = d1.getValueAt(selectIndex, 1).toString();
+        
+//        txtMemberAdd.setEnabled(false);
+//        txtMemeberUpdate.setEnabled(true);
+//        txtMemeberRemove.setEnabled(true);
+//        btnloginDeUpdate.setEnabled(true);
+    }//GEN-LAST:event_BookReserveTableMouseClicked
 
-    private void BookTable1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookTable1KeyReleased
+    private void BookReserveTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookReserveTableKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_BookTable1KeyReleased
-
-    private void btnDelete_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete_Book1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDelete_Book1ActionPerformed
+    }//GEN-LAST:event_BookReserveTableKeyReleased
 
     private void btnUpdate_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_Book1ActionPerformed
-        // TODO add your handling code here:
+        
+        if ( txtBookIDReserve.getText().equals("") ||  txtCopyNoReserve.getText().equals("")  || txtMemberIDReserve.getText().equals("") || txtDateReserve.getText().equals("")  || txtStatusReserve.getSelectedItem().equals("")  ) {
+                JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                
+        } else {
+            
+            String bookID = txtBookIDReserve.getText();
+            String copuNo = txtCopyNoReserve.getText();
+            String  memberid = txtMemberIDReserve.getText();
+            String date =  txtDateReserve.getText();
+            //String bookCatogery = txtMemberTep.getSelectedItem().toString();
+            String tepNo = txtStatusReserve.getSelectedItem().toString();;
+            
+            
+
+            try {
+                pst = con.prepareStatement("update  reserve set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Reserve_Date = ? ");
+
+                pst.setString(1, tepNo);
+                pst.setInt(2, Integer.parseInt(bookID));
+                pst.setInt(3, Integer.parseInt(copuNo));
+                pst.setInt(4, Integer.parseInt(memberid));
+                pst.setString(5, date);
+               // pst.setString(5, Author);
+                int k1 = pst.executeUpdate();
+
+                if(k1==1){
+                    
+//                    int intID = Integer.parseInt(memberid);
+                    
+//                    LoginDetailsSet.memberID = intID;
+//                    LoginDetailsSet.memberName = memberName;
+//                    LoginDetailsSet.role = "Member";
+
+                        txtBookIDReserve.setText("-");
+                        txtCopyNoReserve.setText("-");
+                        txtMemberIDReserve.setText("-");
+                        txtDateReserve.setText("-");
+                        txtStatusReserve.setSelectedItem(""); 
+//                    //txtBookCatogery.setSelectedIndex(-1);
+//                    txtMemberTep.setText("");
+                    txtStatusReserve.requestFocus();
+
+                    reserveTableReload();
+                    
+//                    LoginDetailsSet loginSet = new  LoginDetailsSet();
+//                    loginSet.setVisible(true);
+                    
+                    
+                    
+
+                    JOptionPane.showMessageDialog(this,"Reservation Succesfully Updated");
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Reservation");
+                   
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                // JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
     }//GEN-LAST:event_btnUpdate_Book1ActionPerformed
 
-    private void btnFind_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_Book1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFind_Book1ActionPerformed
+    private void btnFind_ReserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_ReserveActionPerformed
+     
+        if( txFindReserve.getText().equals("") || selectTypeBoxReserve.getSelectedItem().toString().equals("") )
+            JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        else{
 
-    private void txtAuthor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAuthor1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAuthor1ActionPerformed
+            String typeGets = selectTypeBoxReserve.getSelectedItem().toString();
 
-    private void txtBookCatogery1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookCatogery1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookCatogery1ActionPerformed
+            String type;
 
-    private void txtISBN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBN1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtISBN1ActionPerformed
+            try {
 
-    private void txtBookIDSec1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookIDSec1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookIDSec1ActionPerformed
+                if(typeGets == "Book ID"){
+                    int text = 0;
+                    type = "Book_id";
+                    String textGets = txFindReserve.getText();
+                    text= Integer.parseInt(textGets);
+                    
+                    //SELECT * FROM "+" bookcopy"+" NATURAL JOIN"+" purchase"
+                    pst =con.prepareStatement("Select * from reserve  where "+ type +" = "+ text);
+                }
+                else if(typeGets == "Copy NO"){
 
-    private void btnClearBook1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBook1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClearBook1ActionPerformed
+                    type = "copy_no";
+                    String textGets = txFindReserve.getText();
+                    //String finalText = textGets+"%";
+                    
+                    pst =con.prepareStatement("Select * from reserve  where "+ type +" =?");
+                    pst.setString(1,textGets);
 
-    private void selectTypeBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_selectTypeBox2ActionPerformed
+                }
+                else if(typeGets == "Member ID"){
+                    int text = 0;
+                    type = "memberID";
+                    String textGets = txFindReserve.getText();
+                    //text= Integer.parseInt(textGets);
+                    String finalText = "%"+textGets+"%";
+                        System.out.println(finalText);
 
-    private void txtBookFind1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookFind1ActionPerformed
+                    pst =con.prepareStatement("Select * from reserve where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+                else if(typeGets == "Reserve Date"){
+                    int text = 0;
+                    type = "Reserve_Date";
+                    String textGets = txFindReserve.getText();
+                   // text= Integer.parseInt(textGets);
+                   String finalText ="%"+textGets+"%";
+                  
+                    pst =con.prepareStatement("Select * from reserve where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+                else{
+                    int text = 0;
+                    type = "Status";
+                    String textGets = txFindReserve.getText();
+                    String finalText ="%"+ textGets+"%";
+
+                    pst =con.prepareStatement("Select * from reserve where "+ type +" like ?");
+                    pst.setString(1,finalText);
+
+               }
+
+                
+                rs= pst.executeQuery();
+
+                 //no result error mag popup    
+                if( rs.next()==false){
+                    JOptionPane.showMessageDialog(null, "No Result Found!", "Oops ...!", JOptionPane.ERROR_MESSAGE);
+
+                }else{
+                    
+                    int c;
+
+                    ResultSetMetaData rsd;
+                    rsd = rs.getMetaData();
+
+                    c =rsd.getColumnCount();
+
+                    DefaultTableModel d =(DefaultTableModel) BookReserveTable.getModel();
+                    d.setRowCount(0);
+
+                    do{
+                        Vector v1 = new Vector();
+                        //System.out.println(v1);
+
+                            for(int i=1;i<=c;i++){
+                               // int idrs = rs.getInt("Book_id");
+
+                                v1.add(rs.getInt("Book_id"));
+                                    //System.out.println(rs.getInt("Book_id"));
+                                v1.add(rs.getInt("copy_no"));
+                                    //System.out.println(rs.getString("ISBN"));
+                                v1.add(rs.getInt("memberID"));
+                                    //System.out.println(rs.getString("Title"));
+                                v1.add(rs.getString("Reserve_Date"));
+                                    //System.out.println(rs.getString("catogery"));
+                                v1.add(rs.getString("Status"));
+
+
+                           }
+                            //System.out.println(v1);
+                        d.addRow(v1);
+                    }while(rs.next());//
+                }
+
+                //txtBookFind.setText("");
+
+                //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+            catch(Exception ex){
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
+    }//GEN-LAST:event_btnFind_ReserveActionPerformed
+
+    private void txtStatusReserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusReserveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtBookFind1ActionPerformed
+    }//GEN-LAST:event_txtStatusReserveActionPerformed
+
+    private void btnClearReseveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearReseveActionPerformed
+        // TODO add your handling code here:
+        
+        txtBookIDReserve.setText("-");
+        txtCopyNoReserve.setText("-");
+        txtMemberIDReserve.setText("-");
+        txtDateReserve.setText("-");
+        txtStatusReserve.setSelectedItem("");    //Reserved
+        //reserveTableReload();
+       
+    }//GEN-LAST:event_btnClearReseveActionPerformed
+
+    private void selectTypeBoxReserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxReserveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectTypeBoxReserveActionPerformed
+
+    private void txFindReserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txFindReserveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txFindReserveActionPerformed
 
     private void btnClearSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearch2ActionPerformed
-        // TODO add your handling code here:
+      txFindReserve.setText("");
+        reserveTableReload();
     }//GEN-LAST:event_btnClearSearch2ActionPerformed
 
     private void btnMemberClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberClearTextActionPerformed
@@ -3096,31 +3264,29 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BookCopySection;
+    private javax.swing.JTable BookReserveTable;
     private javax.swing.JPanel BookSection;
     private javax.swing.JTable BookTable;
-    private javax.swing.JTable BookTable1;
     private javax.swing.JTable Book_Copy_Table;
     private javax.swing.JPanel BorrowSection;
     private javax.swing.JPanel MemberSection;
     private javax.swing.JPanel ReserveSection;
     private javax.swing.JPanel TabSection;
     private javax.swing.JButton btnAdd_Book;
-    private javax.swing.JButton btnAdd_Book1;
     private javax.swing.JButton btnAdd_bookCopy;
     private javax.swing.JButton btnClearBook;
-    private javax.swing.JButton btnClearBook1;
     private javax.swing.JButton btnClearBookCopy;
+    private javax.swing.JButton btnClearReseve;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnClearSearch1;
     private javax.swing.JButton btnClearSearch2;
     private javax.swing.JButton btnClearSearchBookCopy;
     private javax.swing.JButton btnDelete_Book;
-    private javax.swing.JButton btnDelete_Book1;
     private javax.swing.JButton btnDelete_bookCopy;
     private javax.swing.JButton btnFind_Book;
-    private javax.swing.JButton btnFind_Book1;
     private javax.swing.JButton btnFind_BookCopy;
     private javax.swing.JButton btnFind_Member;
+    private javax.swing.JButton btnFind_Reserve;
     private javax.swing.JButton btnMemberClearText;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_Book1;
@@ -3146,9 +3312,8 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3164,42 +3329,41 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel lblLibName;
     private javax.swing.JTable memberTable;
     private javax.swing.JComboBox<String> selectTypeBox;
-    private javax.swing.JComboBox<String> selectTypeBox2;
     private javax.swing.JComboBox<String> selectTypeBoxBookCopy;
     private javax.swing.JComboBox<String> selectTypeBoxMember;
+    private javax.swing.JComboBox<String> selectTypeBoxReserve;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel1;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel2;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel3;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel4;
     private javax.swing.JTabbedPane tapSection;
+    private javax.swing.JTextField txFindReserve;
     private javax.swing.JTextField txtAuthor;
-    private javax.swing.JTextField txtAuthor1;
     private javax.swing.JButton txtBack;
     private javax.swing.JComboBox<String> txtBookCatogery;
-    private javax.swing.JComboBox<String> txtBookCatogery1;
     private javax.swing.JTextField txtBookCopyFind;
     private javax.swing.JLabel txtBookCount;
-    private javax.swing.JLabel txtBookCount1;
     private javax.swing.JTextField txtBookFind;
-    private javax.swing.JTextField txtBookFind1;
     private javax.swing.JTextField txtBookID;
+    private javax.swing.JLabel txtBookIDReserve;
     private javax.swing.JTextField txtBookIDSec;
-    private javax.swing.JTextField txtBookIDSec1;
     private javax.swing.JTextField txtBookTitle;
-    private javax.swing.JTextField txtBookTitle1;
     private javax.swing.JTextField txtCopyNo;
+    private javax.swing.JLabel txtCopyNoReserve;
     private javax.swing.JTextField txtDate;
+    private javax.swing.JLabel txtDateReserve;
     private javax.swing.JTextField txtEdition;
     private javax.swing.JTextField txtISBN;
-    private javax.swing.JTextField txtISBN1;
     private javax.swing.JTextField txtMamberName;
     private javax.swing.JButton txtMemberAdd;
     private javax.swing.JTextField txtMemberAddress;
     private javax.swing.JTextField txtMemberFind;
+    private javax.swing.JLabel txtMemberIDReserve;
     private javax.swing.JTextField txtMemberId;
     private javax.swing.JTextField txtMemberTep;
     private javax.swing.JButton txtMemeberRemove;
     private javax.swing.JButton txtMemeberUpdate;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JComboBox<String> txtStatusReserve;
     // End of variables declaration//GEN-END:variables
 }

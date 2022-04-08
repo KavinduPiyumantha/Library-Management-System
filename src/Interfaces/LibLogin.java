@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author KAVINDU PIYUMANTHA
+ *
  */
 public class LibLogin extends javax.swing.JFrame {
 

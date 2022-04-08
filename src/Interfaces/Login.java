@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author KAVINDU PIYUMANTHA
+ * 
  */
 public class Login extends javax.swing.JFrame {
 
