@@ -6,6 +6,9 @@ package Interfaces;
 
 
 import Codes.DBconnect;
+import  Codes.DateTime;
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -33,15 +37,20 @@ public class LibDashborad extends javax.swing.JFrame {
           public static String libName;
           
           static String strLibID;
+         
+          
 
     public LibDashborad() {
 
         initComponents();
         con =DBconnect.Connect();
+        
+        //table Loading
         table_reLoad();
         bookCopyTable_reLoad();
         memberTableReLoad();
         reserveTableReload();
+        borrowTableReload();
         
         //book section
         btnUpdate_Book.setEnabled(false);
@@ -61,6 +70,7 @@ public class LibDashborad extends javax.swing.JFrame {
         strLibID=String.valueOf(libID);
         lblLabirarianID.setText(strLibID);
         lblLibName.setText(libName);
+        
         
         
    //     txtBookCatogery.setSelectedIndex(-1);
@@ -234,6 +244,49 @@ public class LibDashborad extends javax.swing.JFrame {
                    // v2.add(rs.getString("Price"));
 
                     
+                }
+                d.addRow(v2);
+            }
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }     
+       
+   }
+   
+   public void borrowTableReload(){
+          int c;
+
+        try {
+//            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
+//            pst.setString(1,"Reserved");
+            
+            pst = con.prepareStatement("SELECT * FROM borrow  ");
+            
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            DefaultTableModel d =(DefaultTableModel )BookBorrowTable.getModel();
+            d.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int i=1;i<=c;i++){
+                    
+                    v2.add(rs.getString("Book_id"));
+                    v2.add(rs.getString("copy_no"));
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("Borrow_Date"));
+                    v2.add(rs.getString("Due_Date"));
+                    v2.add(rs.getString("returned_Date"));
+                    v2.add(rs.getString("Status"));
+                    v2.add(rs.getString("penalty_fee"));
+   
                 }
                 d.addRow(v2);
             }
@@ -481,7 +534,25 @@ public class LibDashborad extends javax.swing.JFrame {
         txtBookIDReserve = new javax.swing.JLabel();
         txtCopyNoReserve = new javax.swing.JLabel();
         txtDateReserve = new javax.swing.JLabel();
-        BorrowSection = new javax.swing.JPanel();
+        ReserveSection1 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        BookBorrowTable = new javax.swing.JTable();
+        btnUpdate_Book2 = new javax.swing.JButton();
+        btnFind_Borrow = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        txtStatusBorrow = new javax.swing.JComboBox<>();
+        jLabel30 = new javax.swing.JLabel();
+        btnClearReseve1 = new javax.swing.JButton();
+        selectTypeBoxBorrow = new javax.swing.JComboBox<>();
+        txFindBorrow = new javax.swing.JTextField();
+        btnClearSearchBorrow = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        txtMemberIDBorrow = new javax.swing.JLabel();
+        txtBookIDBorrow = new javax.swing.JLabel();
+        txtCopyNoBorrow = new javax.swing.JLabel();
+        txtDateBorrow = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         lblLabirarianID = new javax.swing.JLabel();
         lblLibName = new javax.swing.JLabel();
@@ -1617,20 +1688,259 @@ public class LibDashborad extends javax.swing.JFrame {
 
         tapSection.addTab("    Reserved Section  ", ReserveSection);
 
-        BorrowSection.setBackground(new java.awt.Color(255, 255, 255));
+        ReserveSection1.setBackground(new java.awt.Color(255, 255, 255));
+        ReserveSection1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                ReserveSection1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
-        javax.swing.GroupLayout BorrowSectionLayout = new javax.swing.GroupLayout(BorrowSection);
-        BorrowSection.setLayout(BorrowSectionLayout);
-        BorrowSectionLayout.setHorizontalGroup(
-            BorrowSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1273, Short.MAX_VALUE)
+        BookBorrowTable.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        BookBorrowTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Book ID", "Book Copy No", "Member ID", "Borrow Date", "Due Date ", "Returned Date", "Status", "Panalty Fee"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        BookBorrowTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookBorrowTableMouseClicked(evt);
+            }
+        });
+        BookBorrowTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                BookBorrowTableKeyReleased(evt);
+            }
+        });
+        jScrollPane5.setViewportView(BookBorrowTable);
+
+        btnUpdate_Book2.setBackground(new java.awt.Color(204, 204, 204));
+        btnUpdate_Book2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnUpdate_Book2.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate_Book2.setText("Update");
+        btnUpdate_Book2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdate_Book2ActionPerformed(evt);
+            }
+        });
+
+        btnFind_Borrow.setBackground(new java.awt.Color(204, 204, 204));
+        btnFind_Borrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnFind_Borrow.setForeground(new java.awt.Color(0, 0, 0));
+        btnFind_Borrow.setText("Find");
+        btnFind_Borrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFind_BorrowActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Book ID");
+
+        jLabel26.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel26.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel26.setText("Member ID");
+
+        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel28.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel28.setText("Status");
+
+        txtStatusBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txtStatusBorrow.setEditable(true);
+        txtStatusBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txtStatusBorrow.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrowed", "Returened" }));
+        txtStatusBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStatusBorrowActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel30.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel30.setText("Copy No");
+
+        btnClearReseve1.setBackground(new java.awt.Color(204, 204, 204));
+        btnClearReseve1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnClearReseve1.setForeground(new java.awt.Color(0, 0, 0));
+        btnClearReseve1.setText("Clear ");
+        btnClearReseve1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearReseve1ActionPerformed(evt);
+            }
+        });
+
+        selectTypeBoxBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        selectTypeBoxBorrow.setEditable(true);
+        selectTypeBoxBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        selectTypeBoxBorrow.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book ID", "Copy NO", "Member ID", "Borrow Date", "Due Date", "Status" }));
+        selectTypeBoxBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTypeBoxBorrowActionPerformed(evt);
+            }
+        });
+
+        txFindBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txFindBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txFindBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txFindBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txFindBorrowActionPerformed(evt);
+            }
+        });
+
+        btnClearSearchBorrow.setBackground(new java.awt.Color(204, 204, 204));
+        btnClearSearchBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnClearSearchBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        btnClearSearchBorrow.setText("Clear ");
+        btnClearSearchBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearchBorrowActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel31.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel31.setText("Borrow Date");
+
+        txtMemberIDBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txtMemberIDBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtMemberIDBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txtMemberIDBorrow.setText("-");
+
+        txtBookIDBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txtBookIDBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtBookIDBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txtBookIDBorrow.setText("-");
+
+        txtCopyNoBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txtCopyNoBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtCopyNoBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txtCopyNoBorrow.setText("-");
+
+        txtDateBorrow.setBackground(new java.awt.Color(255, 255, 255));
+        txtDateBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        txtDateBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        txtDateBorrow.setText("-");
+
+        javax.swing.GroupLayout ReserveSection1Layout = new javax.swing.GroupLayout(ReserveSection1);
+        ReserveSection1.setLayout(ReserveSection1Layout);
+        ReserveSection1Layout.setHorizontalGroup(
+            ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ReserveSection1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                        .addComponent(btnClearReseve1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdate_Book2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ReserveSection1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ReserveSection1Layout.createSequentialGroup()
+                                .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                        .addComponent(selectTypeBoxBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txFindBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFind_Borrow, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnClearSearchBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
-        BorrowSectionLayout.setVerticalGroup(
-            BorrowSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 614, Short.MAX_VALUE)
+        ReserveSection1Layout.setVerticalGroup(
+            ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ReserveSection1Layout.createSequentialGroup()
+                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(selectTypeBoxBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txFindBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFind_Borrow)
+                            .addComponent(btnClearSearchBorrow))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel30)
+                            .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel26)
+                            .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel31)
+                            .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel28)
+                            .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(76, 76, 76)
+                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnClearReseve1)
+                            .addComponent(btnUpdate_Book2))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        tapSection.addTab("    Borrowed Section   ", BorrowSection);
+        tapSection.addTab("    Borrowed Section   ", ReserveSection1);
 
         javax.swing.GroupLayout TabSectionLayout = new javax.swing.GroupLayout(TabSection);
         TabSection.setLayout(TabSectionLayout);
@@ -2956,7 +3266,14 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     }//GEN-LAST:event_BookReserveTableMouseClicked
 
     private void BookReserveTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookReserveTableKeyReleased
-        // TODO add your handling code here:
+        DefaultTableModel d1 =(DefaultTableModel )BookReserveTable.getModel();
+        int selectIndex =BookReserveTable.getSelectedRow();
+
+        txtBookIDReserve.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNoReserve.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberIDReserve.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtDateReserve.setText(d1.getValueAt(selectIndex, 3).toString());
+        txtStatusReserve.setSelectedItem(d1.getValueAt(selectIndex, 4).toString());
     }//GEN-LAST:event_BookReserveTableKeyReleased
 
     private void btnUpdate_Book1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_Book1ActionPerformed
@@ -2967,26 +3284,57 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         } else {
             
             String bookID = txtBookIDReserve.getText();
-            String copuNo = txtCopyNoReserve.getText();
+            String copyNo = txtCopyNoReserve.getText();
             String  memberid = txtMemberIDReserve.getText();
-            String date =  txtDateReserve.getText();
+            String resdate =  txtDateReserve.getText();
             //String bookCatogery = txtMemberTep.getSelectedItem().toString();
-            String tepNo = txtStatusReserve.getSelectedItem().toString();;
+            String status = txtStatusReserve.getSelectedItem().toString();;
             
             
 
             try {
                 pst = con.prepareStatement("update  reserve set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Reserve_Date = ? ");
 
-                pst.setString(1, tepNo);
+                pst.setString(1, status);
                 pst.setInt(2, Integer.parseInt(bookID));
-                pst.setInt(3, Integer.parseInt(copuNo));
+                pst.setInt(3, Integer.parseInt(copyNo));
                 pst.setInt(4, Integer.parseInt(memberid));
-                pst.setString(5, date);
+                pst.setString(5, resdate);
                // pst.setString(5, Author);
                 int k1 = pst.executeUpdate();
 
                 if(k1==1){
+                    
+                    
+                        if(status == "Picked Up"){
+                            try{
+                                
+                                
+                                
+                            pst =con.prepareStatement("insert into borrow(Book_id, copy_no ,  memberID, Borrow_Date, Due_Date, Status ) value (?,?,?,?,?,?) ");
+                            pst.setInt(1, Integer.parseInt(bookID) );
+                            pst.setInt(2, Integer.parseInt(copyNo) );
+                            pst.setInt(3, Integer.parseInt(memberid) );
+                            pst.setString(4, DateTime.currentDate().toString());
+                            pst.setString(5, DateTime.reternDate().toString());
+                            pst.setString(6, "Borrowed"); 
+                            
+                             int k2 = pst.executeUpdate();
+                            
+                                     if(k2==1){
+
+                                         borrowTableReload();
+                                     }else{
+                                               JOptionPane.showMessageDialog(this,"Error::  Reservation Updated But Can't Update Borrrows  ");
+                                     }
+                            }
+                            catch(SQLException ex){
+                                        Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                                        JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                            }
+                            
+                        }
+                        
                     
 //                    int intID = Integer.parseInt(memberid);
                     
@@ -3001,15 +3349,12 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                         txtStatusReserve.setSelectedItem(""); 
 //                    //txtBookCatogery.setSelectedIndex(-1);
 //                    txtMemberTep.setText("");
-                    txtStatusReserve.requestFocus();
+                         txtStatusReserve.requestFocus();
 
                     reserveTableReload();
                     
 //                    LoginDetailsSet loginSet = new  LoginDetailsSet();
 //                    loginSet.setVisible(true);
-                    
-                    
-                    
 
                     JOptionPane.showMessageDialog(this,"Reservation Succesfully Updated");
 
@@ -3224,6 +3569,287 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         btnloginDeUpdate.setEnabled(true);
     }//GEN-LAST:event_memberTableKeyReleased
 
+    private void BookBorrowTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookBorrowTableMouseClicked
+         
+        DefaultTableModel d1 =(DefaultTableModel )BookBorrowTable.getModel();
+        int selectIndex =BookBorrowTable.getSelectedRow();
+
+        txtBookIDBorrow.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNoBorrow.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberIDBorrow.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtDateBorrow.setText(d1.getValueAt(selectIndex, 3).toString());
+        txtStatusBorrow.setSelectedItem(d1.getValueAt(selectIndex, 6).toString());
+    }//GEN-LAST:event_BookBorrowTableMouseClicked
+
+    private void BookBorrowTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookBorrowTableKeyReleased
+        DefaultTableModel d1 =(DefaultTableModel )BookBorrowTable.getModel();
+        int selectIndex =BookBorrowTable.getSelectedRow();
+
+        txtBookIDBorrow.setText(d1.getValueAt(selectIndex, 0).toString());
+        txtCopyNoBorrow.setText(d1.getValueAt(selectIndex, 1).toString());
+        txtMemberIDBorrow.setText(d1.getValueAt(selectIndex, 2).toString());
+        txtDateBorrow.setText(d1.getValueAt(selectIndex, 3).toString());
+        txtStatusBorrow.setSelectedItem(d1.getValueAt(selectIndex, 6).toString());
+    }//GEN-LAST:event_BookBorrowTableKeyReleased
+
+    private void btnUpdate_Book2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_Book2ActionPerformed
+        if ( txtBookIDBorrow.getText().equals("") ||  txtCopyNoBorrow.getText().equals("")  || txtMemberIDBorrow.getText().equals("") || txtDateBorrow.getText().equals("")  || txtStatusBorrow.getSelectedItem().equals("")  ) {
+                JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                
+        } else {
+            
+            String bookID = txtBookIDBorrow.getText();
+            String copyNo = txtCopyNoBorrow.getText();
+            String  memberid = txtMemberIDBorrow.getText();
+            String barrowdate =  txtDateBorrow.getText();
+            //String bookCatogery = txtMemberTep.getSelectedItem().toString();
+            String status = txtStatusBorrow.getSelectedItem().toString();;
+            
+            
+
+            try {
+                
+                if(status == "Returened"){
+                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+
+                    pst.setString(1, DateTime.currentDate().toString());
+                    pst.setString(2, status);
+                    pst.setInt(3, Integer.parseInt(bookID));
+                    pst.setInt(4, Integer.parseInt(copyNo));
+                    pst.setInt(5, Integer.parseInt(memberid));
+                    pst.setString(6, barrowdate);
+                }
+                else if(status == "Borrowed"){
+                    pst = con.prepareStatement("update  borrow set  returned_Date = Null , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+
+                    //pst.setString(1, DateTime.currentDate().toString());
+                    pst.setString(1, status);
+                    pst.setInt(2, Integer.parseInt(bookID));
+                    pst.setInt(3, Integer.parseInt(copyNo));
+                    pst.setInt(4, Integer.parseInt(memberid));
+                    pst.setString(5, barrowdate);                   
+                }
+                else{
+                    
+                    pst = con.prepareStatement("update  borrow set  Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+                    //pst.setString(1, DateTime.currentDate().toString());
+                    pst.setString(1, status);
+                    pst.setInt(2, Integer.parseInt(bookID));
+                    pst.setInt(3, Integer.parseInt(copyNo));
+                    pst.setInt(4, Integer.parseInt(memberid));
+                    pst.setString(5, barrowdate);
+                    
+                }
+
+               // pst.setString(5, Author);
+                int k1 = pst.executeUpdate();
+
+                if(k1==1){
+
+//                    int intID = Integer.parseInt(memberid);
+                    
+//                    LoginDetailsSet.memberID = intID;
+//                    LoginDetailsSet.memberName = memberName;
+//                    LoginDetailsSet.role = "Member";
+
+                        txtBookIDBorrow.setText("-");
+                        txtCopyNoBorrow.setText("-");
+                        txtMemberIDBorrow.setText("-");
+                        txtDateBorrow.setText("-");
+                        txtStatusBorrow.setSelectedItem(""); 
+//                    //txtBookCatogery.setSelectedIndex(-1);
+//                    txtMemberTep.setText("");
+                         //txtStatusReserve.requestFocus();
+
+                    borrowTableReload();
+                    
+//                    LoginDetailsSet loginSet = new  LoginDetailsSet();
+//                    loginSet.setVisible(true);
+
+                    JOptionPane.showMessageDialog(this,"Borrow Succesfully Updated");
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Borrows");
+                   
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                // JOptionPane.showMessageDialog(null  ,ex);
+            }
+        }
+    }//GEN-LAST:event_btnUpdate_Book2ActionPerformed
+
+    private void btnFind_BorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_BorrowActionPerformed
+        // TODO add your handling code here:
+        
+        
+
+       
+           
+        if( txFindBorrow.getText().equals("") || selectTypeBoxBorrow.getSelectedItem().toString().equals("") )
+            JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+        else{
+
+            String typeGets = selectTypeBoxBorrow.getSelectedItem().toString();
+
+            String type;
+
+            try {
+
+                if(typeGets == "Book ID"){
+                    int text = 0;
+                    type = "Book_id";
+                    String textGets = txFindBorrow.getText();
+                    text= Integer.parseInt(textGets);
+                    
+                    //SELECT * FROM "+" bookcopy"+" NATURAL JOIN"+" purchase"
+                    pst =con.prepareStatement("Select * from borrow  where "+ type +" = "+ text);
+                }
+                else if(typeGets == "Copy NO"){
+
+                    type = "copy_no";
+                    String textGets = txFindBorrow.getText();
+                    //String finalText = textGets+"%";
+                    
+                    pst =con.prepareStatement("Select * from borrow  where "+ type +" =?");
+                    pst.setString(1,textGets);
+
+                }
+                else if(typeGets == "Member ID"){
+                    int text = 0;
+                    type = "memberID";
+                    String textGets = txFindBorrow.getText();
+                    //text= Integer.parseInt(textGets);
+                    String finalText = "%"+textGets+"%";
+                        System.out.println(finalText);
+
+                    pst =con.prepareStatement("Select * from borrow where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+                else if(typeGets == "Borrow Date"){
+                    int text = 0;
+                    type = "Reserve_Date";
+                    String textGets = txFindBorrow.getText();
+                   // text= Integer.parseInt(textGets);
+                   String finalText ="%"+textGets+"%";
+                  
+                    pst =con.prepareStatement("Select * from borrow where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                } 
+                else if(typeGets == "Due Date"){
+                    int text = 0;
+                    type = "Due_Date";
+                    String textGets = txFindBorrow.getText();
+                   // text= Integer.parseInt(textGets);
+                   String finalText ="%"+textGets+"%";
+                  
+                    pst =con.prepareStatement("Select * from borrow where "+ type +" like ?");
+                    pst.setString(1,finalText);
+                }
+                else{
+                    int text = 0;
+                    type = "Status";
+                    String textGets = txFindBorrow.getText();
+                    String finalText ="%"+ textGets+"%";
+
+                    pst =con.prepareStatement("Select * from borrow where "+ type +" like ?");
+                    pst.setString(1,finalText);
+
+               }
+
+               
+                rs= pst.executeQuery();
+
+                 //no result error mag popup    
+                if( rs.next()==false){
+                    JOptionPane.showMessageDialog(null, "No Result Found!", "Oops ...!", JOptionPane.ERROR_MESSAGE);
+
+                }else{
+                    
+                    int c;
+
+                    ResultSetMetaData rsd;
+                    rsd = rs.getMetaData();
+
+                    c =rsd.getColumnCount();
+
+                    DefaultTableModel d =(DefaultTableModel) BookBorrowTable.getModel();
+                    d.setRowCount(0);
+
+                    do{
+                        Vector v1 = new Vector();
+                        //System.out.println(v1);
+
+                            for(int i=1;i<=c;i++){
+                               // int idrs = rs.getInt("Book_id");
+
+                                v1.add(rs.getInt("Book_id"));
+                                    //System.out.println(rs.getInt("Book_id"));
+                                v1.add(rs.getInt("copy_no"));
+                                    //System.out.println(rs.getString("ISBN"));
+                                v1.add(rs.getInt("memberID"));
+                                    //System.out.println(rs.getString("Title"));
+                                v1.add(rs.getString("Borrow_Date"));
+                                    //System.out.println(rs.getString("catogery"));
+                                v1.add(rs.getString("Due_Date"));    
+                                v1.add(rs.getString("returned_Date")); 
+                                v1.add(rs.getString("Status"));
+                                v1.add(rs.getString("penalty_fee"));
+                           }
+                            //System.out.println(v1);
+                        d.addRow(v1);
+                    }while(rs.next());//
+                }
+
+                //txtBookFind.setText("");
+
+                //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+            catch(Exception ex){
+                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null  ,ex);
+            }
+        } 
+                
+    }//GEN-LAST:event_btnFind_BorrowActionPerformed
+
+    private void txtStatusBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusBorrowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStatusBorrowActionPerformed
+
+    private void btnClearReseve1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearReseve1ActionPerformed
+        txtBookIDBorrow.setText("-");
+        txtCopyNoBorrow.setText("-");
+        txtMemberIDBorrow.setText("-");
+        txtDateBorrow.setText("-");
+        txtStatusBorrow.setSelectedItem("");    //Reserved
+    }//GEN-LAST:event_btnClearReseve1ActionPerformed
+
+    private void selectTypeBoxBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxBorrowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectTypeBoxBorrowActionPerformed
+
+    private void txFindBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txFindBorrowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txFindBorrowActionPerformed
+
+    private void btnClearSearchBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchBorrowActionPerformed
+        // TODO add your handling code here:
+        txFindBorrow.setText("");
+        borrowTableReload();
+    }//GEN-LAST:event_btnClearSearchBorrowActionPerformed
+
+    private void ReserveSection1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_ReserveSection1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ReserveSection1AncestorAdded
+
     /**
      * @param args the command line arguments
      */
@@ -3263,33 +3889,38 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BookBorrowTable;
     private javax.swing.JPanel BookCopySection;
     private javax.swing.JTable BookReserveTable;
     private javax.swing.JPanel BookSection;
     private javax.swing.JTable BookTable;
     private javax.swing.JTable Book_Copy_Table;
-    private javax.swing.JPanel BorrowSection;
     private javax.swing.JPanel MemberSection;
     private javax.swing.JPanel ReserveSection;
+    private javax.swing.JPanel ReserveSection1;
     private javax.swing.JPanel TabSection;
     private javax.swing.JButton btnAdd_Book;
     private javax.swing.JButton btnAdd_bookCopy;
     private javax.swing.JButton btnClearBook;
     private javax.swing.JButton btnClearBookCopy;
     private javax.swing.JButton btnClearReseve;
+    private javax.swing.JButton btnClearReseve1;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnClearSearch1;
     private javax.swing.JButton btnClearSearch2;
     private javax.swing.JButton btnClearSearchBookCopy;
+    private javax.swing.JButton btnClearSearchBorrow;
     private javax.swing.JButton btnDelete_Book;
     private javax.swing.JButton btnDelete_bookCopy;
     private javax.swing.JButton btnFind_Book;
     private javax.swing.JButton btnFind_BookCopy;
+    private javax.swing.JButton btnFind_Borrow;
     private javax.swing.JButton btnFind_Member;
     private javax.swing.JButton btnFind_Reserve;
     private javax.swing.JButton btnMemberClearText;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_Book1;
+    private javax.swing.JButton btnUpdate_Book2;
     private javax.swing.JButton btnUpdate_bookCopy;
     private javax.swing.JButton btnloginDeUpdate;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
@@ -3299,6 +3930,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -3312,8 +3944,12 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3324,12 +3960,14 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblEdition;
     private javax.swing.JLabel lblLabirarianID;
     private javax.swing.JLabel lblLibName;
     private javax.swing.JTable memberTable;
     private javax.swing.JComboBox<String> selectTypeBox;
     private javax.swing.JComboBox<String> selectTypeBoxBookCopy;
+    private javax.swing.JComboBox<String> selectTypeBoxBorrow;
     private javax.swing.JComboBox<String> selectTypeBoxMember;
     private javax.swing.JComboBox<String> selectTypeBoxReserve;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel1;
@@ -3337,6 +3975,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private org.jdatepicker.impl.SqlDateModel sqlDateModel3;
     private org.jdatepicker.impl.SqlDateModel sqlDateModel4;
     private javax.swing.JTabbedPane tapSection;
+    private javax.swing.JTextField txFindBorrow;
     private javax.swing.JTextField txFindReserve;
     private javax.swing.JTextField txtAuthor;
     private javax.swing.JButton txtBack;
@@ -3345,12 +3984,15 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JLabel txtBookCount;
     private javax.swing.JTextField txtBookFind;
     private javax.swing.JTextField txtBookID;
+    private javax.swing.JLabel txtBookIDBorrow;
     private javax.swing.JLabel txtBookIDReserve;
     private javax.swing.JTextField txtBookIDSec;
     private javax.swing.JTextField txtBookTitle;
     private javax.swing.JTextField txtCopyNo;
+    private javax.swing.JLabel txtCopyNoBorrow;
     private javax.swing.JLabel txtCopyNoReserve;
     private javax.swing.JTextField txtDate;
+    private javax.swing.JLabel txtDateBorrow;
     private javax.swing.JLabel txtDateReserve;
     private javax.swing.JTextField txtEdition;
     private javax.swing.JTextField txtISBN;
@@ -3358,12 +4000,14 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton txtMemberAdd;
     private javax.swing.JTextField txtMemberAddress;
     private javax.swing.JTextField txtMemberFind;
+    private javax.swing.JLabel txtMemberIDBorrow;
     private javax.swing.JLabel txtMemberIDReserve;
     private javax.swing.JTextField txtMemberId;
     private javax.swing.JTextField txtMemberTep;
     private javax.swing.JButton txtMemeberRemove;
     private javax.swing.JButton txtMemeberUpdate;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JComboBox<String> txtStatusBorrow;
     private javax.swing.JComboBox<String> txtStatusReserve;
     // End of variables declaration//GEN-END:variables
 }

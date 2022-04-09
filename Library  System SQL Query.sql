@@ -62,7 +62,7 @@ CREATE TABLE `reserve` (
   `Book_id` int not null ,
   `copy_no` int not null ,
   `memberID` int not null ,
-  `Reserve_Date` datetime,
+  `Reserve_Date` date,
   `Status` varchar(255),
   PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Reserve_Date`),
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
@@ -75,11 +75,11 @@ CREATE TABLE `borrow` (
   `Book_id` int not null ,
   `copy_no` int not null ,
   `memberID` int not null,
-  `Borrow_Date` datetime,
-  `Due_Date` datetime,
-  `returned_Date` datetime,
+  `Borrow_Date` date not null,
+  `Due_Date` date not null,
+  `returned_Date` date,
   `Status` varchar(255),
-  `penalty_fee` double,
+  `penalty_fee` double default 0.0,
   PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`),
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
@@ -91,7 +91,7 @@ CREATE TABLE `borrow` (
 
 
 insert into reserve(Book_id,copy_no,memberID,Reserve_Date,Status) value 
-(2,1,2,'2010-01-23 12:45:56','Reserved');
+(1,1,2,'2015-01-26','Reserved');
 
 insert into Login(ID,role,username,password)values
 (1,"Librarian","kavindu","12345");
@@ -124,6 +124,8 @@ drop table member;
 drop table librarian;
 
 SELECT * from Login;
+SELECT * from borrow;
+delete * from borrow;
 
 SELECT * FROM book NATURAL JOIN bookcopy;
 
