@@ -125,8 +125,10 @@ drop table librarian;
 
 SELECT * from Login;
 SELECT * from borrow;
-delete * from borrow;
+select * from borrow;
 
 SELECT * FROM book NATURAL JOIN bookcopy;
 
 delete from login where ID =3 and role = "Member";
+
+update  borrow set borrow_Date = '2022-03-26' where  Book_id = 1 and copy_no = 1  and memberID = 2 ;

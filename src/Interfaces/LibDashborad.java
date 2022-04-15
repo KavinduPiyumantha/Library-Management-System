@@ -16,7 +16,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -537,7 +539,7 @@ public class LibDashborad extends javax.swing.JFrame {
         ReserveSection1 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         BookBorrowTable = new javax.swing.JTable();
-        btnUpdate_Book2 = new javax.swing.JButton();
+        btnUpdate_Borrowed = new javax.swing.JButton();
         btnFind_Borrow = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -1735,13 +1737,13 @@ public class LibDashborad extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(BookBorrowTable);
 
-        btnUpdate_Book2.setBackground(new java.awt.Color(204, 204, 204));
-        btnUpdate_Book2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnUpdate_Book2.setForeground(new java.awt.Color(0, 0, 0));
-        btnUpdate_Book2.setText("Update");
-        btnUpdate_Book2.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate_Borrowed.setBackground(new java.awt.Color(204, 204, 204));
+        btnUpdate_Borrowed.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnUpdate_Borrowed.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate_Borrowed.setText("Update");
+        btnUpdate_Borrowed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdate_Book2ActionPerformed(evt);
+                btnUpdate_BorrowedActionPerformed(evt);
             }
         });
 
@@ -1859,7 +1861,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addGroup(ReserveSection1Layout.createSequentialGroup()
                         .addComponent(btnClearReseve1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUpdate_Book2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnUpdate_Borrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
                         .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1936,7 +1938,7 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGap(76, 76, 76)
                         .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnClearReseve1)
-                            .addComponent(btnUpdate_Book2))))
+                            .addComponent(btnUpdate_Borrowed))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -3592,7 +3594,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         txtStatusBorrow.setSelectedItem(d1.getValueAt(selectIndex, 6).toString());
     }//GEN-LAST:event_BookBorrowTableKeyReleased
 
-    private void btnUpdate_Book2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_Book2ActionPerformed
+    private void btnUpdate_BorrowedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_BorrowedActionPerformed
         if ( txtBookIDBorrow.getText().equals("") ||  txtCopyNoBorrow.getText().equals("")  || txtMemberIDBorrow.getText().equals("") || txtDateBorrow.getText().equals("")  || txtStatusBorrow.getSelectedItem().equals("")  ) {
                 JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
                 
@@ -3610,14 +3612,36 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
             try {
                 
                 if(status == "Returened"){
-                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+                    
+                    long daysBetween = DAYS.between(DateTime.StringToLocalDate(barrowdate), DateTime.currentDate());
+                    
+                    System.out.println(daysBetween);
+                    double paneltyFee=0;
+
+                    if(daysBetween > 14){
+                         paneltyFee = ( (int)daysBetween -14) * 5 ;
+                        
+                    }
+                    
+                    System.out.println(paneltyFee);
+                    
+                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ?, penalty_fee = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
 
                     pst.setString(1, DateTime.currentDate().toString());
                     pst.setString(2, status);
-                    pst.setInt(3, Integer.parseInt(bookID));
-                    pst.setInt(4, Integer.parseInt(copyNo));
-                    pst.setInt(5, Integer.parseInt(memberid));
-                    pst.setString(6, barrowdate);
+                    pst.setDouble(3, paneltyFee);
+                    pst.setInt(4, Integer.parseInt(bookID));
+                    pst.setInt(5, Integer.parseInt(copyNo));
+                    pst.setInt(6, Integer.parseInt(memberid));
+                    pst.setString(7, barrowdate);
+                    
+                    int k1 = pst.executeUpdate();
+                    
+                    
+                    
+                    
+
+                    
                 }
                 else if(status == "Borrowed"){
                     pst = con.prepareStatement("update  borrow set  returned_Date = Null , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
@@ -3627,7 +3651,9 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                     pst.setInt(2, Integer.parseInt(bookID));
                     pst.setInt(3, Integer.parseInt(copyNo));
                     pst.setInt(4, Integer.parseInt(memberid));
-                    pst.setString(5, barrowdate);                   
+                    pst.setString(5, barrowdate);   
+                    
+                    int k1 = pst.executeUpdate();
                 }
                 else{
                     
@@ -3638,6 +3664,8 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                     pst.setInt(3, Integer.parseInt(copyNo));
                     pst.setInt(4, Integer.parseInt(memberid));
                     pst.setString(5, barrowdate);
+                    
+                    int k1 = pst.executeUpdate();
                     
                 }
 
@@ -3680,7 +3708,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                 // JOptionPane.showMessageDialog(null  ,ex);
             }
         }
-    }//GEN-LAST:event_btnUpdate_Book2ActionPerformed
+    }//GEN-LAST:event_btnUpdate_BorrowedActionPerformed
 
     private void btnFind_BorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_BorrowActionPerformed
         // TODO add your handling code here:
@@ -3731,7 +3759,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                 }
                 else if(typeGets == "Borrow Date"){
                     int text = 0;
-                    type = "Reserve_Date";
+                    type = "Borrow_Date";
                     String textGets = txFindBorrow.getText();
                    // text= Integer.parseInt(textGets);
                    String finalText ="%"+textGets+"%";
@@ -3920,7 +3948,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton btnMemberClearText;
     private javax.swing.JButton btnUpdate_Book;
     private javax.swing.JButton btnUpdate_Book1;
-    private javax.swing.JButton btnUpdate_Book2;
+    private javax.swing.JButton btnUpdate_Borrowed;
     private javax.swing.JButton btnUpdate_bookCopy;
     private javax.swing.JButton btnloginDeUpdate;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;

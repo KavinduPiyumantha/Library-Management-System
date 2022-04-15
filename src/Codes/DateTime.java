@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;  
 import java.util.Date; 
 import java.time.LocalDate; 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -37,6 +39,15 @@ public class DateTime {
          LocalDate borwDate =  currentDate.plusDays(14);
 
           return borwDate;
+     }
+     
+      public static LocalDate StringToLocalDate(String str){
+
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+          LocalDate date = LocalDate.parse(str, formatter);
+          
+          return date;
      }
      
      }
