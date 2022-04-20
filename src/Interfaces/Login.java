@@ -31,9 +31,9 @@ public class Login extends javax.swing.JFrame {
        //  con =DBconnect.Connect();
     }
 
-    Connection con;
-    PreparedStatement pst;
-    
+//    Connection con;
+//    PreparedStatement pst;
+//    
     
     /**
      * This method is called from within the constructor to initialize the form.

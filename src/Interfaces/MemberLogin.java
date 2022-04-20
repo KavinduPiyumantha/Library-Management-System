@@ -5,9 +5,13 @@
 package Interfaces;
 
 import Codes.DBconnect;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,6 +32,104 @@ public class MemberLogin extends javax.swing.JFrame {
     PreparedStatement pst;
     ResultSet rs;
 
+    
+    
+    public void checklogin(){
+         String userName = txtUserName.getText();
+                String password = txtPassword.getText();
+
+                int memberID = 0;
+                String name = "saman";
+                String correctPass = null;
+               // String correctPass ={'1','2','3','4'};
+               
+                boolean avblUsername=false;
+                boolean passcheck=false;
+
+                try {
+                            pst = con.prepareStatement("SELECT ID,password FROM Login  where username = ? and role = ? ");
+                            pst.setString(1, userName);
+                            pst.setString(2,"Member");
+
+                            rs = pst.executeQuery();
+                            
+                            if(rs.next()==false){
+                                    avblUsername=false;
+                            }else{
+                                    avblUsername=true;
+                                    do{
+                                          memberID = rs.getInt("ID");
+                                          correctPass=  rs.getString("password") ;
+                                    }while( rs.next());
+                                    
+                                     for(int i=0 ;i<password.length();i++){
+
+                                          if(password.length () != correctPass.length () || correctPass.charAt(i) != password.charAt(i)){
+                                                    passcheck = false;
+                                                    break;
+                                          }
+
+                                           passcheck = true;
+                                           //System.out.println("password correct");
+                                      }
+
+                               }
+
+//                            System.out.println(ID);
+//                            System.out.println(correctPass);
+
+                 } catch (SQLException ex) {
+                    Logger.getLogger(LibLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }       
+
+
+
+                if(avblUsername &&  passcheck){
+
+                    //System.out.println(libID);
+                    MemberDashborad.MemberID =memberID;
+                    
+                    
+                    
+                    try {
+                            pst=con.prepareStatement("Select  Member_Name from member where memberID = ?");
+                            pst.setInt(1, memberID);
+                            rs=pst.executeQuery();
+
+                            rs.next();
+                            name=rs.getString("Member_Name");
+                            //System.out.println(name);
+
+                            MemberDashborad.MemberName =rs.getString("Member_Name");
+
+
+                    } catch (SQLException ex) {
+                            Logger.getLogger(LibLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    MemberDashborad login =new MemberDashborad();
+                    this.hide();
+                    login.setVisible(true);
+                    
+
+                    
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
+                    //txtUserName.setText("");
+                    //txtPassword.selectAll();
+
+
+                    
+                    txtUserName.requestFocus();
+                }
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,6 +191,11 @@ public class MemberLogin extends javax.swing.JFrame {
         txtUserName.setBackground(new java.awt.Color(255, 255, 255));
         txtUserName.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserNameActionPerformed(evt);
+            }
+        });
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -97,6 +204,11 @@ public class MemberLogin extends javax.swing.JFrame {
 
         txtPassword.setBackground(new java.awt.Color(255, 255, 255));
         txtPassword.setForeground(new java.awt.Color(0, 0, 0));
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
         jPanelMain.setLayout(jPanelMainLayout);
@@ -170,38 +282,8 @@ public class MemberLogin extends javax.swing.JFrame {
 
     private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
         // TODO add your handling code here:
-        
-        String username = txtUserName.getText();
-        char[] password = txtPassword.getPassword();
-        
-        char[] correctPass ={'1','2','3','4'};
-        boolean passcheck=false;
-        
-        for(int i=0 ;i<password.length;i++){
-            
-            if(password.length != correctPass.length || correctPass[i] != password[i]){
-                passcheck = false;
-                break;
-            }
-            
-            passcheck = true;
-        }
-        
-        if(username.equals("kavindu") && passcheck){
-            
-            Login login =new Login();
-            this.hide();
-            login.setVisible(true);
-        }
-        else{
-            JOptionPane.showMessageDialog(this,"Username or Password is not Correct");
-            txtUserName.setText("");
-            //txtPassword.selectAll();
-            
-    
-            txtUserName.requestFocus();
-        }
-        
+
+          checklogin();
         
     }//GEN-LAST:event_txtOkActionPerformed
 
@@ -213,6 +295,19 @@ public class MemberLogin extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_txtBackActionPerformed
+
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        // TODO add your handling code here:
+        
+                if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            
+                checklogin();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments

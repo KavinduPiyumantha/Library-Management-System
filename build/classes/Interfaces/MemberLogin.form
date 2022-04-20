@@ -199,6 +199,9 @@
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUserNameActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -223,6 +226,9 @@
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPasswordKeyPressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

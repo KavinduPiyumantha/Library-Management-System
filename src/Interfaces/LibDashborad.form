@@ -66,23 +66,9 @@
           <Group type="103" groupAlignment="1" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="jLabel21" min="-2" pref="24" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblLabirarianID" min="-2" pref="37" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel25" min="-2" pref="53" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblLibName" min="-2" pref="144" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="jLabel2" min="-2" pref="238" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="407" max="-2" attributes="0"/>
-                          <Component id="txtBack" min="-2" pref="88" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jLabel2" min="-2" pref="238" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="407" max="-2" attributes="0"/>
+                  <Component id="txtBack" min="-2" pref="88" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
@@ -98,6 +84,22 @@
                       </Group>
                   </Group>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="540" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel25" min="-2" pref="53" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblLibName" min="-2" pref="144" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel21" min="-2" pref="24" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblLabirarianID" min="-2" pref="37" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -111,17 +113,16 @@
                       <Component id="txtBack" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblLibName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblLabirarianID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblLabirarianID" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblLibName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   <Component id="TabSection" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -189,15 +190,15 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="tapSection" alignment="1" max="32767" attributes="0"/>
+                  <Component id="tapSection" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tapSection" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tapSection" min="-2" pref="594" max="-2" attributes="0"/>
+                      <EmptySpace pref="14" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -289,9 +290,8 @@
                                   </Group>
                               </Group>
                               <EmptySpace pref="56" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jScrollPane1" alignment="0" min="-2" pref="885" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <Component id="selectTypeBox" min="-2" pref="149" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="txtBookFind" min="-2" pref="479" max="-2" attributes="0"/>
@@ -300,8 +300,9 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnClearSearch" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -318,7 +319,7 @@
                                           <Component id="btnClearSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane1" min="-2" pref="548" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane1" min="-2" pref="498" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
@@ -363,7 +364,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="12" max="32767" attributes="0"/>
+                              <EmptySpace pref="9" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -918,7 +919,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="18" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="selectTypeBoxBookCopy" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBookCopyFind" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1372,7 +1373,7 @@
                                   <Component id="btnFind_Member" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnClearSearch1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="20" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="3" attributes="0">
@@ -1877,7 +1878,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="12" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2333,7 +2334,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="12" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>

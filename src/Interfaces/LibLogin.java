@@ -47,7 +47,7 @@ public class LibLogin extends javax.swing.JFrame {
                 String password = txtPassword.getText();
 
                 int libID = 0;
-                String name = "saman";
+                String name = "";
                 String correctPass = null;
                // String correctPass ={'1','2','3','4'};
                
