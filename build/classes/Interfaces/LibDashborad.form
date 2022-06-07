@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
-  <NonVisualComponents>
-    <Component class="org.jdatepicker.impl.SqlDateModel" name="sqlDateModel1">
-    </Component>
-    <Component class="org.jdatepicker.impl.SqlDateModel" name="sqlDateModel2">
-    </Component>
-    <Component class="org.jdatepicker.impl.SqlDateModel" name="sqlDateModel3">
-    </Component>
-    <Component class="org.jdatepicker.util.JDatePickerUtil" name="jDatePickerUtil1">
-    </Component>
-    <Component class="org.jdatepicker.util.JDatePickerUtil" name="jDatePickerUtil2">
-    </Component>
-    <Component class="org.jdatepicker.util.JDatePickerUtil" name="jDatePickerUtil3">
-    </Component>
-    <Component class="org.jdatepicker.util.JDatePickerUtil" name="jDatePickerUtil4">
-    </Component>
-    <Component class="org.jdatepicker.impl.SqlDateModel" name="sqlDateModel4">
-    </Component>
-  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>

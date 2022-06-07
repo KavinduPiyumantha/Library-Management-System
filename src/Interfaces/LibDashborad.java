@@ -445,14 +445,6 @@ public class LibDashborad extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sqlDateModel1 = new org.jdatepicker.impl.SqlDateModel();
-        sqlDateModel2 = new org.jdatepicker.impl.SqlDateModel();
-        sqlDateModel3 = new org.jdatepicker.impl.SqlDateModel();
-        jDatePickerUtil1 = new org.jdatepicker.util.JDatePickerUtil();
-        jDatePickerUtil2 = new org.jdatepicker.util.JDatePickerUtil();
-        jDatePickerUtil3 = new org.jdatepicker.util.JDatePickerUtil();
-        jDatePickerUtil4 = new org.jdatepicker.util.JDatePickerUtil();
-        sqlDateModel4 = new org.jdatepicker.impl.SqlDateModel();
         jPanelMain = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -3958,10 +3950,6 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton btnUpdate_Borrowed;
     private javax.swing.JButton btnUpdate_bookCopy;
     private javax.swing.JButton btnloginDeUpdate;
-    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
-    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
-    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
-    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -4005,10 +3993,6 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JComboBox<String> selectTypeBoxBorrow;
     private javax.swing.JComboBox<String> selectTypeBoxMember;
     private javax.swing.JComboBox<String> selectTypeBoxReserve;
-    private org.jdatepicker.impl.SqlDateModel sqlDateModel1;
-    private org.jdatepicker.impl.SqlDateModel sqlDateModel2;
-    private org.jdatepicker.impl.SqlDateModel sqlDateModel3;
-    private org.jdatepicker.impl.SqlDateModel sqlDateModel4;
     private javax.swing.JTabbedPane tapSection;
     private javax.swing.JTextField txFindBorrow;
     private javax.swing.JTextField txFindReserve;
