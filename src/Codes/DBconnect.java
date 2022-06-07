@@ -26,16 +26,13 @@ public class DBconnect {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarysystem","root","Silvatkp99"); 
             
           // 
-            
-            
-           
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null  ,ex);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null  ,ex);
+            JOptionPane.showMessageDialog(null  ,"can't Connect to the Database");
         }
         return con;
     }

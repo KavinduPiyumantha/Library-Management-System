@@ -36,6 +36,7 @@ CREATE TABLE `book` (
   `catogery` varchar(255),
   `Author` varchar(255),
   `book_count` int DEFAULT 0,
+  `avbl_count` int DEFAULT 0,
   PRIMARY KEY (`Book_id`)
 );
 
@@ -129,6 +130,14 @@ select * from borrow;
 
 SELECT * FROM book NATURAL JOIN bookcopy;
 
+Update book set avbl_count = 4  where book_id = 2;
+
 delete from login where ID =3 and role = "Member";
 
 update  borrow set borrow_Date = '2022-03-26' where  Book_id = 1 and copy_no = 1  and memberID = 2 ;
+
+
+
+SELECT Book_id,ISBN,Title,catogery,Author,   book_count -( (SELECT  COUNT(*)  from reserve  where Status ="Reserved" and Book_id= Book_id ) +( SELECT  COUNT(*)  from borrow  where  Status ="Borrowed" and Book_id= Book_id  ) )  as "count"  FROM  book;
+
+SELECT book_count, avbl_count FROM book where Book_id = 2;

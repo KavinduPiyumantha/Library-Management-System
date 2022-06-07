@@ -109,7 +109,7 @@ public class LibDashborad extends javax.swing.JFrame {
 
         try {
             pst = con.prepareStatement("SELECT *  FROM  book" );
-            //pst = con.prepareStatement("SELECT * FROM"+ " book" +" NATURAL JOIN "+ "bookcopy");
+            //pst = con.prepareStatement("SELECT * FROM" + " book" +" NATURAL JOIN "+ "bookcopy");
              rs = pst.executeQuery();
             
             ResultSetMetaData rsd;
@@ -129,7 +129,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     v2.add(rs.getString("catogery"));
                     v2.add(rs.getString("Author"));
                     v2.add(rs.getString("book_count"));
-                    
+                    v2.add(rs.getString("avbl_count"));
                 }
                 d.addRow(v2);
             }
@@ -336,32 +336,34 @@ public class LibDashborad extends javax.swing.JFrame {
             try {
        
                     int intbookId = Integer.parseInt(bookId);
-                    pst = con.prepareStatement("SELECT book_count FROM book where Book_id = "+ intbookId);
+                    pst = con.prepareStatement("SELECT book_count, avbl_count FROM book where Book_id = "+ intbookId);
                     rs = pst.executeQuery();
                     
                     System.out.println("intbookId "+ intbookId);
                     
                     rs.next();
                     int bookCount = rs.getInt(1);
-                    
+                    int avblcount   = rs.getInt(2);
                     System.out.println("bookCount "+bookCount);
+                     System.out.println("avblCount "+avblcount);
                     
                     bookCount = bookCount + 1;
-                    
+                    avblcount =  avblcount+1;
                     System.out.println("bookCount "+bookCount);
-
+                    System.out.println("avblCount "+avblcount);
                     //String sbookCount =  Integer.toString(bookCount) ;
 
                 
                     
-                    pst = con.prepareStatement("Update book set book_count = ? where book_id =?");
+                    pst = con.prepareStatement("Update book set book_count = ? , avbl_count = ?  where book_id =?");
                     //rs = pst.executeQuery();
                     pst.setInt(1, bookCount);
+                    pst.setInt(2, avblcount);
                     
-                    System.out.println("setcount "+bookCount);
+                   // System.out.println("setcount "+bookCount);
                    // pst.setString(2, bookCount);
                     //pst.setString(3, 1);
-                    pst.setInt(2, intbookId);
+                    pst.setInt(3, intbookId);
                     
                     System.out.println("setid "+intbookId);
                     
@@ -385,17 +387,20 @@ public class LibDashborad extends javax.swing.JFrame {
             try {
        
                     int intbookId = Integer.parseInt(bookId);
-                    pst = con.prepareStatement("SELECT book_count FROM book where Book_id = "+ intbookId);
+                    pst = con.prepareStatement("SELECT book_count, avbl_count FROM book where Book_id = "+ intbookId);
                     rs = pst.executeQuery();
                     
                     System.out.println("intbookId "+ intbookId);
                     
                     rs.next();
                     int bookCount = rs.getInt(1);
+                    int avblcount   = rs.getInt(2);
                     
                     System.out.println("bookCount "+bookCount);
                     
                     bookCount = bookCount - 1;
+                    avblcount =  avblcount-1;
+                    
                     
                     System.out.println("bookCount "+bookCount);
 
@@ -403,14 +408,15 @@ public class LibDashborad extends javax.swing.JFrame {
 
                 
                     
-                    pst = con.prepareStatement("Update book set book_count = ? where book_id =?");
+                    pst = con.prepareStatement("Update book set book_count = ? , avbl_count = ? where book_id =?");
                     //rs = pst.executeQuery();
                     pst.setInt(1, bookCount);
+                    pst.setInt(2, avblcount);
                     
                     System.out.println("setcount "+bookCount);
                    // pst.setString(2, bookCount);
                     //pst.setString(3, 1);
-                    pst.setInt(2, intbookId);
+                    pst.setInt(3, intbookId);
                     
                     System.out.println("setid "+intbookId);
                     
@@ -609,14 +615,14 @@ public class LibDashborad extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Book ID", "ISBN No", "Book Title", "Catogery", "Author", "Count"
+                "Book ID", "ISBN No", "Book Title", "Catogery", "Author", "Total Count", "Available Count"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -886,7 +892,7 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGroup(BookSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDelete_Book)
                             .addComponent(btnClearBook))))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         tapSection.addTab("    Book Section  ", BookSection);
