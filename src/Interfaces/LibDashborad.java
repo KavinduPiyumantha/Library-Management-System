@@ -47,12 +47,19 @@ public class LibDashborad extends javax.swing.JFrame {
         initComponents();
         con =DBconnect.Connect();
         
+       //Dispaly Librarian Id and Name   
+        strLibID=String.valueOf(libID);
+        lblLabirarianID.setText(strLibID);
+        lblLibName.setText(libName);
+        
+        
         //table Loading
         table_reLoad();
         bookCopyTable_reLoad();
         memberTableReLoad();
         reserveTableReload();
         borrowTableReload();
+        reserveTableUpdate();
         
         //book section
         btnUpdate_Book.setEnabled(false);
@@ -68,14 +75,9 @@ public class LibDashborad extends javax.swing.JFrame {
         btnloginDeUpdate.setEnabled(false);
         
         
-       //Dispaly Librarian Id and Name   
-        strLibID=String.valueOf(libID);
-        lblLabirarianID.setText(strLibID);
-        lblLibName.setText(libName);
+
         
-        
-        
-   //     txtBookCatogery.setSelectedIndex(-1);
+     
     }
 
     
@@ -83,20 +85,6 @@ public class LibDashborad extends javax.swing.JFrame {
     PreparedStatement pst;
     ResultSet rs;
     
-    
-//    public void Connect(){
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library","root","Silvatkp99");               
-//            
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//    }
-//    
      public void DboardEnable(){
         //LibDashborad.dispose();
         //LibDashborad.setEnabled(true);
@@ -121,16 +109,16 @@ public class LibDashborad extends javax.swing.JFrame {
             
             while(rs.next()){
                 Vector v2 = new Vector();
-                for(int i=1;i<=c;i++){
-                    
-                    v2.add(rs.getString("Book_id"));
-                    v2.add(rs.getString("ISBN"));
-                    v2.add(rs.getString("Title"));
-                    v2.add(rs.getString("catogery"));
-                    v2.add(rs.getString("Author"));
-                    v2.add(rs.getString("book_count"));
-                    v2.add(rs.getString("avbl_count"));
-                }
+                        for(int i=1;i<=c;i++){
+
+                            v2.add(rs.getString("Book_id"));
+                            v2.add(rs.getString("ISBN"));
+                            v2.add(rs.getString("Title"));
+                            v2.add(rs.getString("catogery"));
+                            v2.add(rs.getString("Author"));
+                            v2.add(rs.getString("book_count"));
+                            v2.add(rs.getString("avbl_count"));
+                        }
                 d.addRow(v2);
             }
             
@@ -256,6 +244,81 @@ public class LibDashborad extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null  ,ex);
         }     
        
+   }
+   
+   public void reserveTableUpdate(){
+          int c;
+
+        try {
+//            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
+//            pst.setString(1,"Reserved");
+            
+            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
+            pst.setString(1, "Reserved");
+            
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            //DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
+            //d.setRowCount(0);
+            
+            if(rs.next()==true){
+                     Vector< Vector<String>> v1 = new Vector();
+                    do{
+                                Vector<String> v2 = new Vector();
+                                for(int i=1;i<=c;i++){
+                    
+                                v2.add(rs.getString("Book_id"));
+                                v2.add(rs.getString("copy_no"));
+                                v2.add(rs.getString("memberID"));
+                                v2.add(rs.getString("Reserve_Date"));
+                                v2.add(rs.getString("Status"));
+                                // v2.add(rs.getString("Price"));   
+                             }
+                    v1.add(v2);
+                    }while(rs.next());
+   
+                    
+                    
+                    for(int i=0 ; i< v1.size() ;i++){
+                               
+                               if (DateTime.ReserveExpDate(v1.get(i).get(3) )){
+                                        //change the status to expired and increas available count
+                                          String status = "Expired";
+                                          pst = con.prepareStatement("update  reserve set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Reserve_Date = ? ");
+
+                                          pst.setString(1, status);
+                                          pst.setInt(2, Integer.parseInt(v1.get(i).get(0)));
+                                          pst.setInt(3, Integer.parseInt(v1.get(i).get(1)));
+                                          pst.setInt(4, Integer.parseInt(v1.get(i).get(2)));
+                                          pst.setString(5, v1.get(i).get(3));
+
+                                         pst.executeUpdate();
+
+
+                                         pst = con.prepareStatement("Update book set avbl_count = avbl_count +1 where book_id =?");
+
+                                          pst.setInt(1, Integer.parseInt(v1.get(i).get(0)));
+
+                                          pst.executeUpdate();
+       
+                               }          
+                    }
+                    
+                    reserveTableReload();
+                    table_reLoad();
+ 
+           }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }     
+        
+       //reserveTableReload();
    }
    
    public void borrowTableReload(){
@@ -1162,8 +1225,8 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addComponent(btnFind_BookCopy)
                     .addComponent(btnClearSearchBookCopy))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44))
         );
 
         tapSection.addTab("    Book Copy Section  ", BookCopySection);
@@ -1437,8 +1500,8 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addComponent(btnloginDeUpdate)
                         .addGap(137, 137, 137))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MemberSectionLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43))))
         );
 
         tapSection.addTab("   Memebers  Section ", MemberSection);
@@ -1657,7 +1720,7 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addComponent(btnFind_Reserve)
                             .addComponent(btnClearSearch2))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ReserveSectionLayout.createSequentialGroup()
                         .addGap(122, 122, 122)
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1683,7 +1746,7 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGroup(ReserveSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnClearReseve)
                             .addComponent(btnUpdate_Book1))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         tapSection.addTab("    Reserved Section  ", ReserveSection);
@@ -1911,7 +1974,7 @@ public class LibDashborad extends javax.swing.JFrame {
                             .addComponent(btnFind_Borrow)
                             .addComponent(btnClearSearchBorrow))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ReserveSection1Layout.createSequentialGroup()
                         .addGap(122, 122, 122)
                         .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -3309,9 +3372,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                     
                         if(status == "Picked Up"){
                             try{
-                                
-                                
-                                
+        
                             pst =con.prepareStatement("insert into borrow(Book_id, copy_no ,  memberID, Borrow_Date, Due_Date, Status ) value (?,?,?,?,?,?) ");
                             pst.setInt(1, Integer.parseInt(bookID) );
                             pst.setInt(2, Integer.parseInt(copyNo) );
@@ -3323,8 +3384,20 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                              int k2 = pst.executeUpdate();
                             
                                      if(k2==1){
+              
+                                                txtBookIDReserve.setText("-");
+                                                txtCopyNoReserve.setText("-");
+                                                txtMemberIDReserve.setText("-");
+                                                txtDateReserve.setText("-");
+                                                txtStatusReserve.setSelectedItem(""); 
 
-                                         borrowTableReload();
+                                                 txtStatusReserve.requestFocus();
+
+                                                 reserveTableReload();
+                                                 borrowTableReload();
+
+                                                 JOptionPane.showMessageDialog(this,"Reservation Succesfully Updated");
+    
                                      }else{
                                                JOptionPane.showMessageDialog(this,"Error::  Reservation Updated But Can't Update Borrrows  ");
                                      }
@@ -3334,30 +3407,10 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                                         JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
                             }
                             
+                        }else if(status == "Reserved"){
+                            
+                             JOptionPane.showMessageDialog(this,"Error::  Can't undo Pickedup Books  ");
                         }
-                        
-                    
-//                    int intID = Integer.parseInt(memberid);
-                    
-//                    LoginDetailsSet.memberID = intID;
-//                    LoginDetailsSet.memberName = memberName;
-//                    LoginDetailsSet.role = "Member";
-
-                        txtBookIDReserve.setText("-");
-                        txtCopyNoReserve.setText("-");
-                        txtMemberIDReserve.setText("-");
-                        txtDateReserve.setText("-");
-                        txtStatusReserve.setSelectedItem(""); 
-//                    //txtBookCatogery.setSelectedIndex(-1);
-//                    txtMemberTep.setText("");
-                         txtStatusReserve.requestFocus();
-
-                    reserveTableReload();
-                    
-//                    LoginDetailsSet loginSet = new  LoginDetailsSet();
-//                    loginSet.setVisible(true);
-
-                    JOptionPane.showMessageDialog(this,"Reservation Succesfully Updated");
 
                 }
                 else{
@@ -3521,6 +3574,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private void btnClearSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearch2ActionPerformed
       txFindReserve.setText("");
         reserveTableReload();
+        reserveTableUpdate();
     }//GEN-LAST:event_btnClearSearch2ActionPerformed
 
     private void btnMemberClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberClearTextActionPerformed
@@ -3599,113 +3653,120 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                 
         } else {
             
-            String bookID = txtBookIDBorrow.getText();
-            String copyNo = txtCopyNoBorrow.getText();
-            String  memberid = txtMemberIDBorrow.getText();
-            String barrowdate =  txtDateBorrow.getText();
-            //String bookCatogery = txtMemberTep.getSelectedItem().toString();
-            String status = txtStatusBorrow.getSelectedItem().toString();;
-            
-            
+                    String bookID = txtBookIDBorrow.getText();
+                    String copyNo = txtCopyNoBorrow.getText();
+                    String  memberid = txtMemberIDBorrow.getText();
+                    String barrowdate =  txtDateBorrow.getText();
+                    //String bookCatogery = txtMemberTep.getSelectedItem().toString();
+                    String status = txtStatusBorrow.getSelectedItem().toString();;
 
-            try {
-                
-                if(status == "Returened"){
-                    
-                    long daysBetween = DAYS.between(DateTime.StringToLocalDate(barrowdate), DateTime.currentDate());
-                    
-                    System.out.println(daysBetween);
-                    double paneltyFee=0;
 
-                    if(daysBetween > 14){
-                         paneltyFee = ( (int)daysBetween -14) * 5 ;
-                        
+
+                    try {
+
+                            if(status == "Returened"){
+
+                                    long daysBetween = DAYS.between(DateTime.StringToLocalDate(barrowdate), DateTime.currentDate());
+
+                                    System.out.println(daysBetween);
+                                    double paneltyFee=0;
+
+                                    if(daysBetween > 14){
+                                         paneltyFee = ( (int)daysBetween -14) * 5 ;
+
+                                    }
+
+                                    System.out.println(paneltyFee);
+
+                                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ?, penalty_fee = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+
+                                    pst.setString(1, DateTime.currentDate().toString());
+                                    pst.setString(2, status);
+                                    pst.setDouble(3, paneltyFee);
+                                    pst.setInt(4, Integer.parseInt(bookID));
+                                    pst.setInt(5, Integer.parseInt(copyNo));
+                                    pst.setInt(6, Integer.parseInt(memberid));
+                                    pst.setString(7, barrowdate);
+
+                                    int k1 = pst.executeUpdate();
+
+                                    pst = con.prepareStatement("Update book set avbl_count = avbl_count +1 where book_id =?");
+                                                        //rs = pst.executeQuery();
+                                    pst.setInt(1, Integer.parseInt(bookID));
+
+                                                        //pst.setInt(2, intbookId);
+                                    int k2 = pst.executeUpdate();
+
+
+                                    if(k1==1 && k2==1 ){
+
+                        //                    int intID = Integer.parseInt(memberid);
+
+                        //                    LoginDetailsSet.memberID = intID;
+                        //                    LoginDetailsSet.memberName = memberName;
+                        //                    LoginDetailsSet.role = "Member";
+
+                                                txtBookIDBorrow.setText("-");
+                                                txtCopyNoBorrow.setText("-");
+                                                txtMemberIDBorrow.setText("-");
+                                                txtDateBorrow.setText("-");
+                                                txtStatusBorrow.setSelectedItem(""); 
+                        //                    //txtBookCatogery.setSelectedIndex(-1);
+                        //                    txtMemberTep.setText("");
+                                                 //txtStatusReserve.requestFocus();
+
+                                            borrowTableReload();
+                                            table_reLoad();
+
+                        //                    LoginDetailsSet loginSet = new  LoginDetailsSet();
+                        //                    loginSet.setVisible(true);
+
+                                            JOptionPane.showMessageDialog(this,"Borrow Succesfully Updated");
+
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(this,"Error:: Can't Update Borrows");
+
+                            }
+
+
+                            }
+                            else if(status == "Borrowed"){
+                                        pst = con.prepareStatement("update  borrow set  returned_Date = Null , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+
+                                        //pst.setString(1, DateTime.currentDate().toString());
+                                        pst.setString(1, status);
+                                        pst.setInt(2, Integer.parseInt(bookID));
+                                        pst.setInt(3, Integer.parseInt(copyNo));
+                                        pst.setInt(4, Integer.parseInt(memberid));
+                                        pst.setString(5, barrowdate);   
+
+                                        int k1 = pst.executeUpdate();
+                            }
+                            else{
+
+//                                        pst = con.prepareStatement("update  borrow set  Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
+//                                        //pst.setString(1, DateTime.currentDate().toString());
+//                                        pst.setString(1, status);
+//                                        pst.setInt(2, Integer.parseInt(bookID));
+//                                        pst.setInt(3, Integer.parseInt(copyNo));
+//                                        pst.setInt(4, Integer.parseInt(memberid));
+//                                        pst.setString(5, barrowdate);
+//
+//                                        int k1 = pst.executeUpdate();
+
+                            }
+
+                           // pst.setString(5, Author);
+                            //int k1 = pst.executeUpdate();
+
+
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
+                        // JOptionPane.showMessageDialog(null  ,ex);
                     }
-                    
-                    System.out.println(paneltyFee);
-                    
-                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ?, penalty_fee = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-
-                    pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(2, status);
-                    pst.setDouble(3, paneltyFee);
-                    pst.setInt(4, Integer.parseInt(bookID));
-                    pst.setInt(5, Integer.parseInt(copyNo));
-                    pst.setInt(6, Integer.parseInt(memberid));
-                    pst.setString(7, barrowdate);
-                    
-                    int k1 = pst.executeUpdate();
-                    
-                    
-                    
-                    
-
-                    
-                }
-                else if(status == "Borrowed"){
-                    pst = con.prepareStatement("update  borrow set  returned_Date = Null , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-
-                    //pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(1, status);
-                    pst.setInt(2, Integer.parseInt(bookID));
-                    pst.setInt(3, Integer.parseInt(copyNo));
-                    pst.setInt(4, Integer.parseInt(memberid));
-                    pst.setString(5, barrowdate);   
-                    
-                    int k1 = pst.executeUpdate();
-                }
-                else{
-                    
-                    pst = con.prepareStatement("update  borrow set  Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-                    //pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(1, status);
-                    pst.setInt(2, Integer.parseInt(bookID));
-                    pst.setInt(3, Integer.parseInt(copyNo));
-                    pst.setInt(4, Integer.parseInt(memberid));
-                    pst.setString(5, barrowdate);
-                    
-                    int k1 = pst.executeUpdate();
-                    
-                }
-
-               // pst.setString(5, Author);
-                int k1 = pst.executeUpdate();
-
-                if(k1==1){
-
-//                    int intID = Integer.parseInt(memberid);
-                    
-//                    LoginDetailsSet.memberID = intID;
-//                    LoginDetailsSet.memberName = memberName;
-//                    LoginDetailsSet.role = "Member";
-
-                        txtBookIDBorrow.setText("-");
-                        txtCopyNoBorrow.setText("-");
-                        txtMemberIDBorrow.setText("-");
-                        txtDateBorrow.setText("-");
-                        txtStatusBorrow.setSelectedItem(""); 
-//                    //txtBookCatogery.setSelectedIndex(-1);
-//                    txtMemberTep.setText("");
-                         //txtStatusReserve.requestFocus();
-
-                    borrowTableReload();
-                    
-//                    LoginDetailsSet loginSet = new  LoginDetailsSet();
-//                    loginSet.setVisible(true);
-
-                    JOptionPane.showMessageDialog(this,"Borrow Succesfully Updated");
-
-                }
-                else{
-                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Borrows");
-                   
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
-                // JOptionPane.showMessageDialog(null  ,ex);
-            }
         }
     }//GEN-LAST:event_btnUpdate_BorrowedActionPerformed
 

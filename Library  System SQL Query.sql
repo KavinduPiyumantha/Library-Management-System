@@ -81,7 +81,7 @@ CREATE TABLE `borrow` (
   `returned_Date` date,
   `Status` varchar(255),
   `penalty_fee` double default 0.0,
-  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`),
+  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`,Status),
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
@@ -141,3 +141,8 @@ update  borrow set borrow_Date = '2022-03-26' where  Book_id = 1 and copy_no = 1
 SELECT Book_id,ISBN,Title,catogery,Author,   book_count -( (SELECT  COUNT(*)  from reserve  where Status ="Reserved" and Book_id= Book_id ) +( SELECT  COUNT(*)  from borrow  where  Status ="Borrowed" and Book_id= Book_id  ) )  as "count"  FROM  book;
 
 SELECT book_count, avbl_count FROM book where Book_id = 2;
+
+delete from reserve ;
+delete from borrow ;
+
+Update book set avbl_count = 7  where book_id = 2;

@@ -49,6 +49,25 @@ public class DateTime {
           
           return date;
      }
+      
+      
+      public static boolean ReserveExpDate(String str){
+            
+          String str1=  str;
+          boolean Status = false;
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate date = LocalDate.parse(str1, formatter);
+          
+          //LocalDate expDate = date.plusDays(1);
+          
+          int dcount = currentDate().compareTo(date);
+          
+          if(  2 <= dcount){
+                Status = true;
+          } 
+          
+          return Status;
+     }
      
      }
 
