@@ -27,10 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * 
- */
 public class LibDashborad extends javax.swing.JFrame {
 
     
@@ -52,14 +48,17 @@ public class LibDashborad extends javax.swing.JFrame {
         lblLabirarianID.setText(strLibID);
         lblLibName.setText(libName);
         
+        //Table Update
+        borrowTableUpdate();
+        reserveTableUpdate();
         
         //table Loading
-        table_reLoad();
+        bookTableReLoad();
         bookCopyTable_reLoad();
         memberTableReLoad();
         reserveTableReload();
         borrowTableReload();
-        reserveTableUpdate();
+
         
         //book section
         btnUpdate_Book.setEnabled(false);
@@ -91,7 +90,7 @@ public class LibDashborad extends javax.swing.JFrame {
     }
     
     
-    public void table_reLoad(){
+    public  void bookTableReLoad(){
         
         int c;
 
@@ -133,7 +132,7 @@ public class LibDashborad extends javax.swing.JFrame {
         int c;
 
         try {
-            pst = con.prepareStatement("SELECT * FROM "+" bookcopy"+" NATURAL JOIN"+" purchase");
+            pst = con.prepareStatement("SELECT * FROM  bookcopy" /*+" NATURAL JOIN"+" purchase" */);
              rs = pst.executeQuery();
             
             ResultSetMetaData rsd;
@@ -166,6 +165,10 @@ public class LibDashborad extends javax.swing.JFrame {
     
     
     };    
+    
+    public void bookTableReLoadFromOut(){
+        bookTableReLoad();
+    }
     
    public void memberTableReLoad(){
         int c;
@@ -309,7 +312,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     }
                     
                     reserveTableReload();
-                    table_reLoad();
+                    bookTableReLoad();
  
            }
 
@@ -363,7 +366,74 @@ public class LibDashborad extends javax.swing.JFrame {
         }     
        
    }
-    
+   
+   public void borrowTableUpdate(){
+        int c;
+
+        try {
+
+            pst = con.prepareStatement("SELECT * FROM borrow where Status = ? ");
+            pst.setString(1, "Borrowed");
+            
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            //DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
+            //d.setRowCount(0);
+            
+            if(rs.next()==true){
+                     Vector< Vector<String>> v1 = new Vector();
+                    do{
+                                Vector<String> v2 = new Vector();
+                                for(int i=1;i<=c;i++){
+                    
+                                v2.add(rs.getString("Book_id"));
+                                v2.add(rs.getString("copy_no"));
+                                v2.add(rs.getString("memberID"));
+                                v2.add(rs.getString("Due_Date"));
+                                v2.add(rs.getString("Status"));
+                                // v2.add(rs.getString("Price"));   
+                             }
+                    v1.add(v2);
+                    }while(rs.next());
+   
+                    
+                    
+                    for(int i=0 ; i< v1.size() ;i++){
+                               
+                               if (DateTime.BorrowExpDate(v1.get(i).get(3) )){
+                                        //change the status to expired and increas available count
+                                          String status = "Over Due";
+                                          pst = con.prepareStatement("update  borrow set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Due_Date = ? ");
+
+                                          pst.setString(1, status);
+                                          pst.setInt(2, Integer.parseInt(v1.get(i).get(0)));
+                                          pst.setInt(3, Integer.parseInt(v1.get(i).get(1)));
+                                          pst.setInt(4, Integer.parseInt(v1.get(i).get(2)));
+                                          pst.setString(5, v1.get(i).get(3));
+
+                                         pst.executeUpdate();
+
+//                                         pst = con.prepareStatement("Update book set avbl_count = avbl_count +1 where book_id =?");
+//                                         pst.setInt(1, Integer.parseInt(v1.get(i).get(0)));
+//                                         pst.executeUpdate();
+                               }          
+                    }
+                    
+                    //reserveTableReload();
+                     bookTableReLoad();
+        }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }     
+        
+       //reserveTableReload();
+   }
     
         
    public void loadTableData(){
@@ -432,7 +502,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     
                     pst.executeUpdate();
                     
-                    table_reLoad();
+                    bookTableReLoad();
                     
                     }catch (SQLException ex) {
                         Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -485,7 +555,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     
                     pst.executeUpdate();
                     
-                    table_reLoad();
+                    bookTableReLoad();
                     
                     }catch (SQLException ex) {
                         Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -616,6 +686,7 @@ public class LibDashborad extends javax.swing.JFrame {
         txtBookIDBorrow = new javax.swing.JLabel();
         txtCopyNoBorrow = new javax.swing.JLabel();
         txtDateBorrow = new javax.swing.JLabel();
+        btnDirectBorrow = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         lblLabirarianID = new javax.swing.JLabel();
         lblLibName = new javax.swing.JLabel();
@@ -1912,44 +1983,60 @@ public class LibDashborad extends javax.swing.JFrame {
         txtDateBorrow.setForeground(new java.awt.Color(0, 0, 0));
         txtDateBorrow.setText("-");
 
+        btnDirectBorrow.setBackground(new java.awt.Color(204, 204, 204));
+        btnDirectBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnDirectBorrow.setForeground(new java.awt.Color(0, 0, 0));
+        btnDirectBorrow.setText("Direct Borrow");
+        btnDirectBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDirectBorrowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ReserveSection1Layout = new javax.swing.GroupLayout(ReserveSection1);
         ReserveSection1.setLayout(ReserveSection1Layout);
         ReserveSection1Layout.setHorizontalGroup(
             ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReserveSection1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
                 .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(btnClearReseve1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUpdate_Borrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(16, 16, 16)
                         .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ReserveSection1Layout.createSequentialGroup()
+                                .addComponent(btnClearReseve1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnUpdate_Borrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                                        .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ReserveSection1Layout.createSequentialGroup()
-                                .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
+                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE))
+                    .addGroup(ReserveSection1Layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(btnDirectBorrow)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(ReserveSection1Layout.createSequentialGroup()
@@ -1999,7 +2086,9 @@ public class LibDashborad extends javax.swing.JFrame {
                         .addGap(76, 76, 76)
                         .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnClearReseve1)
-                            .addComponent(btnUpdate_Borrowed))))
+                            .addComponent(btnUpdate_Borrowed))
+                        .addGap(32, 32, 32)
+                        .addComponent(btnDirectBorrow)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2044,12 +2133,6 @@ public class LibDashborad extends javax.swing.JFrame {
         jPanelMainLayout.setHorizontalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanelMainLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(407, 407, 407)
-                .addComponent(txtBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-            .addGroup(jPanelMainLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelMainLayout.createSequentialGroup()
@@ -2058,18 +2141,23 @@ public class LibDashborad extends javax.swing.JFrame {
                     .addGroup(jPanelMainLayout.createSequentialGroup()
                         .addComponent(TabSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMainLayout.createSequentialGroup()
-                .addGap(540, 540, 540)
-                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMainLayout.createSequentialGroup()
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblLibName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelMainLayout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblLabirarianID, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMainLayout.createSequentialGroup()
+                            .addGap(25, 25, 25)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblLabirarianID, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMainLayout.createSequentialGroup()
+                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblLibName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(407, 407, 407)
+                .addComponent(txtBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
         );
         jPanelMainLayout.setVerticalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2097,7 +2185,10 @@ public class LibDashborad extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2454,12 +2545,7 @@ public class LibDashborad extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFind_BookActionPerformed
 
     private void btnUpdate_BookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_BookActionPerformed
-        // TODO add your handling code here:
 
-//        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
-//        int selectIndex =BookTable.getSelectedRow();
-
-//        int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
 
         if ( txtBookIDSec.getText().equals("") || txtISBN.getText().equals("") ||  txtBookTitle.getText().equals("") || txtBookCatogery.getSelectedItem().toString().equals("") || txtAuthor.getText().equals("") ) {
             JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);   
@@ -2495,7 +2581,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     txtBookCount.setText("-");
 
                     txtBookIDSec.requestFocus();
-                    table_reLoad();
+                    bookTableReLoad();
                     btnAdd_Book.setEnabled(true);
                     JOptionPane.showMessageDialog(this,"Book Succesfully Updated");
                 }
@@ -2538,7 +2624,7 @@ public class LibDashborad extends javax.swing.JFrame {
 
                 txtBookIDSec.requestFocus();
                 
-                table_reLoad();
+                bookTableReLoad();
                 
                 btnAdd_Book.setEnabled(true);
                 
@@ -2557,28 +2643,7 @@ public class LibDashborad extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDelete_BookActionPerformed
 
     private void BookTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookTableMouseClicked
-        // TODO add your handling code here:
-//
-//        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
-//        int selectIndex =BookTable.getSelectedRow();
-//
-//        //int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-//        // String z = Integer.toString(id);
-//
-//        //        int count =Integer.parseInt(d1.getValueAt(selectIndex, 5).toString());
-//        //        String cnt = Integer.toString(count);
-//
-//        txtBookIDSec.setText(d1.getValueAt(selectIndex, 0).toString());
-//        txtISBN.setText(d1.getValueAt(selectIndex, 1).toString());
-//        txtBookTitle.setText(d1.getValueAt(selectIndex, 2).toString());
-//        txtBookCatogery.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
-//        txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
-//        txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
-//        //txtISBN.requestFocus();
-//
-//        btnAdd_Book.setEnabled(false);
-//        btnDelete_Book.setEnabled(true);
-        
+
         loadTableData();
     }//GEN-LAST:event_BookTableMouseClicked
 
@@ -2616,7 +2681,7 @@ public class LibDashborad extends javax.swing.JFrame {
                     txtBookCatogery.setSelectedIndex(-1);
                     txtAuthor.setText("");
                     txtBookIDSec.requestFocus();
-                    table_reLoad();
+                    bookTableReLoad();
 
                     JOptionPane.showMessageDialog(this,"New Book Succesfully Added");
 
@@ -2655,29 +2720,27 @@ public class LibDashborad extends javax.swing.JFrame {
                 double dprice = Double.parseDouble(sPrice);
 
                 try {
-                    pst = con.prepareStatement("insert into bookcopy(copy_No,Book_id,Edition)values(?,?,?)");
+                    pst = con.prepareStatement("insert into bookcopy(copy_No,Book_id, Edition, Lib_ID, Purchase_date, Price)values(?,?,?,?,?,?)");
 
                     pst.setString(1, copyno);
                     pst.setString(2, bookId);
                     pst.setString(3, edition);
+                    pst.setInt(4, libID);
+                    pst.setString(5, pDate);
+                    pst.setDouble(6, dprice);
 
                     int k1 = pst.executeUpdate();
 
-                    pst = con.prepareStatement("insert into purchase(copy_no,Lib_ID,Purchase_date,Price) values(?,?,?,?)");
+//                    pst = con.prepareStatement("insert into purchase(copy_no,Lib_ID,Purchase_date,Price) values(?,?,?,?)");
+//
+//                    pst.setString(1, copyno);
+//                    pst.setInt(2, libID);
+//                    pst.setString(3, pDate);
+//                    pst.setDouble(4, dprice);
+//
+//                    int k2 = pst.executeUpdate();           
 
-                    pst.setString(1, copyno);
-                    pst.setInt(2, libID);
-                    pst.setString(3, pDate);
-                    pst.setDouble(4, dprice);
-
-                    int k2 = pst.executeUpdate();           
-
-
-
-                    if(k1==1 && k2==1){
-
-
-
+                    if(k1==1   /*  && k2==1*/){
 
                         //get book Count
                         increase_Book_Count(bookId);
@@ -2744,11 +2807,11 @@ public class LibDashborad extends javax.swing.JFrame {
 
         try {
             
-            pst=con.prepareStatement("delete from purchase where copy_no = ? ");
-            
-            pst.setInt(1, copyNo);
-            
-             int k1 = pst.executeUpdate();
+//            pst=con.prepareStatement("delete from purchase where copy_no = ? ");
+//            
+//            pst.setInt(1, copyNo);
+//            
+//             int k1 = pst.executeUpdate();
             
             pst = con.prepareStatement("delete from bookcopy where copy_no = ?");
 
@@ -2756,9 +2819,9 @@ public class LibDashborad extends javax.swing.JFrame {
 
             int k2 = pst.executeUpdate();
 
-            if(k1==1 && k2==1){
+            if(/*k1==1 && */ k2==1){
 
-                 txtCopyNo.setText("");
+                txtCopyNo.setText("");
                 txtBookID.setText("");
                 txtEdition.setText("");
                 txtDate.setText("");
@@ -2820,24 +2883,27 @@ public class LibDashborad extends javax.swing.JFrame {
         //                
                        int ID =Integer.parseInt(copyno);
                        
-                       pst = con.prepareStatement("update purchase set  Lib_ID = ?, Purchase_date = ?,Price = ? where copy_no = ?");
-                       pst.setInt(1, libID); 
-                       pst.setString(2, pDate);
-                       pst.setDouble(3, dprice);
+//                       pst = con.prepareStatement("update purchase set  Lib_ID = ?, Purchase_date = ?,Price = ? where copy_no = ?");
+//                       pst.setInt(1, libID); 
+//                       pst.setString(2, pDate);
+//                       pst.setDouble(3, dprice);
+//
+//                        pst.setInt(4, ID);
+//                        
+//                        int k1 = pst.executeUpdate();
 
-                        pst.setInt(4, ID);
-                        
-                        int k1 = pst.executeUpdate();
-
-                        pst = con.prepareStatement("update bookcopy set Book_id = ?, Edition = ? where copy_no = ?");
+                        pst = con.prepareStatement("update bookcopy set Book_id = ?, Edition = ?, Lib_ID = ?, Purchase_date = ?,Price = ? where copy_no = ?");
                         pst.setString(1, bookId);
                         pst.setString(2, Edition);
+                       pst.setInt(3, libID); 
+                       pst.setString(4, pDate);
+                       pst.setDouble(5, dprice);
 
-                        pst.setInt(3, ID);
+                        pst.setInt(6, ID);
 
                         int k2 = pst.executeUpdate();
 
-                        if(k1==1 && k2==1){
+                        if(/*k1==1 && */k2==1){
 
                             txtCopyNo.setText("");
                             txtBookID.setText("");
@@ -2990,7 +3056,7 @@ public class LibDashborad extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         txtBookFind.setText("");
-        table_reLoad();
+        bookTableReLoad();
     }//GEN-LAST:event_btnClearSearchActionPerformed
 
     private void selectTypeBoxMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxMemberActionPerformed
@@ -3317,16 +3383,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         txtMemberIDReserve.setText(d1.getValueAt(selectIndex, 2).toString());
         txtDateReserve.setText(d1.getValueAt(selectIndex, 3).toString());
         txtStatusReserve.setSelectedItem(d1.getValueAt(selectIndex, 4).toString());
-        //txtPrice.setText(d1.getValueAt(selectIndex, 4).toString());
-        //txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
-        
-        //LoginDetailsSet.memberID =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-        //LoginDetailsSet.memberName = d1.getValueAt(selectIndex, 1).toString();
-        
-//        txtMemberAdd.setEnabled(false);
-//        txtMemeberUpdate.setEnabled(true);
-//        txtMemeberRemove.setEnabled(true);
-//        btnloginDeUpdate.setEnabled(true);
+
     }//GEN-LAST:event_BookReserveTableMouseClicked
 
     private void BookReserveTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookReserveTableKeyReleased
@@ -3715,8 +3772,10 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
                         //                    txtMemberTep.setText("");
                                                  //txtStatusReserve.requestFocus();
 
+                                            borrowTableUpdate();
                                             borrowTableReload();
-                                            table_reLoad();
+                                            bookTableReLoad();
+                                            
 
                         //                    LoginDetailsSet loginSet = new  LoginDetailsSet();
                         //                    loginSet.setVisible(true);
@@ -3938,6 +3997,14 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
         // TODO add your handling code here:
     }//GEN-LAST:event_ReserveSection1AncestorAdded
 
+    private void btnDirectBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDirectBorrowActionPerformed
+        // TODO add your handling code here:
+        ManualBorrow DirectBorrow =new ManualBorrow();
+        //this.setEnabled(false);
+        DirectBorrow.setVisible(true);
+        
+    }//GEN-LAST:event_btnDirectBorrowActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -4000,6 +4067,7 @@ if( txtBookCopyFind.getText().equals("") || selectTypeBoxBookCopy.getSelectedIte
     private javax.swing.JButton btnClearSearchBorrow;
     private javax.swing.JButton btnDelete_Book;
     private javax.swing.JButton btnDelete_bookCopy;
+    private javax.swing.JButton btnDirectBorrow;
     private javax.swing.JButton btnFind_Book;
     private javax.swing.JButton btnFind_BookCopy;
     private javax.swing.JButton btnFind_Borrow;

@@ -8,7 +8,6 @@ CREATE TABLE `member` (
   PRIMARY KEY (`memberID`)
 );
 
-
 CREATE TABLE `librarian` (
   `Lib_ID` int not null unique,
   `Lib_Name` varchar(255),
@@ -16,7 +15,6 @@ CREATE TABLE `librarian` (
   `Tel_No` varchar(10),
   PRIMARY KEY (`Lib_ID`)
 );
-
 
 CREATE TABLE `Login` (
   `ID` int not null ,
@@ -27,7 +25,6 @@ CREATE TABLE `Login` (
 --   FOREIGN KEY (`ID`) REFERENCES `Member`(`memberID`),
 --   FOREIGN KEY (`ID`) REFERENCES `Librarian`(`Lib_ID`)
 );
-
 
 CREATE TABLE `book` (
   `Book_id` int not null unique,
@@ -40,24 +37,26 @@ CREATE TABLE `book` (
   PRIMARY KEY (`Book_id`)
 );
 
-
 CREATE TABLE `bookcopy` (
   `copy_no` int not null unique,
   `Book_id` int not null,
   `Edition` varchar(255),
+  `Lib_ID` int not null ,
+  `Purchase_date` date,
+  `Price` double,
   PRIMARY KEY (`copy_no`),
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`)
 );
 
-CREATE TABLE `purchase` (
-  `copy_no` int not null ,
-  `Lib_ID` int not null ,
-  `Purchase_date` date,
-  `Price` double,
-  PRIMARY KEY (`copy_no`, `Lib_ID`),
-  FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
-  FOREIGN KEY (`Lib_ID`) REFERENCES `librarian`(`Lib_ID`)
-);
+-- CREATE TABLE `purchase` (
+--   `copy_no` int not null ,
+--   `Lib_ID` int not null ,
+--   `Purchase_date` date,
+--   `Price` double,
+--   PRIMARY KEY (`copy_no`, `Lib_ID`),
+--   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
+--   FOREIGN KEY (`Lib_ID`) REFERENCES `librarian`(`Lib_ID`)
+-- );
 
 CREATE TABLE `reserve` (
   `Book_id` int not null ,
@@ -71,7 +70,6 @@ CREATE TABLE `reserve` (
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
 );
 
-																																	
 CREATE TABLE `borrow` (
   `Book_id` int not null ,
   `copy_no` int not null ,
@@ -81,7 +79,7 @@ CREATE TABLE `borrow` (
   `returned_Date` date,
   `Status` varchar(255),
   `penalty_fee` double default 0.0,
-  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`,Status),
+  PRIMARY KEY (`Book_id`,`copy_no`, `memberID`, `Borrow_Date`),
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`),
   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
@@ -146,3 +144,5 @@ delete from reserve ;
 delete from borrow ;
 
 Update book set avbl_count = 7  where book_id = 2;
+Update book set avbl_count = avbl_count -1 where book_id =2;
+Update reserve set Reserve_Date = '2022-06-06' where book_id =2 and copy_no =3 and memberID = 2;

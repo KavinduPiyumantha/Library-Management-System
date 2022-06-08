@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/**
- *
- * @author KAVINDU PIYUMANTHA
- */
 
 
 public class DateTime {
@@ -68,6 +64,27 @@ public class DateTime {
           
           return Status;
      }
+      
+      
+           public static boolean BorrowExpDate(String dueDate){
+            
+          String duedate =  dueDate;
+          boolean Status = false;
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate locduedate = LocalDate.parse(duedate, formatter);
+          
+          //LocalDate expDate = date.plusDays(1);
+          
+          int dcount = currentDate().compareTo(locduedate);
+          
+          if(  0 < dcount){
+                Status = true;
+          } 
+          
+          return Status;
+     }
+      
+      
      
      }
 

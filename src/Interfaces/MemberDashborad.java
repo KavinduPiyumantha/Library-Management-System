@@ -10,7 +10,6 @@ package Interfaces;
 import Interfaces.*;
 import Codes.DBconnect;
 import  Codes.DateTime;
-import Codes.Refresh;
 import Codes.TableReload;
 
 
@@ -38,14 +37,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MemberDashborad extends javax.swing.JFrame {
 
-    
-    
           public static int MemberID;
           public static String MemberName;
           
           static String strMemberID;
          
-          
+         Connection con=null;
+         PreparedStatement pst;
+         ResultSet rs;       
 
     public MemberDashborad() {
 
@@ -61,27 +60,18 @@ public class MemberDashborad extends javax.swing.JFrame {
         bookTableReLoad();
         MemberRecordsTableReload();
         reserveTableUpdate();
+        borrowTableUpdate();
         
         //book section
         btnReserveBook.setEnabled(false);
 
-
-
     }
 
-    
-    Connection con=null;
-    PreparedStatement pst;
-    ResultSet rs;
-    
-    
- 
      public void DboardEnable(){
         //LibDashborad.dispose();
         //LibDashborad.setEnabled(true);
     }
-    
-    
+  
     public void bookTableReLoad(){
         
         int c;
@@ -121,55 +111,10 @@ public class MemberDashborad extends javax.swing.JFrame {
         }
     }
         
-//    public void reserveTableReload(){
-//              int c;
-//
-//            try {
-//    //            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
-//    //            pst.setString(1,"Reserved");
-//
-//                pst = con.prepareStatement("SELECT * FROM reserve  ");
-//
-//                 rs = pst.executeQuery();
-//
-//                ResultSetMetaData rsd;
-//                rsd = rs.getMetaData();
-//                c = rsd.getColumnCount();
-//
-//                DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
-//                d.setRowCount(0);
-//
-//                while(rs.next()){
-//                    Vector v2 = new Vector();
-//                    for(int i=1;i<=c;i++){
-//
-//                        v2.add(rs.getString("Book_id"));
-//                        v2.add(rs.getString("copy_no"));
-//                        v2.add(rs.getString("memberID"));
-//                        v2.add(rs.getString("Reserve_Date"));
-//                        v2.add(rs.getString("Status"));
-//
-//                       // v2.add(rs.getString("Price"));
-//
-//
-//                    }
-//                    d.addRow(v2);
-//                }
-//
-//
-//            } catch (SQLException ex) {
-//                Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
-//                JOptionPane.showMessageDialog(null  ,ex);
-//            }     
-//
-//       }
-   
 public void reserveTableUpdate(){
           int c;
 
-        try {
-//            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
-//            pst.setString(1,"Reserved");
+        try {;
             
             pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
             pst.setString(1, "Reserved");
@@ -226,12 +171,81 @@ public void reserveTableUpdate(){
                                }          
                     }
                     
-                    //reserveTableReload();
+                    //reserveTableReload()
+                        borrowTableUpdate();
                      bookTableReLoad();
 
 
  
            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null  ,ex);
+        }     
+        
+       //reserveTableReload();
+   }
+   
+public void borrowTableUpdate(){
+        int c;
+
+        try {
+
+            pst = con.prepareStatement("SELECT * FROM borrow where Status = ? ");
+            pst.setString(1, "Borrowed");
+            
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd;
+            rsd = rs.getMetaData();
+            c = rsd.getColumnCount();
+            
+            //DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
+            //d.setRowCount(0);
+            
+            if(rs.next()==true){
+                     Vector< Vector<String>> v1 = new Vector();
+                    do{
+                                Vector<String> v2 = new Vector();
+                                for(int i=1;i<=c;i++){
+                    
+                                v2.add(rs.getString("Book_id"));
+                                v2.add(rs.getString("copy_no"));
+                                v2.add(rs.getString("memberID"));
+                                v2.add(rs.getString("Due_Date"));
+                                v2.add(rs.getString("Status"));
+                                // v2.add(rs.getString("Price"));   
+                             }
+                    v1.add(v2);
+                    }while(rs.next());
+   
+                    
+                    
+                    for(int i=0 ; i< v1.size() ;i++){
+                               
+                               if (DateTime.BorrowExpDate(v1.get(i).get(3) )){
+                                        //change the status to expired and increas available count
+                                          String status = "Over Due";
+                                          pst = con.prepareStatement("update  borrow set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Due_Date = ? ");
+
+                                          pst.setString(1, status);
+                                          pst.setInt(2, Integer.parseInt(v1.get(i).get(0)));
+                                          pst.setInt(3, Integer.parseInt(v1.get(i).get(1)));
+                                          pst.setInt(4, Integer.parseInt(v1.get(i).get(2)));
+                                          pst.setString(5, v1.get(i).get(3));
+
+                                         pst.executeUpdate();
+
+//                                         pst = con.prepareStatement("Update book set avbl_count = avbl_count +1 where book_id =?");
+//                                         pst.setInt(1, Integer.parseInt(v1.get(i).get(0)));
+//                                         pst.executeUpdate();
+                               }          
+                    }
+                    
+                    //reserveTableReload();
+                     bookTableReLoad();
+        }
 
         } catch (SQLException ex) {
             Logger.getLogger(LibDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,16 +262,18 @@ public void reserveTableUpdate(){
 //            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
 //            pst.setString(1,"Reserved");
             
-            pst = con.prepareStatement("SELECT * FROM borrow  where memberID = ?");
-            pst.setString(1, strMemberID);
+           DefaultTableModel d =(DefaultTableModel )RecordsTable.getModel();
+            d.setRowCount(0);
+
+            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
+            pst.setString(1, "Reserved");
+            
              rs = pst.executeQuery();
             
             ResultSetMetaData rsd;
             rsd = rs.getMetaData();
             c = rsd.getColumnCount();
-            
-            DefaultTableModel d =(DefaultTableModel )RecordsTable.getModel();
-            d.setRowCount(0);
+
             
             while(rs.next()){
                 Vector v2 = new Vector();
@@ -266,6 +282,38 @@ public void reserveTableUpdate(){
                     v2.add(rs.getString("Book_id"));
                     v2.add(rs.getString("copy_no"));
                     //v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("Reserve_Date"));
+                    v2.add(" ");
+                    v2.add(" ");
+                    v2.add(" ");
+                    v2.add(rs.getString("Status"));
+                    v2.add(" ");
+   
+                }
+                d.addRow(v2);
+            }
+
+            //pst = con.prepareStatement("SELECT br.Book_id, br.copy_no, res.Reserve_Date , br.Borrow_Date,  br.Due_Date,  br.returned_Date, br.Status , br.penalty_fee FROM reserve as res  NATURAL JOIN borrow as br  where memberID = ? and res.Status = ? ");
+            pst = con.prepareStatement("SELECT * FROM borrow  where memberID = ? ");
+            pst.setString(1, strMemberID);
+            //pst.setString(2, "Picked Up");
+             rs = pst.executeQuery();
+            
+            ResultSetMetaData rsd2;
+            rsd2 = rs.getMetaData();
+            c = rsd2.getColumnCount();
+            
+
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int i=1;i<=c;i++){
+                    
+                    v2.add(rs.getString("Book_id"));
+                    v2.add(rs.getString("copy_no"));
+                    //v2.add(rs.getString("memberID"));
+                    //v2.add(rs.getString(  "Reserve_Date"));
+                    v2.add( " ");
                     v2.add(rs.getString("Borrow_Date"));
                     v2.add(rs.getString("Due_Date"));
                     v2.add(rs.getString("returned_Date"));
@@ -456,22 +504,10 @@ public void reserveTableUpdate(){
         ReserveSection1 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         RecordsTable = new javax.swing.JTable();
-        btnUpdate_Borrowed = new javax.swing.JButton();
         btnFind_Borrow = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        txtStatusBorrow = new javax.swing.JComboBox<>();
-        jLabel30 = new javax.swing.JLabel();
-        btnClearReseve1 = new javax.swing.JButton();
         selectTypeBoxBorrow = new javax.swing.JComboBox<>();
         txFindBorrow = new javax.swing.JTextField();
         btnClearSearchBorrow = new javax.swing.JButton();
-        jLabel31 = new javax.swing.JLabel();
-        txtMemberIDBorrow = new javax.swing.JLabel();
-        txtBookIDBorrow = new javax.swing.JLabel();
-        txtCopyNoBorrow = new javax.swing.JLabel();
-        txtDateBorrow = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         lblLabirarianID = new javax.swing.JLabel();
         lblLibName = new javax.swing.JLabel();
@@ -777,14 +813,14 @@ public void reserveTableUpdate(){
 
             },
             new String [] {
-                "Book ID", "Book Copy No", "Borrow Date", "Due Date ", "Returned Date", "Status", "Panalty Fee"
+                "Book ID", "Book Copy No", "Rserved Date", "Borrow Date", "Due Date ", "Returned Date", "Status", "Panalty Fee"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -807,16 +843,6 @@ public void reserveTableUpdate(){
         });
         jScrollPane5.setViewportView(RecordsTable);
 
-        btnUpdate_Borrowed.setBackground(new java.awt.Color(204, 204, 204));
-        btnUpdate_Borrowed.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnUpdate_Borrowed.setForeground(new java.awt.Color(0, 0, 0));
-        btnUpdate_Borrowed.setText("Update");
-        btnUpdate_Borrowed.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdate_BorrowedActionPerformed(evt);
-            }
-        });
-
         btnFind_Borrow.setBackground(new java.awt.Color(204, 204, 204));
         btnFind_Borrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         btnFind_Borrow.setForeground(new java.awt.Color(0, 0, 0));
@@ -824,46 +850,6 @@ public void reserveTableUpdate(){
         btnFind_Borrow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFind_BorrowActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel12.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Book ID");
-
-        jLabel26.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel26.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Member ID");
-
-        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel28.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel28.setText("Status");
-
-        txtStatusBorrow.setBackground(new java.awt.Color(255, 255, 255));
-        txtStatusBorrow.setEditable(true);
-        txtStatusBorrow.setForeground(new java.awt.Color(0, 0, 0));
-        txtStatusBorrow.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrowed", "Returened" }));
-        txtStatusBorrow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStatusBorrowActionPerformed(evt);
-            }
-        });
-
-        jLabel30.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel30.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel30.setText("Copy No");
-
-        btnClearReseve1.setBackground(new java.awt.Color(204, 204, 204));
-        btnClearReseve1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnClearReseve1.setForeground(new java.awt.Color(0, 0, 0));
-        btnClearReseve1.setText("Clear ");
-        btnClearReseve1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearReseve1ActionPerformed(evt);
             }
         });
 
@@ -896,71 +882,13 @@ public void reserveTableUpdate(){
             }
         });
 
-        jLabel31.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel31.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel31.setText("Borrow Date");
-
-        txtMemberIDBorrow.setBackground(new java.awt.Color(255, 255, 255));
-        txtMemberIDBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtMemberIDBorrow.setForeground(new java.awt.Color(0, 0, 0));
-        txtMemberIDBorrow.setText("-");
-
-        txtBookIDBorrow.setBackground(new java.awt.Color(255, 255, 255));
-        txtBookIDBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtBookIDBorrow.setForeground(new java.awt.Color(0, 0, 0));
-        txtBookIDBorrow.setText("-");
-
-        txtCopyNoBorrow.setBackground(new java.awt.Color(255, 255, 255));
-        txtCopyNoBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtCopyNoBorrow.setForeground(new java.awt.Color(0, 0, 0));
-        txtCopyNoBorrow.setText("-");
-
-        txtDateBorrow.setBackground(new java.awt.Color(255, 255, 255));
-        txtDateBorrow.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        txtDateBorrow.setForeground(new java.awt.Color(0, 0, 0));
-        txtDateBorrow.setText("-");
-
         javax.swing.GroupLayout ReserveSection1Layout = new javax.swing.GroupLayout(ReserveSection1);
         ReserveSection1.setLayout(ReserveSection1Layout);
         ReserveSection1Layout.setHorizontalGroup(
             ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReserveSection1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(187, 187, 187)
                 .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(btnClearReseve1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUpdate_Borrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ReserveSection1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ReserveSection1Layout.createSequentialGroup()
-                                .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReserveSection1Layout.createSequentialGroup()
-                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(ReserveSection1Layout.createSequentialGroup()
                         .addComponent(selectTypeBoxBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -968,48 +896,21 @@ public void reserveTableUpdate(){
                         .addGap(18, 18, 18)
                         .addComponent(btnFind_Borrow, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnClearSearchBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16))
+                        .addComponent(btnClearSearchBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         ReserveSection1Layout.setVerticalGroup(
             ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReserveSection1Layout.createSequentialGroup()
-                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ReserveSection1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(selectTypeBoxBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txFindBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnFind_Borrow)
-                            .addComponent(btnClearSearchBorrow))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
-                    .addGroup(ReserveSection1Layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(txtBookIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel30)
-                            .addComponent(txtCopyNoBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(17, 17, 17)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel26)
-                            .addComponent(txtMemberIDBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel31)
-                            .addComponent(txtDateBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28)
-                            .addComponent(txtStatusBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(76, 76, 76)
-                        .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnClearReseve1)
-                            .addComponent(btnUpdate_Borrowed))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(11, 11, 11)
+                .addGroup(ReserveSection1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(selectTypeBoxBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txFindBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFind_Borrow)
+                    .addComponent(btnClearSearchBorrow))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1054,25 +955,6 @@ public void reserveTableUpdate(){
         jPanelMainLayout.setHorizontalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanelMainLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMainLayout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(407, 407, 407)
-                        .addComponent(txtBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelMainLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelMainLayout.createSequentialGroup()
-                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblLibName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelMainLayout.createSequentialGroup()
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblLabirarianID, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(35, 35, 35))
-            .addGroup(jPanelMainLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelMainLayout.createSequentialGroup()
@@ -1081,6 +963,26 @@ public void reserveTableUpdate(){
                     .addGroup(jPanelMainLayout.createSequentialGroup()
                         .addComponent(TabSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
+            .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelMainLayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(407, 407, 407)
+                        .addComponent(txtBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35))
+                    .addGroup(jPanelMainLayout.createSequentialGroup()
+                        .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMainLayout.createSequentialGroup()
+                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblLibName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelMainLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblLabirarianID, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(521, 521, 521))))
         );
         jPanelMainLayout.setVerticalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1305,15 +1207,20 @@ public void reserveTableUpdate(){
                           reserveStatus= true;
                       }
                       
-                      pst = con.prepareStatement("SELECT *  FROM  borrow where memberID = ? and Status = ? ");
-                      pst.setString(1, strMemberID);
-                      pst.setString(2, "Borrowed");
-                     
-                      rs = pst.executeQuery();
+                      String staustB[]={"Borrowed","Over Due"};
+                      
+                     for(int i=0;i < staustB.length ;i++){
+                              pst = con.prepareStatement("SELECT *  FROM  borrow where memberID = ? and Status = ? ");
+                              pst.setString(1, strMemberID);
+                              pst.setString(2, staustB[i]);
 
-                      if(rs.next()==true){
-                          borrowstatus= true;
-                      }
+                              rs = pst.executeQuery();
+
+                              if(rs.next()==true){
+                                  borrowstatus= true;
+                             }
+                     }
+
 
             } catch (SQLException ex) {
                            Logger.getLogger(MemberDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -1333,22 +1240,13 @@ public void reserveTableUpdate(){
                             try {
 
                                 String bookid = txtBookIDSec.getText();
-                                //                String isbnNO   = txtISBN.getText();
-                                //                String bookTitle = txtBookTitle.getText();
-                                //
-                                //                String Author = txtAuthor.getText();
-                                //                
-                                //                String bookCatogery = txtBookCatogery.getSelectedItem().toString();
 
                                 int ID =Integer.parseInt(bookid);
                                 int c;
 
                                 pst = con.prepareStatement("SELECT * FROM  bookcopy where Book_id = ?");
                                 pst.setInt(1, ID);
-                                //                pst.setString(2, bookTitle);
-                                //                pst.setString(3, bookCatogery);
-                                //                pst.setString(4, Author);
-                                //                pst.setInt(5, ID);
+
 
                                 rs = pst.executeQuery();
 
@@ -1458,17 +1356,16 @@ public void reserveTableUpdate(){
                                         txtBookIDSec.requestFocus();
 
                                         pst = con.prepareStatement("Update book set avbl_count = avbl_count -1 where book_id =?");
-                                        //rs = pst.executeQuery();
                                         pst.setInt(1, ID);
 
-                                        //pst.setInt(2, intbookId);
+                                       
                                         int k2 = pst.executeUpdate();
                                         if(k2==1){
                                             JOptionPane.showMessageDialog(this,"Book Succesfully Reserved");
                                         }
-
+                                        
+                                        borrowTableUpdate();
                                         bookTableReLoad();
-                                        //                    btnAdd_Book.setEnabled(true);
 
                                     }
                                     else{
@@ -1480,11 +1377,7 @@ public void reserveTableUpdate(){
                                 JOptionPane.showMessageDialog(null  ,ex);
                             }
                         }                
-               
-               
            }
-
- 
     }//GEN-LAST:event_btnReserveBookActionPerformed
 
     private void BookTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookTableMouseClicked
@@ -1525,7 +1418,9 @@ public void reserveTableUpdate(){
         // TODO add your handling code here:
         
         txtBookFind.setText("");
+        borrowTableUpdate();
         bookTableReLoad();
+        
     }//GEN-LAST:event_btnClearSearchActionPerformed
 
     private void BookTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookTableKeyReleased
@@ -1539,140 +1434,14 @@ public void reserveTableUpdate(){
         DefaultTableModel d1 =(DefaultTableModel )RecordsTable.getModel();
         int selectIndex =RecordsTable.getSelectedRow();
 
-        txtBookIDBorrow.setText(d1.getValueAt(selectIndex, 0).toString());
-        txtCopyNoBorrow.setText(d1.getValueAt(selectIndex, 1).toString());
-        txtMemberIDBorrow.setText(d1.getValueAt(selectIndex, 2).toString());
-        txtDateBorrow.setText(d1.getValueAt(selectIndex, 3).toString());
-        txtStatusBorrow.setSelectedItem(d1.getValueAt(selectIndex, 6).toString());
     }//GEN-LAST:event_RecordsTableMouseClicked
 
     private void RecordsTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RecordsTableKeyReleased
         DefaultTableModel d1 =(DefaultTableModel )RecordsTable.getModel();
         int selectIndex =RecordsTable.getSelectedRow();
 
-        txtBookIDBorrow.setText(d1.getValueAt(selectIndex, 0).toString());
-        txtCopyNoBorrow.setText(d1.getValueAt(selectIndex, 1).toString());
-        txtMemberIDBorrow.setText(d1.getValueAt(selectIndex, 2).toString());
-        txtDateBorrow.setText(d1.getValueAt(selectIndex, 3).toString());
-        txtStatusBorrow.setSelectedItem(d1.getValueAt(selectIndex, 6).toString());
+
     }//GEN-LAST:event_RecordsTableKeyReleased
-
-    private void btnUpdate_BorrowedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate_BorrowedActionPerformed
-        if ( txtBookIDBorrow.getText().equals("") ||  txtCopyNoBorrow.getText().equals("")  || txtMemberIDBorrow.getText().equals("") || txtDateBorrow.getText().equals("")  || txtStatusBorrow.getSelectedItem().equals("")  ) {
-                JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
-                
-        } else {
-            
-            String bookID = txtBookIDBorrow.getText();
-            String copyNo = txtCopyNoBorrow.getText();
-            String  memberid = txtMemberIDBorrow.getText();
-            String barrowdate =  txtDateBorrow.getText();
-            //String bookCatogery = txtMemberTep.getSelectedItem().toString();
-            String status = txtStatusBorrow.getSelectedItem().toString();;
-            
-            
-
-            try {
-                
-                if(status == "Returened"){
-                    
-                    long daysBetween = DAYS.between(DateTime.StringToLocalDate(barrowdate), DateTime.currentDate());
-                    
-                    System.out.println(daysBetween);
-                    double paneltyFee=0;
-
-                    if(daysBetween > 14){
-                         paneltyFee = ( (int)daysBetween -14) * 5 ;
-                        
-                    }
-                    
-                    System.out.println(paneltyFee);
-                    
-                    pst = con.prepareStatement("update  borrow set  returned_Date = ? , Status = ?, penalty_fee = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-
-                    pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(2, status);
-                    pst.setDouble(3, paneltyFee);
-                    pst.setInt(4, Integer.parseInt(bookID));
-                    pst.setInt(5, Integer.parseInt(copyNo));
-                    pst.setInt(6, Integer.parseInt(memberid));
-                    pst.setString(7, barrowdate);
-                    
-                    int k1 = pst.executeUpdate();
-                    
-                    
-                    
-                    
-
-                    
-                }
-                else if(status == "Borrowed"){
-                    pst = con.prepareStatement("update  borrow set  returned_Date = Null , Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-
-                    //pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(1, status);
-                    pst.setInt(2, Integer.parseInt(bookID));
-                    pst.setInt(3, Integer.parseInt(copyNo));
-                    pst.setInt(4, Integer.parseInt(memberid));
-                    pst.setString(5, barrowdate);   
-                    
-                    int k1 = pst.executeUpdate();
-                }
-                else{
-                    
-                    pst = con.prepareStatement("update  borrow set  Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Borrow_Date = ? ");
-                    //pst.setString(1, DateTime.currentDate().toString());
-                    pst.setString(1, status);
-                    pst.setInt(2, Integer.parseInt(bookID));
-                    pst.setInt(3, Integer.parseInt(copyNo));
-                    pst.setInt(4, Integer.parseInt(memberid));
-                    pst.setString(5, barrowdate);
-                    
-                    int k1 = pst.executeUpdate();
-                    
-                }
-
-               // pst.setString(5, Author);
-                int k1 = pst.executeUpdate();
-
-                if(k1==1){
-
-//                    int intID = Integer.parseInt(memberid);
-                    
-//                    LoginDetailsSet.memberID = intID;
-//                    LoginDetailsSet.memberName = memberName;
-//                    LoginDetailsSet.role = "Member";
-
-                        txtBookIDBorrow.setText("-");
-                        txtCopyNoBorrow.setText("-");
-                        txtMemberIDBorrow.setText("-");
-                        txtDateBorrow.setText("-");
-                        txtStatusBorrow.setSelectedItem(""); 
-//                    //txtBookCatogery.setSelectedIndex(-1);
-//                    txtMemberTep.setText("");
-                         //txtStatusReserve.requestFocus();
-
-                    //borrowTableReload();
-                     MemberRecordsTableReload();
-                    
-//                    LoginDetailsSet loginSet = new  LoginDetailsSet();
-//                    loginSet.setVisible(true);
-
-                    JOptionPane.showMessageDialog(this,"Borrow Succesfully Updated");
-
-                }
-                else{
-                    JOptionPane.showMessageDialog(this,"Error:: Can't Update Borrows");
-                   
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(MemberDashborad.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex , "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
-                // JOptionPane.showMessageDialog(null  ,ex);
-            }
-        }
-    }//GEN-LAST:event_btnUpdate_BorrowedActionPerformed
 
     private void btnFind_BorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_BorrowActionPerformed
         // TODO add your handling code here:
@@ -1812,18 +1581,6 @@ public void reserveTableUpdate(){
                 
     }//GEN-LAST:event_btnFind_BorrowActionPerformed
 
-    private void txtStatusBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusBorrowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStatusBorrowActionPerformed
-
-    private void btnClearReseve1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearReseve1ActionPerformed
-        txtBookIDBorrow.setText("-");
-        txtCopyNoBorrow.setText("-");
-        txtMemberIDBorrow.setText("-");
-        txtDateBorrow.setText("-");
-        txtStatusBorrow.setSelectedItem("");    //Reserved
-    }//GEN-LAST:event_btnClearReseve1ActionPerformed
-
     private void selectTypeBoxBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTypeBoxBorrowActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_selectTypeBoxBorrowActionPerformed
@@ -1835,6 +1592,7 @@ public void reserveTableUpdate(){
     private void btnClearSearchBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchBorrowActionPerformed
         // TODO add your handling code here:
         txFindBorrow.setText("");
+         borrowTableUpdate();
          MemberRecordsTableReload();
         //borrowTableReload();
     }//GEN-LAST:event_btnClearSearchBorrowActionPerformed
@@ -1938,27 +1696,20 @@ public void reserveTableUpdate(){
     private javax.swing.JTable RecordsTable;
     private javax.swing.JPanel ReserveSection1;
     private javax.swing.JPanel TabSection;
-    private javax.swing.JButton btnClearReseve1;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnClearSearchBorrow;
     private javax.swing.JButton btnFind_Book;
     private javax.swing.JButton btnFind_Borrow;
     private javax.swing.JButton btnReserveBook;
-    private javax.swing.JButton btnUpdate_Borrowed;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1981,13 +1732,8 @@ public void reserveTableUpdate(){
     private javax.swing.JButton txtBack;
     private javax.swing.JComboBox<String> txtBookCatogery;
     private javax.swing.JTextField txtBookFind;
-    private javax.swing.JLabel txtBookIDBorrow;
     private javax.swing.JTextField txtBookIDSec;
     private javax.swing.JTextField txtBookTitle;
-    private javax.swing.JLabel txtCopyNoBorrow;
-    private javax.swing.JLabel txtDateBorrow;
     private javax.swing.JTextField txtISBN;
-    private javax.swing.JLabel txtMemberIDBorrow;
-    private javax.swing.JComboBox<String> txtStatusBorrow;
     // End of variables declaration//GEN-END:variables
 }
