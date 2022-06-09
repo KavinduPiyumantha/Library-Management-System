@@ -31,10 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * 
- */
+
 public class MemberDashborad extends javax.swing.JFrame {
 
           public static int MemberID;
@@ -78,10 +75,8 @@ public class MemberDashborad extends javax.swing.JFrame {
 
         try {
             pst = con.prepareStatement("SELECT Book_id, ISBN, Title, catogery, Author, avbl_count   FROM  book" );
-            //pst = con.prepareStatement("SELECT * FROM"+ " book" +" NATURAL JOIN "+ "bookcopy");
-             rs = pst.executeQuery();
+            rs = pst.executeQuery();
             
-             
             ResultSetMetaData rsd;
             rsd = rs.getMetaData();
             c = rsd.getColumnCount();
@@ -103,7 +98,6 @@ public class MemberDashborad extends javax.swing.JFrame {
                 }
                 d.addRow(v2);
             }
-            
 
         } catch (SQLException ex) {
             Logger.getLogger(MemberDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,9 +118,6 @@ public void reserveTableUpdate(){
             ResultSetMetaData rsd;
             rsd = rs.getMetaData();
             c = rsd.getColumnCount();
-            
-            //DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
-            //d.setRowCount(0);
             
             if(rs.next()==true){
                      Vector< Vector<String>> v1 = new Vector();
@@ -149,7 +140,6 @@ public void reserveTableUpdate(){
                     for(int i=0 ; i< v1.size() ;i++){
                                
                                if (DateTime.ReserveExpDate(v1.get(i).get(3) )){
-                                        //change the status to expired and increas available count
                                           String status = "Expired";
                                           pst = con.prepareStatement("update  reserve set Status = ? where  Book_id = ? and copy_no = ?  and memberID = ? and Reserve_Date = ? ");
 
@@ -171,12 +161,8 @@ public void reserveTableUpdate(){
                                }          
                     }
                     
-                    //reserveTableReload()
                         borrowTableUpdate();
                      bookTableReLoad();
-
-
- 
            }
 
         } catch (SQLException ex) {
@@ -184,7 +170,7 @@ public void reserveTableUpdate(){
             JOptionPane.showMessageDialog(null  ,ex);
         }     
         
-       //reserveTableReload();
+
    }
    
 public void borrowTableUpdate(){
@@ -200,9 +186,7 @@ public void borrowTableUpdate(){
             ResultSetMetaData rsd;
             rsd = rs.getMetaData();
             c = rsd.getColumnCount();
-            
-            //DefaultTableModel d =(DefaultTableModel )BookReserveTable.getModel();
-            //d.setRowCount(0);
+           
             
             if(rs.next()==true){
                      Vector< Vector<String>> v1 = new Vector();
@@ -215,7 +199,7 @@ public void borrowTableUpdate(){
                                 v2.add(rs.getString("memberID"));
                                 v2.add(rs.getString("Due_Date"));
                                 v2.add(rs.getString("Status"));
-                                // v2.add(rs.getString("Price"));   
+                                
                              }
                     v1.add(v2);
                     }while(rs.next());
@@ -236,10 +220,6 @@ public void borrowTableUpdate(){
                                           pst.setString(5, v1.get(i).get(3));
 
                                          pst.executeUpdate();
-
-//                                         pst = con.prepareStatement("Update book set avbl_count = avbl_count +1 where book_id =?");
-//                                         pst.setInt(1, Integer.parseInt(v1.get(i).get(0)));
-//                                         pst.executeUpdate();
                                }          
                     }
                     
@@ -256,17 +236,16 @@ public void borrowTableUpdate(){
    }
     
    public void MemberRecordsTableReload(){
-          int c;
+        int c;
 
         try {
-//            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
-//            pst.setString(1,"Reserved");
             
            DefaultTableModel d =(DefaultTableModel )RecordsTable.getModel();
             d.setRowCount(0);
 
-            pst = con.prepareStatement("SELECT * FROM reserve where Status = ? ");
-            pst.setString(1, "Reserved");
+            pst = con.prepareStatement("SELECT * FROM reserve where memberID = ? and Status = ? ");
+            pst.setString(1, strMemberID);
+            pst.setString(2, "Reserved");
             
              rs = pst.executeQuery();
             
@@ -293,10 +272,9 @@ public void borrowTableUpdate(){
                 d.addRow(v2);
             }
 
-            //pst = con.prepareStatement("SELECT br.Book_id, br.copy_no, res.Reserve_Date , br.Borrow_Date,  br.Due_Date,  br.returned_Date, br.Status , br.penalty_fee FROM reserve as res  NATURAL JOIN borrow as br  where memberID = ? and res.Status = ? ");
+            
             pst = con.prepareStatement("SELECT * FROM borrow  where memberID = ? ");
             pst.setString(1, strMemberID);
-            //pst.setString(2, "Picked Up");
              rs = pst.executeQuery();
             
             ResultSetMetaData rsd2;
@@ -311,8 +289,6 @@ public void borrowTableUpdate(){
                     
                     v2.add(rs.getString("Book_id"));
                     v2.add(rs.getString("copy_no"));
-                    //v2.add(rs.getString("memberID"));
-                    //v2.add(rs.getString(  "Reserve_Date"));
                     v2.add( " ");
                     v2.add(rs.getString("Borrow_Date"));
                     v2.add(rs.getString("Due_Date"));
@@ -337,23 +313,15 @@ public void borrowTableUpdate(){
         DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
         int selectIndex =BookTable.getSelectedRow();
 
-        //int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-        // String z = Integer.toString(id);
-
-        //        int count =Integer.parseInt(d1.getValueAt(selectIndex, 5).toString());
-        //        String cnt = Integer.toString(count);
-
         txtBookIDSec.setText(d1.getValueAt(selectIndex, 0).toString());
         txtISBN.setText(d1.getValueAt(selectIndex, 1).toString());
         txtBookTitle.setText(d1.getValueAt(selectIndex, 2).toString());
         txtBookCatogery.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
         txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
-        //txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
-        //txtISBN.requestFocus();
 
         //btnAdd_Book.setEnabled(false);
         btnReserveBook.setEnabled(true);
-//        btnDelete_Book.setEnabled(true);
+        // btnDelete_Book.setEnabled(true);
         
    }
     
@@ -379,17 +347,10 @@ public void borrowTableUpdate(){
                     
                     System.out.println("bookCount "+bookCount);
 
-                    //String sbookCount =  Integer.toString(bookCount) ;
-
-                
-                    
                     pst = con.prepareStatement("Update book set book_count = ? where book_id =?");
-                    //rs = pst.executeQuery();
                     pst.setInt(1, bookCount);
                     
                     System.out.println("setcount "+bookCount);
-                   // pst.setString(2, bookCount);
-                    //pst.setString(3, 1);
                     pst.setInt(2, intbookId);
                     
                     System.out.println("setid "+intbookId);
@@ -409,8 +370,7 @@ public void borrowTableUpdate(){
      public void decrease_Book_Count(String id){
         
         String bookId = id;
-        
-        
+
             try {
        
                     int intbookId = Integer.parseInt(bookId);
@@ -428,17 +388,10 @@ public void borrowTableUpdate(){
                     
                     System.out.println("bookCount "+bookCount);
 
-                    //String sbookCount =  Integer.toString(bookCount) ;
-
-                
-                    
                     pst = con.prepareStatement("Update book set book_count = ? where book_id =?");
-                    //rs = pst.executeQuery();
                     pst.setInt(1, bookCount);
                     
                     System.out.println("setcount "+bookCount);
-                   // pst.setString(2, bookCount);
-                    //pst.setString(3, 1);
                     pst.setInt(2, intbookId);
                     
                     System.out.println("setid "+intbookId);
@@ -1028,8 +981,7 @@ public void borrowTableUpdate(){
         Login login =new Login();
         this.hide();
         login.setVisible(true);
-        
-        
+ 
     }//GEN-LAST:event_txtBackActionPerformed
 
     private void txtBookIDSecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBookIDSecActionPerformed
@@ -1067,9 +1019,6 @@ public void borrowTableUpdate(){
              }
 
             try {
-                
-                
-                
 
                 if(typeGets == "ID"){
                     int text = 0;
@@ -1083,7 +1032,6 @@ public void borrowTableUpdate(){
 
                     type = "ISBN";
                     String textGets = txtBookFind.getText();
-                    //String finalText = textGets+"%";
                     
                     pst =con.prepareStatement("Select * from book where "+ type +" = ?" + avbl);
                     pst.setString(1,textGets);
@@ -1093,7 +1041,6 @@ public void borrowTableUpdate(){
                     int text = 0;
                     type = "Title";
                     String textGets = txtBookFind.getText();
-                    //text= Integer.parseInt(textGets);
                     String finalText = "%"+textGets+"%";
                         System.out.println(finalText);
 
@@ -1104,7 +1051,6 @@ public void borrowTableUpdate(){
                     int text = 0;
                     type = "catogery";
                     String textGets = txtBookFind.getText();
-                   // text= Integer.parseInt(textGets);
                    String finalText ="%"+textGets+"%";
                   
                     pst =con.prepareStatement("Select * from book where "+ type +" like ?" + avbl);
@@ -1165,7 +1111,7 @@ public void borrowTableUpdate(){
                                     //System.out.println(rs.getString("catogery"));
                                 v1.add(rs.getString("Author"));
 
-                                v1.add(rs.getInt("book_count"));
+                                v1.add(rs.getInt("avbl_count"));
                                     //System.out.println(rs.getInt("book_count"));
 
                            // System.out.print(v1);//
@@ -1174,11 +1120,12 @@ public void borrowTableUpdate(){
                             System.out.println(v1);
                         d.addRow(v1);
                     }while(rs.next());//
-                }
-
                 //txtBookFind.setText("");
 
                 //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
+                }
+
+
 
             } catch (SQLException ex) {
                 Logger.getLogger(MemberDashborad.class.getName()).log(Level.SEVERE, null, ex);
@@ -1233,7 +1180,7 @@ public void borrowTableUpdate(){
                     JOptionPane.showMessageDialog(null, "You Already Borrowed a Book!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
            }else{
                
-                        if ( txtBookIDSec.getText().equals("")  /* || txtISBN.getText().equals("") ||  txtBookTitle.getText().equals("") || txtBookCatogery.getSelectedItem().toString().equals("") || txtAuthor.getText().equals("") */ ) {
+                        if ( txtBookIDSec.getText().equals("")  ) {
                             JOptionPane.showMessageDialog(null, "Select a Row !", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
                         } else {
 
@@ -1305,33 +1252,33 @@ public void borrowTableUpdate(){
 
                                     for (int i = 0; i < bCopySet.size(); i++){
 
-                                        int bcopy = Integer.parseInt(bCopySet.get(i)) ;
+                                            int bcopy = Integer.parseInt(bCopySet.get(i)) ;
 
 
-                                        pst = con.prepareStatement("SELECT *  FROM  reserve where copy_no = ? and Status = ? ");
-                                        pst.setInt(1, bcopy);
-                                        pst.setString(2, "Reserved");
-
-                                        rs = pst.executeQuery();
-
-                                        if(rs.next()==true){
-                                            continue;
-                                        }else{
-
-                                            pst = con.prepareStatement("SELECT *  FROM  borrow where copy_no = ? and Status = ? ");
+                                            pst = con.prepareStatement("SELECT *  FROM  reserve where copy_no = ? and Status = ? ");
                                             pst.setInt(1, bcopy);
-                                            pst.setString(2, "Borrowed");
+                                            pst.setString(2, "Reserved");
 
                                             rs = pst.executeQuery();
 
-                                            if(rs.next()==true){
-                                                continue;
-                                            }else{
-                                                avblCopyNo = bcopy;
-                                                System.out.print( "avblCopyNo = "+bcopy);
-                                                break;
+                                        if(rs.next()==true){
+                                                    continue;
+                                        }else{
 
-                                            }
+                                                    pst = con.prepareStatement("SELECT *  FROM  borrow where copy_no = ? and Status = ? ");
+                                                    pst.setInt(1, bcopy);
+                                                    pst.setString(2, "Borrowed");
+
+                                                    rs = pst.executeQuery();
+
+                                                    if(rs.next()==true){
+                                                        continue;
+                                                    }else{
+                                                        avblCopyNo = bcopy;
+                                                        System.out.print( "avblCopyNo = "+bcopy);
+                                                        break;
+
+                                                    }
                                         }
                                     }
 
@@ -1345,27 +1292,28 @@ public void borrowTableUpdate(){
 
                                     int k = pst.executeUpdate();
                                     if(k==1){
-
-                                        txtBookIDSec.setText("");
-                                        txtISBN.setText("");
-                                        txtBookTitle.setText("");
-                                        txtBookCatogery.setSelectedIndex(-1);
-                                        txtAuthor.setText("");
-                                        //txtBookCount.setText("-");
-
-                                        txtBookIDSec.requestFocus();
-
-                                        pst = con.prepareStatement("Update book set avbl_count = avbl_count -1 where book_id =?");
-                                        pst.setInt(1, ID);
-
-                                       
-                                        int k2 = pst.executeUpdate();
-                                        if(k2==1){
-                                            JOptionPane.showMessageDialog(this,"Book Succesfully Reserved");
-                                        }
                                         
-                                        borrowTableUpdate();
-                                        bookTableReLoad();
+                                                txtBookIDSec.setText("");
+                                                txtISBN.setText("");
+                                                txtBookTitle.setText("");
+                                                txtBookCatogery.setSelectedIndex(-1);
+                                                txtAuthor.setText("");
+                                                //txtBookCount.setText("-");
+
+                                                txtBookIDSec.requestFocus();
+
+                                                pst = con.prepareStatement("Update book set avbl_count = avbl_count -1 where book_id =?");
+                                                pst.setInt(1, ID);
+
+
+                                                int k2 = pst.executeUpdate();
+                                                if(k2==1){
+                                                    JOptionPane.showMessageDialog(this,"Book Succesfully Reserved");
+                                                }
+
+                                                borrowTableUpdate();
+                                                bookTableReLoad();
+                                                MemberRecordsTableReload();
 
                                     }
                                     else{
@@ -1382,27 +1330,7 @@ public void borrowTableUpdate(){
 
     private void BookTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookTableMouseClicked
         // TODO add your handling code here:
-//
-//        DefaultTableModel d1 =(DefaultTableModel )BookTable.getModel();
-//        int selectIndex =BookTable.getSelectedRow();
-//
-//        //int id =Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-//        // String z = Integer.toString(id);
-//
-//        //        int count =Integer.parseInt(d1.getValueAt(selectIndex, 5).toString());
-//        //        String cnt = Integer.toString(count);
-//
-//        txtBookIDSec.setText(d1.getValueAt(selectIndex, 0).toString());
-//        txtISBN.setText(d1.getValueAt(selectIndex, 1).toString());
-//        txtBookTitle.setText(d1.getValueAt(selectIndex, 2).toString());
-//        txtBookCatogery.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
-//        txtAuthor.setText(d1.getValueAt(selectIndex, 4).toString());
-//        txtBookCount.setText(d1.getValueAt(selectIndex, 5).toString());
-//        //txtISBN.requestFocus();
-//
-//        btnAdd_Book.setEnabled(false);
-//        btnDelete_Book.setEnabled(true);
-        
+
         loadTableData();
     }//GEN-LAST:event_BookTableMouseClicked
 
@@ -1445,11 +1373,7 @@ public void borrowTableUpdate(){
 
     private void btnFind_BorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind_BorrowActionPerformed
         // TODO add your handling code here:
-        
-        
-
-       
-           
+ 
         if( txFindBorrow.getText().equals("") || selectTypeBoxBorrow.getSelectedItem().toString().equals("") )
             JOptionPane.showMessageDialog(null, "Enter item!", "Oops Wait...!", JOptionPane.ERROR_MESSAGE);
         else{
@@ -1563,11 +1487,14 @@ public void borrowTableUpdate(){
                             //System.out.println(v1);
                         d.addRow(v1);
                     }while(rs.next());//
-                }
-
+                    
                 //txtBookFind.setText("");
 
                 //JOptionPane.showMessageDialog(null, "Item(s) not found!", "Ooops!", JOptionPane.ERROR_MESSAGE);
+                    
+                }
+
+
 
             } catch (SQLException ex) {
                 Logger.getLogger(MemberDashborad.class.getName()).log(Level.SEVERE, null, ex);

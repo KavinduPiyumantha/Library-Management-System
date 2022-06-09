@@ -15,17 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class DateTime {
+public class DateTime { 
     
     
     
      public static LocalDate currentDate(){
          
                 LocalDate currentdDate =  LocalDate.now();
-//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-//                Date date = new Date(); 
-//                String currentDate = formatter.format(date);
-                
                 return  currentdDate;
                 }
      public static LocalDate reternDate(){

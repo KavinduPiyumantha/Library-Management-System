@@ -4,24 +4,10 @@
  */
 package Codes;
 
-/**
- *
- * @author KAVINDU PIYUMANTHA
- */
-public class Librarian extends User {
+
+public class Librarian extends Person {
     
-         public void AddMember(){
 
-        }
-
-        public void UpdateMember(){
-
-        }
         
-        public void RemoveMember(){
-
-        }
-    
-    
     
 }

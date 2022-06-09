@@ -4,31 +4,8 @@
  */
 package Codes;
 
-/**
- *
- * @author KAVINDU PIYUMANTHA
- */
-public class Member extends User {
+
+public class Member extends Person {
     
-        public void AddMember(){
-
-        }
-
-        public void UpdateMember(){
-
-        }
-        
-        public void RemoveMember(){
-
-        }
-        
-         public void AddMemberLogins(){
-
-        }
-         
-         public void UpdateMemberLogins(){
-
-        }
-        
-        
+ 
 }

@@ -21,9 +21,9 @@ CREATE TABLE `Login` (
   `role` varchar(255) not null,
   `username` varchar(255) not null unique,
   `password` varchar(255),
-  PRIMARY KEY (`ID`, `role`)
---   FOREIGN KEY (`ID`) REFERENCES `Member`(`memberID`),
---   FOREIGN KEY (`ID`) REFERENCES `Librarian`(`Lib_ID`)
+  PRIMARY KEY (`ID`, `role`),
+  FOREIGN KEY `Login`(`ID`) REFERENCES `Member`(`memberID`),
+  FOREIGN KEY `Login`(`ID`) REFERENCES `Librarian`(`Lib_ID`)
 );
 
 CREATE TABLE `book` (
@@ -48,15 +48,6 @@ CREATE TABLE `bookcopy` (
   FOREIGN KEY (`Book_id`) REFERENCES `book`(`Book_id`)
 );
 
--- CREATE TABLE `purchase` (
---   `copy_no` int not null ,
---   `Lib_ID` int not null ,
---   `Purchase_date` date,
---   `Price` double,
---   PRIMARY KEY (`copy_no`, `Lib_ID`),
---   FOREIGN KEY (`copy_no`) REFERENCES `bookcopy`(`copy_no`),
---   FOREIGN KEY (`Lib_ID`) REFERENCES `librarian`(`Lib_ID`)
--- );
 
 CREATE TABLE `reserve` (
   `Book_id` int not null ,
@@ -85,9 +76,17 @@ CREATE TABLE `borrow` (
   FOREIGN KEY (`memberID`) REFERENCES `member`(`memberID`)
 );
 
+insert into librarian(Lib_ID,Lib_Name,Lib_Address,Tel_No) value
+(1,"Kavindu Piyumantha","aluthgama","0773648123");
+
+insert into Login(ID,role,username,password)values
+(1,"Librarian","kavindu","12345");
 
 
 
+
+insert into librarian(Lib_ID,Lib_Name,Lib_Address,Tel_No) value
+(1,"Kavindu Piyumantha","aluthgama","1234567890");
 
 insert into reserve(Book_id,copy_no,memberID,Reserve_Date,Status) value 
 (1,1,2,'2015-01-26','Reserved');
@@ -142,7 +141,17 @@ SELECT book_count, avbl_count FROM book where Book_id = 2;
 
 delete from reserve ;
 delete from borrow ;
+delete from member ;
+delete from bookcopy ;
+delete from book ;
+delete from login;
 
-Update book set avbl_count = 7  where book_id = 2;
+Update  book set avbl_count = 0  where book_id;
+Update  book set book_count = 0  ;
 Update book set avbl_count = avbl_count -1 where book_id =2;
 Update reserve set Reserve_Date = '2022-06-06' where book_id =2 and copy_no =3 and memberID = 2;
+
+SELECT br.Book_id, br.copy_no, res.Reserve_Date , br.Borrow_Date,  br.Due_Date,  br.returned_Date, br.Status , br.penalty_fee FROM reserve as res  NATURAL JOIN borrow as br ON res.memberID= br.memberID  where memberID = 2 and res.Status = "Picked Up" ;
+
+Update borrow set Borrow_Date = '2022-06-04' where book_id =2 and copy_no =2 and memberID = 2;
+Update borrow set Status = "Picked Up" where book_id =2 and copy_no =2 and memberID = 2;
